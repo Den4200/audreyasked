@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
-  pull_request:
+  pull_request_target:
+
+permissions:
+  checks: write
+  contents: read
 
 jobs:
   lint:
@@ -12,8 +16,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (push)
+        if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@v2
+
+      - name: Checkout repository (pull_request_target)
+        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
