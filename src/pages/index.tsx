@@ -7,7 +7,7 @@ import ButtonLink from '@/components/link/ButtonLink';
 import UnderlineLink from '@/components/link/UnderlineLink';
 import RadioButton from '@/components/RadioButton';
 import TextInput from '@/components/TextInput';
-import { Meta } from '@/layout/Meta';
+import Meta from '@/layout/Meta';
 import Main from '@/templates/Main';
 import { AppConfig } from '@/utils/AppConfig';
 
