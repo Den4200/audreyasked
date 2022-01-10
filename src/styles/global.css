@@ -1,0 +1,53 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@layer utilities {
+  .animated-underline {
+    background-image: linear-gradient(#33333300, #33333300), linear-gradient(to right, rgb(244, 114, 182), rgb(236, 72, 153));
+    background-size: 100% 2px, 0 2px;
+    background-position: 100% 100%, 0% 100%;
+    background-repeat: no-repeat;
+    transition: 0.3s ease;
+    transition-property: background-size, color, background-color, border-color;
+  }
+
+  .animated-underline:hover,
+  .animated-underline:focus-visible {
+    background-size: 0 2px, 100% 2px;
+  }
+
+  .radio-inner {
+    box-shadow: inset 12px 12px theme('colors.pink.300');
+  }
+
+  .heart {
+    position: relative;
+    width: 13px;
+    height: 13px;
+  }
+
+  .heart::before, .heart::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 8px;
+    height: 13px;
+    border-radius: 8px 8px 0 0;
+    background: white;
+  }
+
+  .heart::before {
+    left: 8px;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+  }
+
+  .heart::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+  }
+}
