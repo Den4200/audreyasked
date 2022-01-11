@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import Image from 'next/image';
+
 import Button from '@/components/Button';
 import Checkbox from '@/components/Checkbox';
 import ConfettiForm from '@/components/ConfettiForm';
@@ -8,6 +10,7 @@ import UnderlineLink from '@/components/link/UnderlineLink';
 import RadioButton from '@/components/RadioButton';
 import TextInput from '@/components/TextInput';
 import Meta from '@/layout/Meta';
+import banner from '@/public/assets/banner.png';
 import Main from '@/templates/Main';
 import { AppConfig } from '@/utils/AppConfig';
 
@@ -20,9 +23,9 @@ const Index = () => {
         <Meta title={AppConfig.title} description={AppConfig.description} />
       }
     >
-      <img
+      <Image
         className="pb-4 border-b border-gray-300"
-        src="https://cdn.discordapp.com/attachments/441762222880981013/929447603182108672/audrey_asks.png"
+        src={banner}
         alt="banner"
       />
 
