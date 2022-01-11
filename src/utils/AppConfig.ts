@@ -3,5 +3,5 @@ export const AppConfig = {
   title: 'Audrey Asked',
   description: 'A poll website inspired by Audrey!',
   locale: 'en',
-  themeColor: '#F9A8D4',
+  themeColor: '#F472B6',
 };
