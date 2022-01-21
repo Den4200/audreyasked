@@ -9,10 +9,14 @@ import TextInput from '@/components/TextInput';
 import Meta from '@/layout/Meta';
 import Main from '@/templates/Main';
 
-type Answer = {
+interface ObjectID {
+  id: number;
+}
+
+interface Answer extends ObjectID {
   id: number;
   value: string;
-};
+}
 
 enum QuestionType {
   Checkbox,
@@ -20,14 +24,17 @@ enum QuestionType {
   Text,
 }
 
-type QuestionProps = {
+interface Question extends ObjectID {
   id: number;
   type: QuestionType;
   question?: string;
   answers?: string[];
-};
+}
 
-const Question = (props: QuestionProps) => {
+const newID = (objs: ObjectID[]) =>
+  objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
+
+const QuestionElement = (props: Question) => {
   const [question, setQuestion] = useState<string>(props.question || '');
   const [answers, setAnswers] = useState<Answer[]>(
     props.answers?.map((answer, id) => {
@@ -39,10 +46,7 @@ const Question = (props: QuestionProps) => {
     setAnswers([
       ...answers,
       {
-        id:
-          answers.length !== 0
-            ? Math.max(...answers.map((answer) => answer.id)) + 1
-            : 0,
+        id: newID(answers),
         value,
       },
     ]);
@@ -141,11 +145,11 @@ const Question = (props: QuestionProps) => {
   }
 };
 
-type Section = {
+interface Section extends ObjectID {
   id: number;
-  questions: QuestionProps[];
+  questions: Question[];
   addQuestionType: keyof typeof QuestionType;
-};
+}
 
 const NewPoll = () => {
   const [sections, setSections] = useState<Section[]>([]);
@@ -154,10 +158,7 @@ const NewPoll = () => {
     setSections([
       ...sections,
       {
-        id:
-          sections.length !== 0
-            ? Math.max(...sections.map((section) => section.id)) + 1
-            : 0,
+        id: newID(sections),
         questions: [],
         addQuestionType: 'Checkbox',
       },
@@ -187,12 +188,7 @@ const NewPoll = () => {
               questions: [
                 ...section.questions,
                 {
-                  id:
-                    section.questions.length !== 0
-                      ? Math.max(
-                          ...section.questions.map((question) => question.id)
-                        ) + 1
-                      : 0,
+                  id: newID(section.questions),
                   type: QuestionType[section.addQuestionType!],
                 },
               ],
@@ -239,7 +235,7 @@ const NewPoll = () => {
                   >
                     x
                   </button>
-                  <Question {...question} />
+                  <QuestionElement {...question} />
                   <hr className="mt-4" />
                 </div>
               ))}
