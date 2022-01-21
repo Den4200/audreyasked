@@ -87,7 +87,7 @@ const QuestionElement = (props: Question) => {
             </div>
           ))}
           <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[66%] -ml-2"
+            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64] -ml-2"
             onClick={() => addAnswer('')}
           >
             +
@@ -120,7 +120,7 @@ const QuestionElement = (props: Question) => {
             </div>
           ))}
           <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[66%] -ml-2"
+            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64] -ml-2"
             onClick={() => addAnswer('')}
           >
             +
