@@ -14,7 +14,6 @@ interface ObjectID {
 }
 
 interface Answer extends ObjectID {
-  id: number;
   value: string;
 }
 
@@ -25,7 +24,6 @@ enum QuestionType {
 }
 
 interface Question extends ObjectID {
-  id: number;
   type: QuestionType;
   question?: string;
   answers?: string[];
@@ -146,7 +144,6 @@ const QuestionElement = (props: Question) => {
 };
 
 interface Section extends ObjectID {
-  id: number;
   questions: Question[];
   addQuestionType: keyof typeof QuestionType;
 }
