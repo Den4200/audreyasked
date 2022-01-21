@@ -100,6 +100,7 @@ const QuestionElement = (props: Question) => {
             className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 -ml-1 mr-3 leading-10"
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
+            placeholder="Question here.."
           />
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
@@ -108,6 +109,7 @@ const QuestionElement = (props: Question) => {
                 className="border-dotted focus:border-solid focus:ring-0 leading-5"
                 onChange={(event) => setAnswer(answer.id, event.target.value)}
                 value={answer.value}
+                placeholder="Answer here.."
               />
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
@@ -133,6 +135,7 @@ const QuestionElement = (props: Question) => {
             className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 -ml-1 mr-3 leading-10"
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
+            placeholder="Question here.."
           />
           <TextInput />
         </div>
