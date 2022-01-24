@@ -32,6 +32,7 @@ interface Question extends ObjectID {
 
 interface Section extends ObjectID {
   questions: Question[];
+  title?: string;
   addQuestionType: keyof typeof QuestionType;
 }
 
@@ -198,6 +199,13 @@ const NewPoll = () => {
       )
     );
 
+  const setSectionTitle = (sectionID: number, sectionTitle: string) =>
+    setSections(
+      sections.map((section) =>
+        section.id === sectionID ? { ...section, title: sectionTitle } : section
+      )
+    );
+
   const removeSection = (id: number) =>
     setSections(sections.filter((section) => section.id !== id));
 
@@ -239,8 +247,8 @@ const NewPoll = () => {
       meta={<Meta title="New Poll" description="Create a new poll here!" />}
     >
       <TextInput
-        className="w-full text-2xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-10 mb-4 px-2"
-        placeholder="Title here.."
+        className="w-full text-3xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-[3.25rem] mb-4 px-2"
+        placeholder="Poll title here.."
         onChange={(event) => setTitle(event.target.value)}
         value={title}
       />
@@ -259,6 +267,15 @@ const NewPoll = () => {
             </Button>
 
             <div className="flex flex-col space-y-4 mt-2">
+              <TextInput
+                className="text-2xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-10 px-2"
+                placeholder="Section title here.."
+                onChange={(event) =>
+                  setSectionTitle(section.id, event.target.value)
+                }
+                value={section.title}
+              />
+              <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
                   <button
