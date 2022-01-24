@@ -162,7 +162,7 @@ const QuestionElement = (props: Question) => {
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
           />
-          <TextInput />
+          <TextInput className="mr-3" />
         </div>
       );
 
