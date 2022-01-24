@@ -42,7 +42,7 @@ const QuestionInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ className, ...rest }, ref) => (
     <TextInput
       className={clsxm(
-        'text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10',
+        'text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 mr-3 leading-10',
         className
       )}
       placeholder="Question here.."
@@ -101,7 +101,7 @@ const QuestionElement = (props: Question) => {
           />
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
-              <CheckboxElement className="mr-4" />
+              <CheckboxElement className="ml-2 mr-4" />
               <AnswerOptionInput
                 onChange={(event) => setAnswer(answer.id, event.target.value)}
                 value={answer.value}
@@ -116,7 +116,7 @@ const QuestionElement = (props: Question) => {
             </div>
           ))}
           <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64] -ml-2"
+            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64]"
             onClick={() => addAnswer('')}
           >
             +
@@ -133,7 +133,7 @@ const QuestionElement = (props: Question) => {
           />
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
-              <RadioButton name={props.id.toString()} className="mr-4" />
+              <RadioButton name={props.id.toString()} className="ml-2 mr-4" />
               <AnswerOptionInput
                 onChange={(event) => setAnswer(answer.id, event.target.value)}
                 value={answer.value}
@@ -148,7 +148,7 @@ const QuestionElement = (props: Question) => {
             </div>
           ))}
           <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64] -ml-2"
+            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64]"
             onClick={() => addAnswer('')}
           >
             +
