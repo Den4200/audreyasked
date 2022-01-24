@@ -84,6 +84,7 @@ const QuestionElement = (props: Question) => {
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
                 onClick={() => removeAnswer(answer.id)}
+                tabIndex={-1}
               >
                 x
               </button>
@@ -119,6 +120,7 @@ const QuestionElement = (props: Question) => {
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
                 onClick={() => removeAnswer(answer.id)}
+                tabIndex={-1}
               >
                 x
               </button>
@@ -232,6 +234,7 @@ const NewPoll = () => {
             <Button
               className="float-right text-white -mt-8 -mr-8 rounded-full text-sm w-8 h-8 leading-3"
               onClick={() => removeSection(section.id)}
+              tabIndex={-1}
             >
               x
             </Button>
@@ -242,6 +245,7 @@ const NewPoll = () => {
                   <button
                     className="float-right text-gray-400 hover:text-gray-700 mt-2"
                     onClick={() => removeQuestion(section.id, question.id)}
+                    tabIndex={-1}
                   >
                     x
                   </button>

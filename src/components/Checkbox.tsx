@@ -17,6 +17,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         ref={ref}
         {...rest}
         type="checkbox"
+        tabIndex={-1}
       />
       <span
         className={clsxm(

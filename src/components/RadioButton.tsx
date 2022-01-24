@@ -17,6 +17,7 @@ const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
         ref={ref}
         {...rest}
         type="radio"
+        tabIndex={-1}
       />
       <span
         className={clsxm(
