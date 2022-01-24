@@ -37,6 +37,20 @@ interface Section extends ObjectID {
 const newID = (objs: ObjectID[]) =>
   objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
 
+const QuestionInput = forwardRef<HTMLInputElement, TextInputProps>(
+  ({ className, ...rest }, ref) => (
+    <TextInput
+      className={clsxm(
+        'text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10',
+        className
+      )}
+      placeholder="Question here.."
+      ref={ref}
+      {...rest}
+    />
+  )
+);
+
 const QuestionElement = (props: Question) => {
   const [question, setQuestion] = useState<string>(props.question || '');
   const [answers, setAnswers] = useState<Answer[]>(
@@ -66,11 +80,9 @@ const QuestionElement = (props: Question) => {
     case QuestionType.Checkbox:
       return (
         <div className="flex flex-col space-y-2">
-          <TextInput
-            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10"
+          <QuestionInput
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
-            placeholder="Question here.."
           />
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
@@ -102,11 +114,9 @@ const QuestionElement = (props: Question) => {
     case QuestionType.Radio:
       return (
         <div className="flex flex-col space-y-2">
-          <TextInput
-            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10"
+          <QuestionInput
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
-            placeholder="Question here.."
           />
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
@@ -138,11 +148,9 @@ const QuestionElement = (props: Question) => {
     case QuestionType.Text:
       return (
         <div className="flex flex-col space-y-2">
-          <TextInput
-            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10"
+          <QuestionInput
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
-            placeholder="Question here.."
           />
           <TextInput />
         </div>
