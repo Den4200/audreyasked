@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 import Button from '@/components/Button';
 import CheckboxElement from '@/components/Checkbox';
 import ConfettiForm from '@/components/ConfettiForm';
 import Dropdown from '@/components/Dropdown';
 import RadioButton from '@/components/RadioButton';
-import TextInput from '@/components/TextInput';
+import TextInput, { TextInputProps } from '@/components/TextInput';
 import Meta from '@/layout/Meta';
 import Main from '@/templates/Main';
+import clsxm from '@/utils/clsxm';
 
 interface ObjectID {
   id: number;
