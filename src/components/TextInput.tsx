@@ -2,7 +2,7 @@ import React, { ComponentPropsWithRef, forwardRef } from 'react';
 
 import clsxm from '@/utils/clsxm';
 
-type TextInputProps = ComponentPropsWithRef<'input'>;
+export type TextInputProps = ComponentPropsWithRef<'input'>;
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ className, ...rest }, ref) => (
