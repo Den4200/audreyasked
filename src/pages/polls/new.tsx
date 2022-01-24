@@ -67,7 +67,7 @@ const QuestionElement = (props: Question) => {
       return (
         <div className="flex flex-col space-y-2">
           <TextInput
-            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 -ml-1 mr-3 leading-10"
+            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10"
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
             placeholder="Question here.."
@@ -102,7 +102,7 @@ const QuestionElement = (props: Question) => {
       return (
         <div className="flex flex-col space-y-2">
           <TextInput
-            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 -ml-1 mr-3 leading-10"
+            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10"
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
             placeholder="Question here.."
@@ -137,7 +137,7 @@ const QuestionElement = (props: Question) => {
       return (
         <div className="flex flex-col space-y-2">
           <TextInput
-            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 -ml-1 mr-3 leading-10"
+            className="text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 -ml-1 mr-3 leading-10"
             onChange={(event) => setQuestion(event.target.value)}
             value={question}
             placeholder="Question here.."
