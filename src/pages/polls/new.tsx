@@ -51,6 +51,20 @@ const QuestionInput = forwardRef<HTMLInputElement, TextInputProps>(
   )
 );
 
+const AnswerOptionInput = forwardRef<HTMLInputElement, TextInputProps>(
+  ({ className, ...rest }, ref) => (
+    <TextInput
+      className={clsxm(
+        'border-dotted focus:border-solid focus:ring-0 leading-5',
+        className
+      )}
+      placeholder="Answer here.."
+      ref={ref}
+      {...rest}
+    />
+  )
+);
+
 const QuestionElement = (props: Question) => {
   const [question, setQuestion] = useState<string>(props.question || '');
   const [answers, setAnswers] = useState<Answer[]>(
@@ -87,11 +101,9 @@ const QuestionElement = (props: Question) => {
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
               <CheckboxElement className="mr-4" />
-              <TextInput
-                className="border-dotted focus:border-solid focus:ring-0 leading-5"
+              <AnswerOptionInput
                 onChange={(event) => setAnswer(answer.id, event.target.value)}
                 value={answer.value}
-                placeholder="Answer here.."
               />
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
@@ -121,11 +133,9 @@ const QuestionElement = (props: Question) => {
           {answers.map((answer) => (
             <div key={`${props.id}-${answer.id}`} className="flex">
               <RadioButton name={props.id.toString()} className="mr-4" />
-              <TextInput
-                className="border-dotted focus:border-solid focus:ring-0 leading-5"
+              <AnswerOptionInput
                 onChange={(event) => setAnswer(answer.id, event.target.value)}
                 value={answer.value}
-                placeholder="Answer here.."
               />
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
