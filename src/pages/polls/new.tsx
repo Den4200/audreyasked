@@ -152,6 +152,7 @@ const QuestionElement = (props: Question) => {
 };
 
 const NewPoll = () => {
+  const [title, setTitle] = useState<string>();
   const [sections, setSections] = useState<Section[]>([]);
 
   const addSection = () =>
@@ -216,6 +217,12 @@ const NewPoll = () => {
     <Main
       meta={<Meta title="New Poll" description="Create a new poll here!" />}
     >
+      <TextInput
+        className="w-full text-2xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-10 mb-4 px-2"
+        placeholder="Title here.."
+        onChange={(event) => setTitle(event.target.value)}
+        value={title}
+      />
       <div className="mt-2 space-y-8">
         {sections.map((section) => (
           <div
