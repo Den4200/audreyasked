@@ -29,6 +29,11 @@ interface Question extends ObjectID {
   answers?: string[];
 }
 
+interface Section extends ObjectID {
+  questions: Question[];
+  addQuestionType: keyof typeof QuestionType;
+}
+
 const newID = (objs: ObjectID[]) =>
   objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
 
@@ -145,11 +150,6 @@ const QuestionElement = (props: Question) => {
       return <></>;
   }
 };
-
-interface Section extends ObjectID {
-  questions: Question[];
-  addQuestionType: keyof typeof QuestionType;
-}
 
 const NewPoll = () => {
   const [sections, setSections] = useState<Section[]>([]);
