@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 
 import Button from '@/components/Button';
 import CheckboxElement from '@/components/Checkbox';
@@ -6,38 +6,11 @@ import ConfettiForm from '@/components/ConfettiForm';
 import Dropdown from '@/components/Dropdown';
 import RadioButton from '@/components/RadioButton';
 import TextInput, { TextInputProps } from '@/components/TextInput';
+import { usePollSchema } from '@/hooks/pollSchema';
 import Meta from '@/layout/Meta';
 import Main from '@/templates/Main';
 import clsxm from '@/utils/clsxm';
-
-interface ObjectID {
-  id: number;
-}
-
-interface Answer extends ObjectID {
-  value: string;
-}
-
-enum QuestionType {
-  Checkbox,
-  Radio,
-  Text,
-}
-
-interface Question extends ObjectID {
-  type: QuestionType;
-  question?: string;
-  answers?: string[];
-}
-
-interface Section extends ObjectID {
-  questions: Question[];
-  title?: string;
-  addQuestionType: keyof typeof QuestionType;
-}
-
-const newID = (objs: ObjectID[]) =>
-  objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
+import { QuestionType } from '@/utils/types';
 
 const QuestionInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ className, ...rest }, ref) => (
@@ -67,49 +40,48 @@ const AnswerOptionInput = forwardRef<HTMLInputElement, TextInputProps>(
   )
 );
 
-const QuestionElement = (props: Question) => {
-  const [question, setQuestion] = useState<string>(props.question || '');
-  const [answers, setAnswers] = useState<Answer[]>(
-    props.answers?.map((answer, id) => {
-      return { id, value: answer };
-    }) || []
-  );
+type QuestionElementProps = {
+  sectionID: number;
+  questionID: number;
+};
 
-  const addAnswer = (value: string) =>
-    setAnswers([
-      ...answers,
-      {
-        id: newID(answers),
-        value,
-      },
-    ]);
+const QuestionElement = (props: QuestionElementProps) => {
+  const { getQuestion, setQuestion, addAnswer, setAnswer, removeAnswer } =
+    usePollSchema();
+  const question = getQuestion(props.sectionID, props.questionID);
 
-  const setAnswer = (id: number, value: string) =>
-    setAnswers(
-      answers.map((answer) => (answer.id === id ? { id, value } : answer))
-    );
-
-  const removeAnswer = (id: number) =>
-    setAnswers(answers.filter((answer) => answer.id !== id));
-
-  switch (props.type) {
+  switch (question.type) {
     case QuestionType.Checkbox:
       return (
         <div className="flex flex-col space-y-2">
           <QuestionInput
-            onChange={(event) => setQuestion(event.target.value)}
-            value={question}
+            onChange={(event) =>
+              setQuestion(props.sectionID, question.id, event.target.value)
+            }
+            value={question.question}
           />
-          {answers.map((answer) => (
-            <div key={`${props.id}-${answer.id}`} className="flex">
+          {question.answers.map((answer) => (
+            <div
+              key={`${props.sectionID}-${question.id}-${answer.id}`}
+              className="flex"
+            >
               <CheckboxElement className="ml-2 mr-4" />
               <AnswerOptionInput
-                onChange={(event) => setAnswer(answer.id, event.target.value)}
+                onChange={(event) =>
+                  setAnswer(
+                    props.sectionID,
+                    question.id,
+                    answer.id,
+                    event.target.value
+                  )
+                }
                 value={answer.value}
               />
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
-                onClick={() => removeAnswer(answer.id)}
+                onClick={() =>
+                  removeAnswer(props.sectionID, question.id, answer.id)
+                }
                 tabIndex={-1}
               >
                 x
@@ -118,7 +90,7 @@ const QuestionElement = (props: Question) => {
           ))}
           <Button
             className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64]"
-            onClick={() => addAnswer('')}
+            onClick={() => addAnswer(props.sectionID, question.id)}
           >
             +
           </Button>
@@ -129,19 +101,36 @@ const QuestionElement = (props: Question) => {
       return (
         <div className="flex flex-col space-y-2">
           <QuestionInput
-            onChange={(event) => setQuestion(event.target.value)}
-            value={question}
+            onChange={(event) =>
+              setQuestion(props.sectionID, question.id, event.target.value)
+            }
+            value={question.question}
           />
-          {answers.map((answer) => (
-            <div key={`${props.id}-${answer.id}`} className="flex">
-              <RadioButton name={props.id.toString()} className="ml-2 mr-4" />
+          {question.answers.map((answer) => (
+            <div
+              key={`${props.sectionID}-${question.id}-${answer.id}`}
+              className="flex"
+            >
+              <RadioButton
+                name={question.id.toString()}
+                className="ml-2 mr-4"
+              />
               <AnswerOptionInput
-                onChange={(event) => setAnswer(answer.id, event.target.value)}
+                onChange={(event) =>
+                  setAnswer(
+                    props.sectionID,
+                    question.id,
+                    answer.id,
+                    event.target.value
+                  )
+                }
                 value={answer.value}
               />
               <button
                 className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
-                onClick={() => removeAnswer(answer.id)}
+                onClick={() =>
+                  removeAnswer(props.sectionID, question.id, answer.id)
+                }
                 tabIndex={-1}
               >
                 x
@@ -150,7 +139,7 @@ const QuestionElement = (props: Question) => {
           ))}
           <Button
             className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64]"
-            onClick={() => addAnswer('')}
+            onClick={() => addAnswer(props.sectionID, question.id)}
           >
             +
           </Button>
@@ -161,8 +150,10 @@ const QuestionElement = (props: Question) => {
       return (
         <div className="flex flex-col space-y-2">
           <QuestionInput
-            onChange={(event) => setQuestion(event.target.value)}
-            value={question}
+            onChange={(event) =>
+              setQuestion(props.sectionID, question.id, event.target.value)
+            }
+            value={question.question}
           />
           <TextInput className="mr-3" />
         </div>
@@ -174,73 +165,16 @@ const QuestionElement = (props: Question) => {
 };
 
 const NewPoll = () => {
-  const [title, setTitle] = useState<string>();
-  const [sections, setSections] = useState<Section[]>([]);
-
-  const addSection = () =>
-    setSections([
-      ...sections,
-      {
-        id: newID(sections),
-        questions: [],
-        addQuestionType: 'Checkbox',
-      },
-    ]);
-
-  const setSectionQuestionType = (
-    sectionID: number,
-    type: keyof typeof QuestionType
-  ) =>
-    setSections(
-      sections.map((section) =>
-        section.id === sectionID
-          ? { ...section, addQuestionType: type }
-          : section
-      )
-    );
-
-  const setSectionTitle = (sectionID: number, sectionTitle: string) =>
-    setSections(
-      sections.map((section) =>
-        section.id === sectionID ? { ...section, title: sectionTitle } : section
-      )
-    );
-
-  const removeSection = (id: number) =>
-    setSections(sections.filter((section) => section.id !== id));
-
-  const addQuestion = (sectionID: number) =>
-    setSections(
-      sections.map((section) =>
-        section.id === sectionID
-          ? {
-              ...section,
-              questions: [
-                ...section.questions,
-                {
-                  id: newID(section.questions),
-                  type: QuestionType[section.addQuestionType!],
-                },
-              ],
-            }
-          : section
-      )
-    );
-
-  const removeQuestion = (sectionID: number, questionID: number) => {
-    setSections(
-      sections.map((section) =>
-        section.id === sectionID
-          ? {
-              ...section,
-              questions: section.questions.filter(
-                (question) => question.id !== questionID
-              ),
-            }
-          : section
-      )
-    );
-  };
+  const {
+    pollSchema,
+    addSection,
+    removeSection,
+    setTitle,
+    setSectionTitle,
+    setSectionQuestionType,
+    addQuestion,
+    removeQuestion,
+  } = usePollSchema();
 
   return (
     <Main
@@ -250,10 +184,10 @@ const NewPoll = () => {
         className="w-full text-3xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-[3.25rem] mb-4 px-2"
         placeholder="Poll title here.."
         onChange={(event) => setTitle(event.target.value)}
-        value={title}
+        value={pollSchema.title}
       />
       <div className="mt-2 space-y-8">
-        {sections.map((section) => (
+        {pollSchema.sections.map((section) => (
           <div
             key={section.id}
             className="border-2 border-pink-300 p-4 rounded"
@@ -285,7 +219,10 @@ const NewPoll = () => {
                   >
                     x
                   </button>
-                  <QuestionElement {...question} />
+                  <QuestionElement
+                    sectionID={section.id}
+                    questionID={question.id}
+                  />
                   <hr className="mt-4" />
                 </div>
               ))}
