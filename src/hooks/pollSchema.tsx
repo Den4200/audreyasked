@@ -5,6 +5,7 @@ import { newID, PollSchema, Question, QuestionType } from '@/utils/types';
 type PollSchemaContextType = {
   pollSchema: PollSchema;
   setPollSchema: (pollSchema: PollSchema) => void;
+  resetPollSchema: () => void;
   setTitle: (title: string) => void;
   addSection: () => void;
   removeSection: (id: number) => void;
@@ -42,6 +43,12 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
     title: '',
     sections: [],
   });
+
+  const resetPollSchema = () =>
+    setPollSchema({
+      title: '',
+      sections: [],
+    });
 
   const setTitle = (title: string) => setPollSchema({ ...pollSchema, title });
 
@@ -231,6 +238,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
       value={{
         pollSchema,
         setPollSchema,
+        resetPollSchema,
         setTitle,
         addSection,
         setSectionTitle,
