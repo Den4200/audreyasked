@@ -25,7 +25,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# dotenv local files
+# dotenv
+.env
 .env*.local
 
 # local folder
