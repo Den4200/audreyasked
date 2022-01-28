@@ -1,5 +1,5 @@
 ##### Build Image #####
-FROM node:latest AS builder
+FROM node:16 AS builder
 
 WORKDIR /audreyasked
 
@@ -10,7 +10,7 @@ COPY . .
 RUN yarn build
 
 ##### Runtime Image #####
-FROM node:latest
+FROM node:16
 
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
