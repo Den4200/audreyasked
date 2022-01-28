@@ -1,0 +1,15 @@
+FROM node:16
+
+WORKDIR /audreyasked
+
+# Copy dependencies
+COPY package.json .
+COPY yarn.lock .
+
+# Install dependencies
+RUN yarn
+
+# Copy source code
+COPY . .
+
+CMD ["yarn", "dev"]
