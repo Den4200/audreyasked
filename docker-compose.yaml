@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  audreyasked:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://audreyasked:audreyasked@127.0.0.1:5432/audreyasked
+      SECRET: only-for-development
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      NEXTAUTH_URL: http://localhost:3000/api/auth
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/audreyasked/:ro
+      - ./.next/:/audreyasked/.next/
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: audreyasked
+      POSTGRES_USER: audreyasked
+      POSTGRES_PASSWORD: audreyasked
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data/:/var/lib/postgresql/data/
