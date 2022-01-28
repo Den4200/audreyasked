@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Poll {
+  id        String         @id @default(cuid())
+  schema    String
+  author    User           @relation(fields: [authorId], references: [id])
+  authorId  String         @map(name: "author_id")
+  responses PollResponse[]
+
+  @@map(name: "polls")
+}
+
+model PollResponse {
+  id       String  @id @default(cuid())
+  data     String
+  pollId   String  @map(name: "poll_id")
+  poll     Poll    @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  userId   String? @map(name: "user_id")
+  user     User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map(name: "poll_responses")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?      @map(name: "email_verified")
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  polls         Poll[]
+  pollResponses PollResponse[]
+
+  @@map(name: "users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map(name: "user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map(name: "provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map(name: "accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map(name: "session_token")
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map(name: "sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map(name: "verification_tokens")
+}
