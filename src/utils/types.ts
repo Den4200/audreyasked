@@ -9,13 +9,10 @@ export enum QuestionType {
 }
 
 export interface Answer extends ObjectID {
-  sectionID: number;
-  questionID: number;
   value: string;
 }
 
 export interface Question extends ObjectID {
-  sectionID: number;
   type: QuestionType;
   question: string;
   answers: Answer[];

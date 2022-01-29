@@ -104,7 +104,6 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
                 ...section.questions,
                 {
                   id: newID(section.questions),
-                  sectionID,
                   type: QuestionType[section.addQuestionType!],
                   question: '',
                   answers: [],
@@ -167,8 +166,6 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
                         ...question.answers,
                         {
                           id: newID(question.answers),
-                          sectionID,
-                          questionID,
                           value: '',
                         },
                       ],
