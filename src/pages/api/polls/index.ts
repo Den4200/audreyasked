@@ -36,36 +36,6 @@ const pollsHandler: AuthApiHandler = async (req, res) => {
       break;
     }
 
-    case 'PUT': {
-      const pollSchema = JSON.stringify(req.body.poll.schema);
-      if (!pollSchema) {
-        res.status(422).json({ message: '422 Unprocessable Entity' });
-        break;
-      }
-
-      const { count } = await prisma.poll.updateMany({
-        data: { schema: pollSchema },
-        where: {
-          id: req.body.poll.id,
-        },
-      });
-
-      res.status(200).json({ updated: count });
-      break;
-    }
-
-    case 'DELETE': {
-      const { count } = await prisma.poll.deleteMany({
-        where: {
-          id: req.body.poll.id,
-          author: { email: { equals: req.session.user?.email } },
-        },
-      });
-
-      res.status(200).json({ deleted: count });
-      break;
-    }
-
     default: {
       res.status(405).json({ message: '405 Method Not Allowed' });
       break;
