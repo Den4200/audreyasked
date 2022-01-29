@@ -57,6 +57,18 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
     }
 
     case 'PUT': {
+      const pollResponse = await prisma.pollResponse.findFirst({
+        select: { user: true },
+        where: { id: req.body.response.id },
+      });
+      if (
+        !pollResponse ||
+        pollResponse.user?.email !== req.session.user?.email
+      ) {
+        res.status(401).json({ message: '401 Forbidden' });
+        break;
+      }
+
       const data = JSON.stringify(req.body.response.data);
       if (!data) {
         res.status(422).json({ message: '422 Unprocessable Entity' });
