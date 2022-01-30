@@ -23,10 +23,15 @@ const EditPoll = () => {
     applyPollSchema();
   }, [router.query.id, setPollSchema]);
 
-  const onSubmit = async () =>
-    axios.put(`polls/${router.query.id}`, {
+  const onSubmit = async () => {
+    const { data } = await axios.put(`polls/${router.query.id}`, {
       poll: { schema: pollSchema },
     });
+
+    if (data.updated === 1) {
+      router.push(`/polls/${router.query.id}`);
+    }
+  };
 
   return (
     <PollEditor
