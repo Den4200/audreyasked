@@ -23,4 +23,4 @@ COPY --from=builder /audreyasked/.next/ ./.next
 COPY --from=builder /audreyasked/node_modules/ ./node_modules
 COPY --from=builder /audreyasked/package.json/ ./package.json
 
-CMD ["yarn", "start"]
+CMD ["sh", "-c",  "npx prisma migrate deploy && yarn start"]
