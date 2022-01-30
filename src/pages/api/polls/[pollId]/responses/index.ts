@@ -11,7 +11,7 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
     select: { author: true },
-    where: { id: { equals: pollId } },
+    where: { id: pollId },
   });
 
   if (!poll) {

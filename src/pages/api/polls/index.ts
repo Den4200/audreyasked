@@ -11,7 +11,7 @@ const pollsHandler: AuthApiHandler = async (req, res) => {
     case 'GET': {
       const polls = await prisma.poll.findMany({
         select: { id: true, schema: true },
-        where: { author: { email: { equals: req.session.user?.email } } },
+        where: { author: { email: req.session.user?.email } },
       });
       res.status(200).json({ polls: polls.map(parsePoll) });
       break;

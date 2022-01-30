@@ -5,7 +5,7 @@ const pollHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
     select: { id: true, schema: true, author: true },
-    where: { id: { equals: pollId } },
+    where: { id: pollId },
   });
 
   if (!poll) {
@@ -51,7 +51,7 @@ const pollHandler: AuthApiHandler = async (req, res) => {
       const { count } = await prisma.poll.deleteMany({
         where: {
           id: req.body.poll.id,
-          author: { email: { equals: req.session.user?.email } },
+          author: { email: req.session.user?.email },
         },
       });
 
