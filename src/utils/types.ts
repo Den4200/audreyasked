@@ -24,10 +24,19 @@ export interface Section extends ObjectID {
   addQuestionType: keyof typeof QuestionType;
 }
 
-export interface PollSchema {
+export type PollSchema = {
   title: string;
   sections: Section[];
-}
+};
+
+export type Poll = {
+  id: string;
+  schema: PollSchema;
+};
+
+export type PollResponse = {
+  sections: { id: number; questions: { id: number; answers: string[] }[] }[];
+};
 
 export const newID = (objs: ObjectID[]) =>
   objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
