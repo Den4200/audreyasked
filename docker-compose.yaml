@@ -7,7 +7,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgresql://audreyasked:audreyasked@127.0.0.1:5432/audreyasked
+      DATABASE_URL: postgresql://audreyasked:audreyasked@postgres:5432/audreyasked
       SECRET: only-for-development
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
