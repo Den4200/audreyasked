@@ -47,7 +47,7 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
       });
 
       if (pollResponse!.user?.email !== req.session.user?.email) {
-        res.status(401).json({ message: '401 Forbidden' });
+        res.status(403).json({ message: '403 Forbidden' });
         break;
       }
 

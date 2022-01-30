@@ -23,7 +23,7 @@ const pollHandler: AuthApiHandler = async (req, res) => {
 
     case 'PUT': {
       if (poll.author.email !== req.session.user?.email) {
-        res.status(401).json({ message: '401 Forbidden' });
+        res.status(403).json({ message: '403 Forbidden' });
         break;
       }
 
@@ -44,7 +44,7 @@ const pollHandler: AuthApiHandler = async (req, res) => {
 
     case 'DELETE': {
       if (poll.author.email !== req.session.user?.email) {
-        res.status(401).json({ message: '401 Forbidden' });
+        res.status(403).json({ message: '403 Forbidden' });
         break;
       }
 

@@ -19,6 +19,6 @@ export const withAuth =
     if (session) {
       handler({ ...req, session } as AuthApiRequest, res);
     } else {
-      res.status(403).json({ message: '401 Forbidden' });
+      res.status(401).json({ message: '401 Unauthorized' });
     }
   };
