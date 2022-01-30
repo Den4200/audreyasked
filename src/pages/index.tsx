@@ -9,7 +9,6 @@ import ButtonLink from '@/components/link/ButtonLink';
 import UnderlineLink from '@/components/link/UnderlineLink';
 import RadioButton from '@/components/RadioButton';
 import TextInput from '@/components/TextInput';
-import Meta from '@/layout/Meta';
 import banner from '@/public/assets/banner.png';
 import Main from '@/templates/Main';
 import { AppConfig } from '@/utils/AppConfig';
@@ -18,11 +17,7 @@ const Index = () => {
   const [input, setInput] = useState<string>();
 
   return (
-    <Main
-      meta={
-        <Meta title={AppConfig.title} description={AppConfig.description} />
-      }
-    >
+    <Main title={AppConfig.title} description={AppConfig.description}>
       <Image
         className="pb-4 border-b border-gray-300"
         src={banner}

@@ -1,6 +1,8 @@
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  theme: {},
+  theme: {
+    namedGroups: ['option'],
+  },
   variants: {},
-  plugins: [],
+  plugins: [require('tailwindcss-named-groups')],
 };

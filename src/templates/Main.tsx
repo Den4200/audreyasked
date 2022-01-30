@@ -1,21 +1,21 @@
 import React, { ReactNode } from 'react';
 
+import Meta from '@/layout/Meta';
 import { AppConfig } from '@/utils/AppConfig';
 
-type IMainProps = {
-  meta: ReactNode;
+type MainProps = {
+  title: string;
+  description: string;
   children: ReactNode;
 };
 
-const Main = (props: IMainProps) => (
+const Main = (props: MainProps) => (
   <div className="flex flex-col px-4 pt-4 min-h-screen max-w-screen-md mx-auto text-gray-700">
-    {props.meta}
+    <Meta title={props.title} description={props.description} />
 
     <div className="mb-4 border-b border-gray-300">
-      <h1 className="font-bold mb-1 text-3xl text-gray-900">
-        {AppConfig.title}
-      </h1>
-      <h2 className="mb-4 text-xl">{AppConfig.description}</h2>
+      <h1 className="font-bold mb-1 text-3xl text-gray-900">{props.title}</h1>
+      <h2 className="mb-4 text-xl">{props.description}</h2>
     </div>
 
     <div className="grow content">{props.children}</div>
