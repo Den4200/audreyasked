@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 
 import PollEditor from '@/components/PollEditor';
 import { usePollSchema } from '@/hooks/pollSchema';
-import Meta from '@/layout/Meta';
 import axios from '@/lib/axios';
 
 const NewPoll = () => {
@@ -19,7 +18,8 @@ const NewPoll = () => {
 
   return (
     <PollEditor
-      meta={<Meta title="New Poll" description="Create a new poll here!" />}
+      title="New Poll"
+      description="Create a new poll here!"
       submitText="Create poll!"
       onSubmit={onSubmit}
     />

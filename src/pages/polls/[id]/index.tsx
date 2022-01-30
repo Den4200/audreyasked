@@ -8,7 +8,6 @@ import ConfettiForm from '@/components/ConfettiForm';
 import RadioButton from '@/components/RadioButton';
 import TextInput from '@/components/TextInput';
 import usePollResponse from '@/hooks/pollResponse';
-import Meta from '@/layout/Meta';
 import axios from '@/lib/axios';
 import Main from '@/templates/Main';
 import { Question, QuestionType } from '@/utils/types';
@@ -95,14 +94,7 @@ const Poll = () => {
   }, [router.query, setPollId]);
 
   return (
-    <Main
-      meta={
-        <Meta
-          title={poll.schema.title}
-          description={`Answer this poll: ${poll.schema.title}`}
-        />
-      }
-    >
+    <Main title={poll.schema.title} description={`Answer a poll!`}>
       <div className="mt-2 space-y-8">
         {poll.schema.sections.map((section) => (
           <div

@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import { forwardRef } from 'react';
 
 import Button from '@/components/Button';
 import CheckboxElement from '@/components/Checkbox';
@@ -47,7 +47,8 @@ type QuestionElementProps = {
 type PollEditorProps = {
   submitText: string;
   onSubmit: () => void;
-  meta: ReactNode;
+  title: string;
+  description: string;
 };
 
 const QuestionElement = (props: QuestionElementProps) => {
@@ -182,7 +183,7 @@ const PollEditor = (props: PollEditorProps) => {
   } = usePollSchema();
 
   return (
-    <Main meta={props.meta}>
+    <Main title={props.title} description={props.description}>
       <TextInput
         className="w-full text-3xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-[3.25rem] mb-4 px-2"
         placeholder="Poll title here.."
