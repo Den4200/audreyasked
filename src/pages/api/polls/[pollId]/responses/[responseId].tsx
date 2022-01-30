@@ -1,6 +1,12 @@
 import withAuth, { AuthApiHandler } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
+const parsePollResponse = (pollResponse: {
+  id: string;
+  data: string;
+  userId: string | null;
+}) => ({ ...pollResponse, data: JSON.parse(pollResponse.data) });
+
 const pollResponseHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId!.toString();
   const responseId = req.query.responseId!.toString();
@@ -24,6 +30,16 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
   }
 
   switch (req.method) {
+    case 'GET': {
+      const resp =
+        poll.author.email === req.session.user?.email
+          ? { response: parsePollResponse(response) }
+          : { response: { id: response.id, data: JSON.parse(response.data) } };
+
+      res.status(200).json(resp);
+      break;
+    }
+
     case 'PUT': {
       const pollResponse = await prisma.pollResponse.findFirst({
         select: { user: true },
