@@ -8,7 +8,7 @@ const parsePollResponse = (pollResponse: {
 }) => ({ ...pollResponse, data: JSON.parse(pollResponse.data) });
 
 const pollResponsesHandler: AuthApiHandler = async (req, res) => {
-  const pollId = req.query.id?.toString();
+  const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
     select: { author: true },
     where: { id: { equals: pollId } },
@@ -53,34 +53,6 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
       });
 
       res.status(200).json({ response: parsePollResponse(resp) });
-      break;
-    }
-
-    case 'PUT': {
-      const pollResponse = await prisma.pollResponse.findFirst({
-        select: { user: true },
-        where: { id: req.body.response.id },
-      });
-      if (
-        !pollResponse ||
-        pollResponse.user?.email !== req.session.user?.email
-      ) {
-        res.status(401).json({ message: '401 Forbidden' });
-        break;
-      }
-
-      const data = JSON.stringify(req.body.response.data);
-      if (!data) {
-        res.status(422).json({ message: '422 Unprocessable Entity' });
-        break;
-      }
-
-      const { count } = await prisma.pollResponse.updateMany({
-        data: { data },
-        where: { id: req.body.response.id },
-      });
-
-      res.status(200).json({ updated: count });
       break;
     }
 
