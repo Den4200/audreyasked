@@ -1,5 +1,6 @@
 import PollEditor from '@/components/PollEditor';
 import { usePollSchema } from '@/hooks/pollSchema';
+import Meta from '@/layout/Meta';
 import axios from '@/lib/axios';
 
 const NewPoll = () => {
@@ -10,7 +11,13 @@ const NewPoll = () => {
       poll: { schema: pollSchema },
     });
 
-  return <PollEditor submitText="Create poll!" onSubmit={onSubmit} />;
+  return (
+    <PollEditor
+      meta={<Meta title="New Poll" description="Create a new poll here!" />}
+      submitText="Create poll!"
+      onSubmit={onSubmit}
+    />
+  );
 };
 
 export default NewPoll;

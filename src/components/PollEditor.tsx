@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, ReactNode } from 'react';
 
 import Button from '@/components/Button';
 import CheckboxElement from '@/components/Checkbox';
@@ -7,7 +7,6 @@ import Dropdown from '@/components/Dropdown';
 import RadioButton from '@/components/RadioButton';
 import TextInput, { TextInputProps } from '@/components/TextInput';
 import { usePollSchema } from '@/hooks/pollSchema';
-import Meta from '@/layout/Meta';
 import Main from '@/templates/Main';
 import clsxm from '@/utils/clsxm';
 import { QuestionType } from '@/utils/types';
@@ -48,6 +47,7 @@ type QuestionElementProps = {
 type PollEditorProps = {
   submitText: string;
   onSubmit: () => void;
+  meta: ReactNode;
 };
 
 const QuestionElement = (props: QuestionElementProps) => {
@@ -182,9 +182,7 @@ const PollEditor = (props: PollEditorProps) => {
   } = usePollSchema();
 
   return (
-    <Main
-      meta={<Meta title="New Poll" description="Create a new poll here!" />}
-    >
+    <Main meta={props.meta}>
       <TextInput
         className="w-full text-3xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-[3.25rem] mb-4 px-2"
         placeholder="Poll title here.."
