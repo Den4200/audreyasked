@@ -7,7 +7,8 @@
       {
         "singleQuote": true
       }
-    ]
+    ],
+    "global-require": "off"
   },
   "overrides": [
     // Configuration for TypeScript files
@@ -25,7 +26,6 @@
             "singleQuote": true
           }
         ],
-        "global-require": "off",
         "no-plusplus": "off",
         "react/display-name": "off", // No need for this
         "react/destructuring-assignment": "off", // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
