@@ -40,7 +40,7 @@ jobs:
         with:
           namespace: audreyasked
           manifests: |
-            audreyasked/deployment.yaml
+            audreyasked/audreyasked/deployment.yaml
           images: |
             ghcr.io/den4200/audreyasked:${{ steps.sha_tag.outputs.tag }}
           kubectl-version: 'latest'
