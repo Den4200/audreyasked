@@ -33,6 +33,8 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
       const resps = await prisma.pollResponse.findMany(query);
       res
         .status(200)
+        // @ts-ignore
+        // for some reason, `resp` is implicitly `any` in docker build
         .json({ responses: resps.map((resp) => parsePollResponse(resp)) });
       break;
     }
