@@ -6,6 +6,9 @@ WORKDIR /audreyasked
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
+COPY prisma .
+RUN npx prisma generate
+
 COPY . .
 RUN yarn build
 
