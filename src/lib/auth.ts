@@ -11,7 +11,7 @@ export type AuthApiHandler<T = any> = (
   res: NextApiResponse<T>
 ) => Promise<void> | void;
 
-const withAuth =
+export const withAuth =
   (handler: AuthApiHandler) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
@@ -22,5 +22,3 @@ const withAuth =
       res.status(403).json({ message: '401 Forbidden' });
     }
   };
-
-export default withAuth;

@@ -1,4 +1,4 @@
-import withAuth, { AuthApiHandler } from '@/lib/auth';
+import { AuthApiHandler, withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 const pollHandler: AuthApiHandler = async (req, res) => {
