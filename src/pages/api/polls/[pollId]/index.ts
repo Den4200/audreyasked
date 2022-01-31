@@ -5,7 +5,13 @@ import { parsePoll } from '@/utils/types';
 const pollHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
-    select: { id: true, schema: true, createdAt: true, updatedAt: true, author: true },
+    select: {
+      id: true,
+      schema: true,
+      createdAt: true,
+      updatedAt: true,
+      author: true,
+    },
     where: { id: pollId },
   });
 
@@ -16,10 +22,9 @@ const pollHandler: AuthApiHandler = async (req, res) => {
 
   switch (req.method) {
     case 'GET': {
+      // eslint-disable-next-line unused-imports/no-unused-vars
       const { author, ...resPoll } = poll;
-      res
-        .status(200)
-        .json({ poll: parsePoll(resPoll) });
+      res.status(200).json({ poll: parsePoll(resPoll) });
       break;
     }
 
