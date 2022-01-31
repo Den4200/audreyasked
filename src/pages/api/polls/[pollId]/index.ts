@@ -1,11 +1,6 @@
 import { AuthApiHandler, withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { DbPoll } from '@/utils/types';
-
-const parsePoll = (poll: DbPoll) => ({
-  ...poll,
-  schema: JSON.parse(poll.schema),
-});
+import { parsePoll } from '@/utils/types';
 
 const pollHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();

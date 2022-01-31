@@ -56,3 +56,13 @@ export type DbPollResponse = Omit<PollResponse, 'data'> & {
 
 export const newID = (objs: ObjectID[]) =>
   objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
+
+export const parsePoll = (poll: DbPoll) => ({
+  ...poll,
+  schema: JSON.parse(poll.schema),
+});
+
+export const parsePollResponse = (pollResponse: DbPollResponse) => ({
+  ...pollResponse,
+  data: JSON.parse(pollResponse.data),
+});
