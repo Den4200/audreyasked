@@ -1,7 +1,8 @@
 import { AuthApiHandler, withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
+import { DbPoll } from '@/utils/types';
 
-const parsePoll = (poll: { id: string; schema: string }) => ({
+const parsePoll = (poll: DbPoll) => ({
   ...poll,
   schema: JSON.parse(poll.schema),
 });
@@ -10,7 +11,7 @@ const pollsHandler: AuthApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET': {
       const polls = await prisma.poll.findMany({
-        select: { id: true, schema: true },
+        select: { id: true, schema: true, createdAt: true, updatedAt: true },
         where: { author: { email: req.session.user?.email } },
       });
       res.status(200).json({ polls: polls.map(parsePoll) });
@@ -25,7 +26,7 @@ const pollsHandler: AuthApiHandler = async (req, res) => {
       }
 
       const poll = await prisma.poll.create({
-        select: { id: true, schema: true },
+        select: { id: true, schema: true, createdAt: true, updatedAt: true },
         data: {
           author: { connect: { email: req.session.user?.email! } },
           schema: pollSchema,

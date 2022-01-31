@@ -1,11 +1,11 @@
 import { AuthApiHandler, withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
+import { DbPollResponse } from '@/utils/types';
 
-const parsePollResponse = (pollResponse: {
-  id: string;
-  data: string;
-  userId: string | null;
-}) => ({ ...pollResponse, data: JSON.parse(pollResponse.data) });
+const parsePollResponse = (pollResponse: DbPollResponse) => ({
+  ...pollResponse,
+  data: JSON.parse(pollResponse.data),
+});
 
 const pollResponsesHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();
@@ -22,7 +22,13 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET': {
       const query = {
-        select: { id: true, data: true, userId: false },
+        select: {
+          id: true,
+          data: true,
+          createdAt: true,
+          updatedAt: true,
+          userId: false,
+        },
         where: { pollId },
       };
 
@@ -35,7 +41,9 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
         .status(200)
         // @ts-ignore
         // for some reason, `resp` is implicitly `any` in docker build
-        .json({ responses: resps.map((resp) => parsePollResponse(resp)) });
+        .json({
+          responses: resps.map((resp) => parsePollResponse(resp || undefined)),
+        });
       break;
     }
 

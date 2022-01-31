@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 
 import usePoll from '@/hooks/poll';
-import { PollResponse } from '@/utils/types';
+import { PollResponseData } from '@/utils/types';
 
 const usePollResponse = (pollId?: string) => {
   const { poll, setPollId } = usePoll(pollId);
-  const [pollResponse, setPollResponse] = useState<PollResponse>({
+  const [pollResponse, setPollResponse] = useState<PollResponseData>({
     sections: [],
   });
 
   useEffect(
     () =>
       setPollResponse({
-        sections: poll?.schema.sections.map((section) => ({
+        sections: poll.schema.sections.map((section) => ({
           id: section.id,
           questions: section.questions.map((question) => ({
             id: question.id,

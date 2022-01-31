@@ -15,18 +15,22 @@ model Poll {
   schema    String
   author    User           @relation(fields: [authorId], references: [id])
   authorId  String         @map(name: "author_id")
+  createdAt DateTime       @map(name: "created_at") @default(now())
+  updatedAt DateTime       @map(name: "updated_at") @default(now()) @updatedAt
   responses PollResponse[]
 
   @@map(name: "polls")
 }
 
 model PollResponse {
-  id       String  @id @default(cuid())
-  data     String
-  pollId   String  @map(name: "poll_id")
-  poll     Poll    @relation(fields: [pollId], references: [id], onDelete: Cascade)
-  userId   String? @map(name: "user_id")
-  user     User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id        String   @id @default(cuid())
+  data      String
+  pollId    String   @map(name: "poll_id")
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  userId    String?  @map(name: "user_id")
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @map(name: "created_at") @default(now())
+  updatedAt DateTime @map(name: "updated_at") @default(now()) @updatedAt
 
   @@map(name: "poll_responses")
 }
@@ -37,6 +41,8 @@ model User {
   email         String?        @unique
   emailVerified DateTime?      @map(name: "email_verified")
   image         String?
+  createdAt     DateTime @map(name: "created_at") @default(now())
+  updatedAt     DateTime @map(name: "updated_at") @default(now()) @updatedAt
   accounts      Account[]
   sessions      Session[]
   polls         Poll[]

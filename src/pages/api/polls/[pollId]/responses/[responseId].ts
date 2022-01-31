@@ -1,11 +1,11 @@
 import { AuthApiHandler, withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
+import { DbPollResponse } from '@/utils/types';
 
-const parsePollResponse = (pollResponse: {
-  id: string;
-  data: string;
-  userId: string | null;
-}) => ({ ...pollResponse, data: JSON.parse(pollResponse.data) });
+const parsePollResponse = (pollResponse: DbPollResponse) => ({
+  ...pollResponse,
+  data: JSON.parse(pollResponse.data),
+});
 
 const pollResponseHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId!.toString();
@@ -21,7 +21,13 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
   }
 
   const response = await prisma.pollResponse.findFirst({
-    select: { id: true, data: true, userId: true },
+    select: {
+      id: true,
+      data: true,
+      createdAt: true,
+      updatedAt: true,
+      userId: true,
+    },
     where: { id: responseId, pollId },
   });
   if (!response) {
@@ -31,10 +37,13 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
 
   switch (req.method) {
     case 'GET': {
+      // eslint-disable-next-line unused-imports/no-unused-vars
+      const { userId, ...responseWithoutUser } = response;
+
       const resp =
         poll.author.email === req.session.user?.email
           ? { response: parsePollResponse(response) }
-          : { response: { id: response.id, data: JSON.parse(response.data) } };
+          : { response: parsePollResponse(responseWithoutUser) };
 
       res.status(200).json(resp);
       break;

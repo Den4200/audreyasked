@@ -8,6 +8,8 @@ const usePoll = (id?: string) => {
   const [poll, setPoll] = useState<Poll>({
     id: '',
     schema: { title: '', sections: [] },
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
 
   useEffect(() => {

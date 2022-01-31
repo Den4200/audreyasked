@@ -1,10 +1,16 @@
 import { AuthApiHandler, withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
+import { DbPoll } from '@/utils/types';
+
+const parsePoll = (poll: DbPoll) => ({
+  ...poll,
+  schema: JSON.parse(poll.schema),
+});
 
 const pollHandler: AuthApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
-    select: { id: true, schema: true, author: true },
+    select: { id: true, schema: true, createdAt: true, updatedAt: true, author: true },
     where: { id: pollId },
   });
 
@@ -15,9 +21,10 @@ const pollHandler: AuthApiHandler = async (req, res) => {
 
   switch (req.method) {
     case 'GET': {
+      const { author, ...resPoll } = poll;
       res
         .status(200)
-        .json({ poll: { id: poll.id, schema: JSON.parse(poll.schema) } });
+        .json({ poll: parsePoll(resPoll) });
       break;
     }
 

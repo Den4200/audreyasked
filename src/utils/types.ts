@@ -32,10 +32,26 @@ export type PollSchema = {
 export type Poll = {
   id: string;
   schema: PollSchema;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type DbPoll = Omit<Poll, 'schema'> & {
+  schema: string;
+};
+
+export type PollResponseData = {
+  sections: { id: number; questions: { id: number; answers: string[] }[] }[];
 };
 
 export type PollResponse = {
-  sections: { id: number; questions: { id: number; answers: string[] }[] }[];
+  id: string;
+  data: PollResponseData;
+  userId?: string | null;
+};
+
+export type DbPollResponse = Omit<PollResponse, 'data'> & {
+  data: string;
 };
 
 export const newID = (objs: ObjectID[]) =>
