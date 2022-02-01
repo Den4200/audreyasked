@@ -1,8 +1,11 @@
-import { AuthApiHandler, withAuth } from '@/lib/auth';
+import { NextApiHandler } from 'next';
+import { getSession } from 'next-auth/react';
+
+import { withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { parsePollResponse } from '@/utils/types';
 
-const pollResponseHandler: AuthApiHandler = async (req, res) => {
+const pollResponseHandler: NextApiHandler = async (req, res) => {
   const pollId = req.query.pollId!.toString();
   const responseId = req.query.responseId!.toString();
 
@@ -35,8 +38,9 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
       // eslint-disable-next-line unused-imports/no-unused-vars
       const { userId, ...responseWithoutUser } = response;
 
+      const session = await getSession({ req });
       const resp =
-        poll.author.email === req.session.user?.email
+        session && poll.author.email === session.user?.email
           ? { response: parsePollResponse(response) }
           : { response: parsePollResponse(responseWithoutUser) };
 
@@ -45,28 +49,31 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
     }
 
     case 'PUT': {
-      const pollResponse = await prisma.pollResponse.findFirst({
-        select: { user: true },
-        where: { id: responseId, pollId },
+      const pollResponsePutHandler = withAuth(async (aReq, aRes) => {
+        const pollResponse = await prisma.pollResponse.findFirst({
+          select: { user: true },
+          where: { id: responseId, pollId },
+        });
+
+        if (pollResponse!.user?.email !== aReq.session.user?.email) {
+          aRes.status(403).json({ message: '403 Forbidden' });
+          return;
+        }
+
+        const data = JSON.stringify(aReq.body.response.data);
+        if (!data) {
+          aRes.status(422).json({ message: '422 Unprocessable Entity' });
+          return;
+        }
+
+        const { count } = await prisma.pollResponse.updateMany({
+          data: { data },
+          where: { id: responseId, pollId },
+        });
+
+        aRes.status(200).json({ updated: count });
       });
-
-      if (pollResponse!.user?.email !== req.session.user?.email) {
-        res.status(403).json({ message: '403 Forbidden' });
-        break;
-      }
-
-      const data = JSON.stringify(req.body.response.data);
-      if (!data) {
-        res.status(422).json({ message: '422 Unprocessable Entity' });
-        break;
-      }
-
-      const { count } = await prisma.pollResponse.updateMany({
-        data: { data },
-        where: { id: responseId, pollId },
-      });
-
-      res.status(200).json({ updated: count });
+      pollResponsePutHandler(req, res);
       break;
     }
 
@@ -77,4 +84,4 @@ const pollResponseHandler: AuthApiHandler = async (req, res) => {
   }
 };
 
-export default withAuth(pollResponseHandler);
+export default pollResponseHandler;

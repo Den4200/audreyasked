@@ -1,8 +1,10 @@
-import { AuthApiHandler, withAuth } from '@/lib/auth';
+import { NextApiHandler } from 'next';
+
+import { withAuth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { parsePoll } from '@/utils/types';
 
-const pollHandler: AuthApiHandler = async (req, res) => {
+const pollHandler: NextApiHandler = async (req, res) => {
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
     select: {
@@ -29,40 +31,46 @@ const pollHandler: AuthApiHandler = async (req, res) => {
     }
 
     case 'PUT': {
-      if (poll.author.email !== req.session.user?.email) {
-        res.status(403).json({ message: '403 Forbidden' });
-        break;
-      }
+      const pollPutHandler = withAuth(async (aReq, aRes) => {
+        if (poll.author.email !== aReq.session.user?.email) {
+          aRes.status(403).json({ message: '403 Forbidden' });
+          return;
+        }
 
-      const pollSchema = JSON.stringify(req.body.poll.schema);
-      if (!pollSchema) {
-        res.status(422).json({ message: '422 Unprocessable Entity' });
-        break;
-      }
+        const pollSchema = JSON.stringify(aReq.body.poll.schema);
+        if (!pollSchema) {
+          aRes.status(422).json({ message: '422 Unprocessable Entity' });
+          return;
+        }
 
-      const { count } = await prisma.poll.updateMany({
-        data: { schema: pollSchema },
-        where: { id: pollId },
+        const { count } = await prisma.poll.updateMany({
+          data: { schema: pollSchema },
+          where: { id: pollId },
+        });
+
+        aRes.status(200).json({ updated: count });
       });
-
-      res.status(200).json({ updated: count });
+      pollPutHandler(req, res);
       break;
     }
 
     case 'DELETE': {
-      if (poll.author.email !== req.session.user?.email) {
-        res.status(403).json({ message: '403 Forbidden' });
-        break;
-      }
+      const pollDeleteHandler = withAuth(async (aReq, aRes) => {
+        if (poll.author.email !== aReq.session.user?.email) {
+          aRes.status(403).json({ message: '403 Forbidden' });
+          return;
+        }
 
-      const { count } = await prisma.poll.deleteMany({
-        where: {
-          id: req.body.poll.id,
-          author: { email: req.session.user?.email },
-        },
+        const { count } = await prisma.poll.deleteMany({
+          where: {
+            id: aReq.body.poll.id,
+            author: { email: aReq.session.user?.email },
+          },
+        });
+
+        aRes.status(200).json({ deleted: count });
       });
-
-      res.status(200).json({ deleted: count });
+      pollDeleteHandler(req, res);
       break;
     }
 
@@ -73,4 +81,4 @@ const pollHandler: AuthApiHandler = async (req, res) => {
   }
 };
 
-export default withAuth(pollHandler);
+export default pollHandler;

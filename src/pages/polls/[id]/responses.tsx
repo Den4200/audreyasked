@@ -4,7 +4,6 @@ import { ResponsiveBar } from '@nivo/bar';
 import { useRouter } from 'next/router';
 
 import { usePollSchema } from '@/hooks/pollSchema';
-import { useAuth } from '@/lib/auth';
 import axios from '@/lib/axios';
 import Main from '@/templates/Main';
 import responseCounter from '@/utils/responseCounter';
@@ -83,7 +82,7 @@ const PollResponses = () => {
     })),
   }));
 
-  return useAuth(
+  return (
     <Main
       title={pollSchema.title}
       description={`${pollResponses.length} response${

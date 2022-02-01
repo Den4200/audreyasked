@@ -1,8 +1,11 @@
-import { AuthApiHandler, withAuth } from '@/lib/auth';
+import { NextApiHandler } from 'next';
+import { getSession } from 'next-auth/react';
+
 import prisma from '@/lib/prisma';
 import { parsePollResponse } from '@/utils/types';
 
-const pollResponsesHandler: AuthApiHandler = async (req, res) => {
+const pollResponsesHandler: NextApiHandler = async (req, res) => {
+  const session = await getSession({ req });
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
     select: { author: true },
@@ -27,7 +30,7 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
         where: { pollId },
       };
 
-      if (poll.author.email === req.session.user?.email) {
+      if (session && poll.author.email === session.user?.email) {
         query.select.userId = true;
       }
 
@@ -46,18 +49,27 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
       const data = JSON.stringify(req.body.response.data);
       if (!data) {
         res.status(422).json({ message: '422 Unprocessable Entity' });
-        break;
+        return;
       }
 
-      const resp = await prisma.pollResponse.create({
-        data: {
-          poll: { connect: { id: pollId } },
-          user: { connect: { email: req.session.user?.email! } },
-          data,
-        },
+      res.status(200).json({
+        response: parsePollResponse(
+          session
+            ? await prisma.pollResponse.create({
+                data: {
+                  poll: { connect: { id: pollId } },
+                  user: { connect: { email: session.user?.email! } },
+                  data,
+                },
+              })
+            : await prisma.pollResponse.create({
+                data: {
+                  poll: { connect: { id: pollId } },
+                  data,
+                },
+              })
+        ),
       });
-
-      res.status(200).json({ response: parsePollResponse(resp) });
       break;
     }
 
@@ -68,4 +80,4 @@ const pollResponsesHandler: AuthApiHandler = async (req, res) => {
   }
 };
 
-export default withAuth(pollResponsesHandler);
+export default pollResponsesHandler;
