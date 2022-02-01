@@ -1,6 +1,12 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-import { newID, PollSchema, Question, QuestionType } from '@/utils/types';
+import {
+  Answer,
+  newID,
+  PollSchema,
+  Question,
+  QuestionType,
+} from '@/utils/types';
 
 type PollSchemaContextType = {
   pollSchema: PollSchema;
@@ -17,6 +23,7 @@ type PollSchemaContextType = {
   addQuestion: (sectionID: number) => void;
   getQuestion: (sectionID: number, questionID: number) => Question;
   setQuestion: (sectionID: number, questionID: number, value: string) => void;
+  duplicateQuestion: (sectionID: number, questionID: number) => void;
   removeQuestion: (sectionID: number, questionID: number) => void;
   addAnswer: (sectionID: number, questionID: number) => void;
   setAnswer: (
@@ -93,7 +100,11 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
       ),
     });
 
-  const addQuestion = (sectionID: number) =>
+  const addQuestion = (
+    sectionID: number,
+    question?: string,
+    answers?: Answer[]
+  ) =>
     setPollSchema({
       ...pollSchema,
       sections: pollSchema.sections.map((section) =>
@@ -105,8 +116,8 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
                 {
                   id: newID(section.questions),
                   type: QuestionType[section.addQuestionType!],
-                  question: '',
-                  answers: [],
+                  question: question || '',
+                  answers: answers || [],
                 },
               ],
             }
@@ -135,6 +146,11 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
           : section
       ),
     });
+
+  const duplicateQuestion = (sectionID: number, questionID: number) => {
+    const question = getQuestion(sectionID, questionID);
+    addQuestion(sectionID, question.question, question.answers);
+  };
 
   const removeQuestion = (sectionID: number, questionID: number) =>
     setPollSchema({
@@ -244,6 +260,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
         addQuestion,
         getQuestion,
         setQuestion,
+        duplicateQuestion,
         removeQuestion,
         addAnswer,
         setAnswer,

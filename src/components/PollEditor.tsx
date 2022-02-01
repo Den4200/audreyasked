@@ -179,6 +179,7 @@ const PollEditor = (props: PollEditorProps) => {
     setSectionTitle,
     setSectionQuestionType,
     addQuestion,
+    duplicateQuestion,
     removeQuestion,
   } = usePollSchema();
 
@@ -216,13 +217,22 @@ const PollEditor = (props: PollEditorProps) => {
               <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
-                  <button
-                    className="float-right text-gray-400 hover:text-gray-700 mt-2"
-                    onClick={() => removeQuestion(section.id, question.id)}
-                    tabIndex={-1}
-                  >
-                    x
-                  </button>
+                  <div className="flex flex-col float-right text-gray-400 text-lg -mt-2">
+                    <button
+                      className="hover:text-gray-700"
+                      tabIndex={-1}
+                      onClick={() => removeQuestion(section.id, question.id)}
+                    >
+                      x
+                    </button>
+                    <button
+                      className="hover:text-gray-700"
+                      tabIndex={-1}
+                      onClick={() => duplicateQuestion(section.id, question.id)}
+                    >
+                      ◳
+                    </button>
+                  </div>
                   <QuestionElement
                     sectionID={section.id}
                     questionID={question.id}
