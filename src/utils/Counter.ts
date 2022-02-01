@@ -11,5 +11,13 @@ export const Counter = (array: string[]) => {
     }
   });
 
+  // Move N/A to last element
+  const na = counter.findIndex((entry) => entry.answer === 'N/A');
+  if (na !== -1) {
+    const naCount = counter[na]!.count;
+    counter.splice(na, 1);
+    counter.push({ answer: 'N/A', count: naCount });
+  }
+
   return counter;
 };
