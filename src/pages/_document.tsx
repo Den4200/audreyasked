@@ -8,7 +8,7 @@ class MyDocument extends Document {
     return (
       <Html lang={AppConfig.locale}>
         <Head />
-        <body className="selection:bg-pink-100 selection:text-pink-500">
+        <body className="selection:bg-pink-100 selection:text-pink-500 bg-pink-50">
           <Main />
           <NextScript />
         </body>

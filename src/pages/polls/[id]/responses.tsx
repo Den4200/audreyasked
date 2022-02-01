@@ -94,7 +94,7 @@ const PollResponses = () => {
         {aggregatedResponses.map((section) => (
           <div
             key={section.id}
-            className="border-2 border-pink-300 p-4 rounded"
+            className="border-2 border-pink-300 p-4 rounded bg-white"
           >
             <div className="space-y-4 mt-2">
               <h2 className="text-3xl font-semibold text-center">

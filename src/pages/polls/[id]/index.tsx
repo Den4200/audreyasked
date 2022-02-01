@@ -102,7 +102,7 @@ const Poll = () => {
         {poll.schema.sections.map((section) => (
           <div
             key={section.id}
-            className="border-2 border-pink-300 p-4 rounded"
+            className="border-2 border-pink-300 p-4 rounded bg-white"
           >
             <div className="flex flex-col space-y-4 mt-2">
               <h2 className="text-2xl font-semibold">{section.title}</h2>

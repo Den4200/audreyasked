@@ -194,7 +194,7 @@ const PollEditor = (props: PollEditorProps) => {
         {pollSchema.sections.map((section) => (
           <div
             key={section.id}
-            className="border-2 border-pink-300 p-4 rounded"
+            className="border-2 border-pink-300 p-4 rounded bg-white"
           >
             <Button
               className="float-right text-white -mt-8 -mr-8 rounded-full text-sm w-8 h-8 leading-3"
