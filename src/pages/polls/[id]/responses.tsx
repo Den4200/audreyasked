@@ -9,6 +9,26 @@ import Main from '@/templates/Main';
 import responseCounter from '@/utils/responseCounter';
 import { PollResponse, QuestionType } from '@/utils/types';
 
+const BAR_COLORS = [
+  '#F43F5E',
+  '#EC4899',
+  '#D946EF',
+  '#A855F7',
+  '#8B5CF6',
+  '#6366F1',
+  '#3B82F6',
+  '#0EA5E9',
+  '#06B6D4',
+  '#14B8A6',
+  '#10B981',
+  '#22C55E',
+  '#84CC16',
+  '#EAB308',
+  '#F59E0B',
+  '#F97316',
+  '#EF4444',
+];
+
 const PollResponses = () => {
   const router = useRouter();
   const { pollSchema, setPollSchema } = usePollSchema();
@@ -44,47 +64,47 @@ const PollResponses = () => {
     questions: section.questions.map((question) => ({
       id: question.id,
       question: question.question,
-      responses:
-        question.type === QuestionType.Text
-          ? responseCounter(
-              pollResponses
-                .map(
-                  (response) =>
-                    response.data.sections
-                      .find((s) => s.id === section.id)
-                      ?.questions.find((q) => q.id === question.id)
-                      ?.answers || ['N/A']
-                )
-                .reduce((prev, curr) => (curr ? [...prev, ...curr] : prev), [])
-            ).sort((resp1, resp2) =>
-              resp2.answer !== 'N/A' ? resp2.count - resp1.count : -1
-            )
-          : responseCounter(
-              pollResponses
-                .map(
-                  (resp) =>
-                    resp.data.sections
-                      .find((sec) => sec.id === section.id)
-                      ?.questions.find((ques) => ques.id === question.id)
-                      ?.answers || ['N/A']
-                )
-                .reduce((prev, curr) => [...prev, ...curr], [])
-                .map(
-                  (answerId) =>
-                    pollSchema.sections
-                      .find((sec) => sec.id === section.id)
-                      ?.questions.find((ques) => ques.id === question.id)
-                      ?.answers.find(
-                        (answer) => answer.id === parseInt(answerId, 10)
-                      )?.value || 'N/A'
-                )
-            ).sort((resp1, resp2) =>
-              resp2.answer !== 'N/A'
-                ? resp2.answer < resp1.answer
-                  ? 1
-                  : -1
-                : -1
-            ),
+      responses: (question.type === QuestionType.Text
+        ? responseCounter(
+            pollResponses
+              .map(
+                (response) =>
+                  response.data.sections
+                    .find((s) => s.id === section.id)
+                    ?.questions.find((q) => q.id === question.id)?.answers || [
+                    'N/A',
+                  ]
+              )
+              .reduce((prev, curr) => (curr ? [...prev, ...curr] : prev), [])
+          ).sort((resp1, resp2) =>
+            resp2.answer !== 'N/A' ? resp2.count - resp1.count : -1
+          )
+        : responseCounter(
+            pollResponses
+              .map(
+                (resp) =>
+                  resp.data.sections
+                    .find((sec) => sec.id === section.id)
+                    ?.questions.find((ques) => ques.id === question.id)
+                    ?.answers || ['N/A']
+              )
+              .reduce((prev, curr) => [...prev, ...curr], [])
+              .map(
+                (answerId) =>
+                  pollSchema.sections
+                    .find((sec) => sec.id === section.id)
+                    ?.questions.find((ques) => ques.id === question.id)
+                    ?.answers.find(
+                      (answer) => answer.id === parseInt(answerId, 10)
+                    )?.value || 'N/A'
+              )
+          ).sort((resp1, resp2) =>
+            resp2.answer !== 'N/A' ? (resp2.answer < resp1.answer ? 1 : -1) : -1
+          )
+      ).map((resp, index) => ({
+        ...resp,
+        color: BAR_COLORS[index % BAR_COLORS.length]!,
+      })),
     })),
   }));
 
@@ -135,7 +155,7 @@ const PollResponses = () => {
                         keys={['count']}
                         indexBy="answer"
                         data={question.responses}
-                        colors={{ scheme: 'pastel1' }}
+                        colors={(resp) => resp.data.color}
                         margin={{ top: 16, right: 16, bottom: 24, left: 32 }}
                       />
                     </div>
