@@ -37,7 +37,7 @@ const EditPoll = () => {
     <PollEditor
       title="Edit Poll"
       description="Edit a poll here!"
-      submitText="Update poll!"
+      submitText="Save poll!"
       onSubmit={onSubmit}
     />
   );
