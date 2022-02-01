@@ -1,6 +1,9 @@
+import { ReactNode } from 'react';
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
+import { HashLoader } from 'react-spinners';
 
 export interface AuthApiRequest extends NextApiRequest {
   session: Session;
@@ -22,3 +25,20 @@ export const withAuth =
       res.status(401).json({ message: '401 Unauthorized' });
     }
   };
+
+export const useAuth = (node: ReactNode) => {
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated: () => signIn('discord'),
+  });
+
+  if (status === 'loading') {
+    return (
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <HashLoader color="#F472B6" />
+      </div>
+    );
+  }
+
+  return node;
+};
