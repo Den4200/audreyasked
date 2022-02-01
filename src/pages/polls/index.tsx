@@ -13,11 +13,19 @@ import { Poll } from '@/utils/types';
 const Polls = () => {
   const [polls, setPolls] = useState<Poll[]>();
 
+  const getPolls = async () => {
+    const { data } = await axios.get('polls');
+    setPolls(data.polls);
+  };
+
+  const deletePoll = async (pollId: string) => {
+    const { data } = await axios.delete(`polls/${pollId}`);
+    if (data.deleted === 1) {
+      await getPolls();
+    }
+  };
+
   useEffect(() => {
-    const getPolls = async () => {
-      const { data } = await axios.get('polls');
-      setPolls(data.polls);
-    };
     getPolls();
   }, []);
 
@@ -54,7 +62,11 @@ const Polls = () => {
                   >
                     Edit
                   </UnderlineLink>
-                  <UnderlineLink href="#" className="text-gray-500">
+                  <UnderlineLink
+                    href=""
+                    onClick={async () => deletePoll(poll.id)}
+                    className="text-gray-500"
+                  >
                     Delete
                   </UnderlineLink>
                 </div>
