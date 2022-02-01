@@ -56,7 +56,7 @@ const PollResponses = () => {
                       ?.questions.find((q) => q.id === question.id)
                       ?.answers || ['N/A']
                 )
-                .reduce((prev, curr) => (curr ? [...prev!, ...curr] : prev), [])
+                .reduce((prev, curr) => (curr ? [...prev, ...curr] : prev), [])
             ).sort((resp1, resp2) =>
               resp2.answer !== 'N/A' ? resp2.count - resp1.count : -1
             )
