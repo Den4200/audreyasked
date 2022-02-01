@@ -7,7 +7,7 @@ import { usePollSchema } from '@/hooks/pollSchema';
 import { useAuth } from '@/lib/auth';
 import axios from '@/lib/axios';
 import Main from '@/templates/Main';
-import { Counter } from '@/utils/Counter';
+import responseCounter from '@/utils/responseCounter';
 import { PollResponse, QuestionType } from '@/utils/types';
 
 const PollResponses = () => {
@@ -47,7 +47,7 @@ const PollResponses = () => {
       question: question.question,
       responses:
         question.type === QuestionType.Text
-          ? Counter(
+          ? responseCounter(
               pollResponses
                 .map(
                   (response) =>
@@ -60,7 +60,7 @@ const PollResponses = () => {
             ).sort((resp1, resp2) =>
               resp2.answer !== 'N/A' ? resp2.count - resp1.count : -1
             )
-          : Counter(
+          : responseCounter(
               pollResponses
                 .map(
                   (resp) =>

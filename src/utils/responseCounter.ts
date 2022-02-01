@@ -1,4 +1,4 @@
-export const Counter = (array: string[]) => {
+const responseCounter = (array: string[]) => {
   const counter: { answer: string; count: number }[] = [];
 
   array.forEach((value) => {
@@ -21,3 +21,5 @@ export const Counter = (array: string[]) => {
 
   return counter;
 };
+
+export default responseCounter;
