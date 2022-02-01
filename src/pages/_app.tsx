@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { HashLoader } from 'react-spinners';
 
 import '@/styles/global.css';
+import Loading from '@/components/Loading';
 import { PollSchemaProvider } from '@/hooks/pollSchema';
 
 const MyApp = ({
@@ -35,11 +35,7 @@ const MyApp = ({
   return (
     <SessionProvider session={session}>
       <PollSchemaProvider>
-        {loading ? (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <HashLoader color="#F472B6" />
-          </div>
-        ) : null}
+        {loading ? <Loading /> : null}
         <Component {...pageProps} />
       </PollSchemaProvider>
     </SessionProvider>

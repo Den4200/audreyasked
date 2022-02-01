@@ -3,7 +3,8 @@ import { ReactNode } from 'react';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-auth';
 import { getSession, signIn, useSession } from 'next-auth/react';
-import { HashLoader } from 'react-spinners';
+
+import Loading from '@/components/Loading';
 
 export interface AuthApiRequest extends NextApiRequest {
   session: Session;
@@ -33,11 +34,7 @@ export const useAuth = (node: ReactNode) => {
   });
 
   if (status === 'loading') {
-    return (
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <HashLoader color="#F472B6" />
-      </div>
-    );
+    return <Loading />;
   }
 
   return node;
