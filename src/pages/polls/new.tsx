@@ -7,7 +7,11 @@ import axios from '@/lib/axios';
 
 const NewPoll = () => {
   const router = useRouter();
-  const { pollSchema } = usePollSchema();
+  const { pollSchema, resetPollSchema } = usePollSchema();
+
+  if (pollSchema.title !== '' || pollSchema.sections.length !== 0) {
+    resetPollSchema();
+  }
 
   const onSubmit = async () => {
     const { data } = await axios.post('polls', {
