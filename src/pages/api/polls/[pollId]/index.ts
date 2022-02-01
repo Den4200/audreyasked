@@ -63,7 +63,7 @@ const pollHandler: NextApiHandler = async (req, res) => {
 
         const { count } = await prisma.poll.deleteMany({
           where: {
-            id: aReq.body.poll.id,
+            id: pollId,
             author: { email: aReq.session.user?.email },
           },
         });
