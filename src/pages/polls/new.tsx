@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { useRouter } from 'next/router';
 
 import PollEditor from '@/components/PollEditor';
@@ -9,9 +11,9 @@ const NewPoll = () => {
   const router = useRouter();
   const { pollSchema, resetPollSchema } = usePollSchema();
 
-  if (pollSchema.title !== '' || pollSchema.sections.length !== 0) {
+  useEffect(() => {
     resetPollSchema();
-  }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = async () => {
     const { data } = await axios.post('polls', {
