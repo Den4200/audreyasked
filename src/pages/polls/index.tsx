@@ -49,23 +49,16 @@ const Polls = () => {
                   </h2>
                 </Link>
                 <hr className="border-gray-300 mb-2" />
-                <div className="space-x-2">
-                  <UnderlineLink
-                    href={`/polls/${poll.id}/responses`}
-                    className="text-gray-500"
-                  >
+                <div className="text-gray-500 space-x-2">
+                  <UnderlineLink href={`/polls/${poll.id}/responses`}>
                     Responses
                   </UnderlineLink>
-                  <UnderlineLink
-                    href={`/polls/${poll.id}/edit`}
-                    className="text-gray-500"
-                  >
+                  <UnderlineLink href={`/polls/${poll.id}/edit`}>
                     Edit
                   </UnderlineLink>
                   <UnderlineLink
                     href=""
                     onClick={async () => deletePoll(poll.id)}
-                    className="text-gray-500"
                   >
                     Delete
                   </UnderlineLink>
