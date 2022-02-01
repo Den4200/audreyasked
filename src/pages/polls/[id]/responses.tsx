@@ -78,6 +78,12 @@ const PollResponses = () => {
                         (answer) => answer.id === parseInt(answerId, 10)
                       )?.value || 'N/A'
                 )
+            ).sort((resp1, resp2) =>
+              resp2.answer !== 'N/A'
+                ? resp2.answer < resp1.answer
+                  ? 1
+                  : -1
+                : -1
             ),
     })),
   }));
