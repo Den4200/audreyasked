@@ -43,6 +43,12 @@ const Polls = () => {
                 <hr className="border-gray-300 mb-2" />
                 <div className="space-x-2">
                   <UnderlineLink
+                    href={`/polls/${poll.id}/responses`}
+                    className="text-gray-500"
+                  >
+                    Responses
+                  </UnderlineLink>
+                  <UnderlineLink
                     href={`/polls/${poll.id}/edit`}
                     className="text-gray-500"
                   >
