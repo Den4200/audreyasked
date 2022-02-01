@@ -82,10 +82,12 @@ const Poll = () => {
   const { poll, setPollId, pollResponse, setAnswer, setCheckboxAnswer } =
     usePollResponse();
 
-  const onSubmit = async () =>
+  const onSubmit = async () => {
     axios.post(`polls/${poll.id}/responses`, {
       response: { data: pollResponse },
     });
+    router.push(`/polls/${poll.id}/responses`);
+  };
 
   useEffect(() => {
     const { id } = router.query;
