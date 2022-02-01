@@ -118,7 +118,7 @@ const QuestionElement = (props: QuestionElementProps) => {
               className="flex"
             >
               <RadioButton
-                name={question.id.toString()}
+                name={`${props.sectionID}-${question.id}`}
                 className="ml-2 mr-4"
               />
               <AnswerOptionInput

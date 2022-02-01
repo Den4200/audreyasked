@@ -50,7 +50,7 @@ const QuestionElement = (props: QuestionElementProps) => {
               className="flex"
             >
               <RadioButton
-                name={props.question.id.toString()}
+                name={`${props.sectionId}-${props.question.id}`}
                 className="ml-2 mr-4"
                 onClick={() => props.setAnswer(answer.id.toString())}
               />
