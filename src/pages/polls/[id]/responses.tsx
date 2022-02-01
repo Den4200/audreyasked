@@ -57,7 +57,9 @@ const PollResponses = () => {
                       ?.answers || ['N/A']
                 )
                 .reduce((prev, curr) => (curr ? [...prev!, ...curr] : prev), [])
-            ).sort((resp1, resp2) => resp2.count - resp1.count)
+            ).sort((resp1, resp2) =>
+              resp2.answer !== 'N/A' ? resp2.count - resp1.count : -1
+            )
           : Counter(
               pollResponses
                 .map(
