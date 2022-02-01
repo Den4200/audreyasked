@@ -44,7 +44,7 @@ const Polls = () => {
                 className="border-2 border-pink-300 rounded mb-4 p-2 md:w-56 w-80 mx-2 md:h-32 h-40"
               >
                 <Link href={`/polls/${poll.id}`} passHref={true}>
-                  <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300 inline-block">
+                  <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300">
                     {poll.schema.title}
                   </h2>
                 </Link>
