@@ -16,12 +16,28 @@ import axios from '@/lib/axios';
 import Main from '@/templates/Main';
 import { Poll } from '@/utils/types';
 
+type ResponseCounts = {
+  [pollId: string]: number;
+};
+
 const Polls = () => {
   const [polls, setPolls] = useState<Poll[]>();
+  const [responseCounts, setResponseCounts] = useState<ResponseCounts>({});
 
   const getPolls = async () => {
     const { data } = await axios.get('polls');
     setPolls(data.polls);
+
+    const counts: ResponseCounts = {};
+    await Promise.all(
+      data.polls.map(async (poll: Poll) => {
+        counts[poll.id] = (
+          await axios.get(`polls/${poll.id}/responses/count`)
+        ).data.count;
+      })
+    );
+
+    setResponseCounts(counts);
   };
 
   const deletePoll = async (pollId: string) => {
@@ -64,7 +80,11 @@ const Polls = () => {
                     {poll.schema.title}
                   </h2>
                 </Link>
-                <hr className="border-gray-300 mb-2" />
+                <hr className="border-gray-300" />
+                <div className="mt-1 mb-6">
+                  {responseCounts[poll.id]} response
+                  {responseCounts[poll.id] === 1 ? null : 's'}
+                </div>
                 <div className="flex text-gray-500 space-x-2">
                   <Link href={`/polls/${poll.id}/responses`} passHref={true}>
                     <PresentationChartBarIcon
