@@ -81,23 +81,23 @@ const Polls = () => {
                       {poll.schema.title}
                     </h2>
                   </Link>
-                  <div className="flex text-gray-500 space-x-2">
+                  <div className="text-gray-500 space-x-2">
                     <Link href={`/polls/${poll.id}/responses`} passHref={true}>
                       <PresentationChartBarIcon
-                        className="cursor-pointer w-6"
+                        className="cursor-pointer w-6 inline-block"
                         data-tip="Responses"
                         data-for="tooltip"
                       />
                     </Link>
                     <Link href={`/polls/${poll.id}/edit`} passHref={true}>
                       <PencilIcon
-                        className="cursor-pointer w-6"
+                        className="cursor-pointer w-6 inline-block"
                         data-tip="Edit"
                         data-for="tooltip"
                       />
                     </Link>
                     <TrashIcon
-                      className="cursor-pointer w-6"
+                      className="cursor-pointer w-6 inline-block"
                       onClick={async () => deletePoll(poll.id)}
                       data-tip="Delete"
                       data-for="tooltip"
