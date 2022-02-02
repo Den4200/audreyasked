@@ -7,6 +7,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/outline';
 import Link from 'next/link';
+import ReactTooltip from 'react-tooltip';
 
 import ButtonLink from '@/components/link/ButtonLink';
 import Loading from '@/components/Loading';
@@ -38,6 +39,15 @@ const Polls = () => {
     <Main title="Your polls" description="See your polls here!">
       {polls ? (
         <div className="flex flex-col justify-center">
+          <ReactTooltip
+            id="tooltip"
+            effect="solid"
+            backgroundColor="#FDF2F8"
+            border
+            borderColor="#F472B6"
+            textColor="#374151"
+            place="bottom"
+          />
           <ButtonLink href="/polls/new" className="w-full mb-4 text-center">
             <DocumentAddIcon width={24} className="inline-block mb-1" />{' '}
             <span className="inline-block mt-1">Create Poll</span>
@@ -57,14 +67,24 @@ const Polls = () => {
                 <hr className="border-gray-300 mb-2" />
                 <div className="flex text-gray-500 space-x-2">
                   <Link href={`/polls/${poll.id}/responses`} passHref={true}>
-                    <PresentationChartBarIcon className="cursor-pointer w-6" />
+                    <PresentationChartBarIcon
+                      className="cursor-pointer w-6"
+                      data-tip="Responses"
+                      data-for="tooltip"
+                    />
                   </Link>
                   <Link href={`/polls/${poll.id}/edit`} passHref={true}>
-                    <PencilIcon className="cursor-pointer w-6" />
+                    <PencilIcon
+                      className="cursor-pointer w-6"
+                      data-tip="Edit"
+                      data-for="tooltip"
+                    />
                   </Link>
                   <TrashIcon
                     className="cursor-pointer w-6"
                     onClick={async () => deletePoll(poll.id)}
+                    data-tip="Delete"
+                    data-for="tooltip"
                   />
                 </div>
               </div>
