@@ -32,8 +32,8 @@ export type PollSchema = {
 export type Poll = {
   id: string;
   schema: PollSchema;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type DbPoll = Omit<Poll, 'schema'> & {
