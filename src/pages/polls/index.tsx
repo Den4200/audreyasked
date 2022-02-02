@@ -109,10 +109,10 @@ const Polls = () => {
                 {responseCounts[poll.id] === 1 ? null : 's'}
                 <div className="mt-10" />
                 <div className="text-xs text-gray-400 absolute bottom-0 mb-2">
-                  Created: {new Date(poll.createdAt).toLocaleString()}
+                  Created: {poll.createdAt.toLocaleString()}
                   <br />
                   {poll.createdAt === poll.updatedAt ? null : (
-                    <>Updated: {new Date(poll.updatedAt).toLocaleString()}</>
+                    <>Updated: {poll.updatedAt.toLocaleString()}</>
                   )}
                 </div>
               </div>

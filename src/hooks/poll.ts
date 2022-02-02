@@ -15,6 +15,8 @@ const usePoll = (id?: string) => {
   useEffect(() => {
     const getPoll = async () => {
       const { data } = await axios.get(`polls/${pollId}`);
+      data.poll.createdAt = new Date(data.poll.createdAt);
+      data.poll.updatedAt = new Date(data.poll.updatedAt);
       setPoll(data.poll);
     };
 
