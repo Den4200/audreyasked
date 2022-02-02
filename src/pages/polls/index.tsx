@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 import {
   DocumentAddIcon,
+  DocumentReportIcon,
   PencilIcon,
-  PresentationChartBarIcon,
   TrashIcon,
 } from '@heroicons/react/outline';
 import Link from 'next/link';
@@ -83,7 +83,7 @@ const Polls = () => {
                   </Link>
                   <div className="text-gray-500 space-x-2">
                     <Link href={`/polls/${poll.id}/responses`} passHref={true}>
-                      <PresentationChartBarIcon
+                      <DocumentReportIcon
                         className="cursor-pointer w-6 inline-block"
                         data-tip="Responses"
                         data-for="tooltip"
