@@ -76,7 +76,7 @@ const Main = (props: MainProps) => {
               </Link>
               <LogoutIcon
                 className="cursor-pointer w-8"
-                onClick={() => signOut()}
+                onClick={() => signOut({ callbackUrl: '/' })}
                 data-tip="Sign out"
                 data-for="nav-tooltip"
               />
