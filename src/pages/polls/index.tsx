@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 
+import {
+  DocumentAddIcon,
+  PencilIcon,
+  PresentationChartBarIcon,
+  TrashIcon,
+} from '@heroicons/react/outline';
 import Link from 'next/link';
 
 import ButtonLink from '@/components/link/ButtonLink';
-import UnderlineLink from '@/components/link/UnderlineLink';
 import Loading from '@/components/Loading';
 import { useAuth } from '@/lib/auth';
 import axios from '@/lib/axios';
@@ -34,7 +39,8 @@ const Polls = () => {
       {polls ? (
         <div className="flex flex-col justify-center">
           <ButtonLink href="/polls/new" className="w-full mb-4 text-center">
-            + Create Poll
+            <DocumentAddIcon width={24} className="inline-block mb-1" />{' '}
+            <span className="inline-block mt-1">Create Poll</span>
           </ButtonLink>
           <hr className="border-gray-300 mb-4" />
           <div className="flex md:justify-start justify-center flex-wrap">
@@ -49,19 +55,17 @@ const Polls = () => {
                   </h2>
                 </Link>
                 <hr className="border-gray-300 mb-2" />
-                <div className="text-gray-500 space-x-2">
-                  <UnderlineLink href={`/polls/${poll.id}/responses`}>
-                    Responses
-                  </UnderlineLink>
-                  <UnderlineLink href={`/polls/${poll.id}/edit`}>
-                    Edit
-                  </UnderlineLink>
-                  <UnderlineLink
-                    href=""
+                <div className="flex text-gray-500 space-x-2">
+                  <Link href={`/polls/${poll.id}/responses`} passHref={true}>
+                    <PresentationChartBarIcon className="cursor-pointer w-6" />
+                  </Link>
+                  <Link href={`/polls/${poll.id}/edit`} passHref={true}>
+                    <PencilIcon className="cursor-pointer w-6" />
+                  </Link>
+                  <TrashIcon
+                    className="cursor-pointer w-6"
                     onClick={async () => deletePoll(poll.id)}
-                  >
-                    Delete
-                  </UnderlineLink>
+                  />
                 </div>
               </div>
             ))}

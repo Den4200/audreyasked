@@ -1,5 +1,8 @@
 import { forwardRef } from 'react';
 
+import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/solid';
+
 import Button from '@/components/Button';
 import CheckboxElement from '@/components/Checkbox';
 import ConfettiForm from '@/components/ConfettiForm';
@@ -84,22 +87,22 @@ const QuestionElement = (props: QuestionElementProps) => {
                 value={answer.value}
               />
               <button
-                className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
+                className="text-gray-400 hover:text-gray-500 ml-1 w-4"
                 onClick={() =>
                   removeAnswer(props.sectionID, question.id, answer.id)
                 }
                 tabIndex={-1}
               >
-                x
+                <XIcon />
               </button>
             </div>
           ))}
-          <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64]"
+          <button
+            className="text-pink-400 hover:text-pink-500 rounded-full w-8 transition-colors duration-500 ml-1"
             onClick={() => addAnswer(props.sectionID, question.id)}
           >
-            +
-          </Button>
+            <PlusCircleIcon />
+          </button>
         </div>
       );
 
@@ -133,22 +136,22 @@ const QuestionElement = (props: QuestionElementProps) => {
                 value={answer.value}
               />
               <button
-                className="text-gray-400 hover:text-gray-700 ml-1 -mt-1"
+                className="text-gray-400 hover:text-gray-500 ml-1 w-4"
                 onClick={() =>
                   removeAnswer(props.sectionID, question.id, answer.id)
                 }
                 tabIndex={-1}
               >
-                x
+                <XIcon />
               </button>
             </div>
           ))}
-          <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3 scale-[0.64]"
+          <button
+            className="text-pink-400 hover:text-pink-500 rounded-full w-8 transition-colors duration-500 ml-1"
             onClick={() => addAnswer(props.sectionID, question.id)}
           >
-            +
-          </Button>
+            <PlusCircleIcon />
+          </button>
         </div>
       );
 
@@ -197,13 +200,13 @@ const PollEditor = (props: PollEditorProps) => {
             key={section.id}
             className="border-2 border-pink-300 p-4 rounded bg-white"
           >
-            <Button
-              className="float-right text-white -mt-8 -mr-8 rounded-full text-sm w-8 h-8 leading-3"
+            <button
+              className="float-right text-pink-400 hover:text-pink-500 transition-colors duration-500 -mt-9 -mr-9 w-10 bg-pink-50 rounded-full"
               onClick={() => removeSection(section.id)}
               tabIndex={-1}
             >
-              x
-            </Button>
+              <XCircleIcon />
+            </button>
 
             <div className="flex flex-col space-y-4 mt-2">
               <TextInput
@@ -217,20 +220,20 @@ const PollEditor = (props: PollEditorProps) => {
               <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
-                  <div className="flex flex-col float-right text-gray-400 text-lg -mt-2">
+                  <div className="flex flex-col float-right text-gray-400 w-5 -mt-1 space-y-2">
                     <button
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-500"
                       tabIndex={-1}
                       onClick={() => removeQuestion(section.id, question.id)}
                     >
-                      x
+                      <XIcon />
                     </button>
                     <button
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-500"
                       tabIndex={-1}
                       onClick={() => duplicateQuestion(section.id, question.id)}
                     >
-                      ◳
+                      <DuplicateIcon />
                     </button>
                   </div>
                   <QuestionElement
@@ -260,24 +263,24 @@ const PollEditor = (props: PollEditorProps) => {
                     value={section.addQuestionType}
                   />
                 </div>
-                <Button
-                  className="rounded-full p-2 w-10 h-10 text-2xl leading-3"
+                <button
+                  className="text-pink-400 hover:text-pink-500 rounded-full w-12 transition-colors duration-500"
                   onClick={() => addQuestion(section.id)}
                 >
-                  +
-                </Button>
+                  <PlusCircleIcon />
+                </button>
               </div>
             </div>
           </div>
         ))}
 
         <div className="flex justify-center">
-          <Button
-            className="rounded-full p-2 w-10 h-10 text-2xl leading-3"
+          <button
+            className="text-pink-400 hover:text-pink-500 rounded-full w-16 transition-colors duration-500"
             onClick={addSection}
           >
-            +
-          </Button>
+            <PlusCircleIcon />
+          </button>
         </div>
         <hr className="border-gray-300" />
         <ConfettiForm className="flex justify-center" onSubmit={props.onSubmit}>
