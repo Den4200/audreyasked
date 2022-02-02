@@ -73,39 +73,47 @@ const Polls = () => {
             {polls.map((poll) => (
               <div
                 key={poll.id}
-                className="border-2 border-pink-300 rounded mb-4 p-2 md:w-56 w-80 mx-2 md:h-32 h-40"
+                className="relative border-2 border-pink-300 rounded mb-4 p-2 md:w-56 w-80 mx-2 md:min-h-32 min-h-40"
               >
-                <Link href={`/polls/${poll.id}`} passHref={true}>
-                  <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300">
-                    {poll.schema.title}
-                  </h2>
-                </Link>
-                <hr className="border-gray-300" />
-                <div className="mt-1 mb-6">
-                  {responseCounts[poll.id]} response
-                  {responseCounts[poll.id] === 1 ? null : 's'}
+                <div className="flex justify-between">
+                  <Link href={`/polls/${poll.id}`} passHref={true}>
+                    <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300">
+                      {poll.schema.title}
+                    </h2>
+                  </Link>
+                  <div className="flex text-gray-500 space-x-2">
+                    <Link href={`/polls/${poll.id}/responses`} passHref={true}>
+                      <PresentationChartBarIcon
+                        className="cursor-pointer w-6"
+                        data-tip="Responses"
+                        data-for="tooltip"
+                      />
+                    </Link>
+                    <Link href={`/polls/${poll.id}/edit`} passHref={true}>
+                      <PencilIcon
+                        className="cursor-pointer w-6"
+                        data-tip="Edit"
+                        data-for="tooltip"
+                      />
+                    </Link>
+                    <TrashIcon
+                      className="cursor-pointer w-6"
+                      onClick={async () => deletePoll(poll.id)}
+                      data-tip="Delete"
+                      data-for="tooltip"
+                    />
+                  </div>
                 </div>
-                <div className="flex text-gray-500 space-x-2">
-                  <Link href={`/polls/${poll.id}/responses`} passHref={true}>
-                    <PresentationChartBarIcon
-                      className="cursor-pointer w-6"
-                      data-tip="Responses"
-                      data-for="tooltip"
-                    />
-                  </Link>
-                  <Link href={`/polls/${poll.id}/edit`} passHref={true}>
-                    <PencilIcon
-                      className="cursor-pointer w-6"
-                      data-tip="Edit"
-                      data-for="tooltip"
-                    />
-                  </Link>
-                  <TrashIcon
-                    className="cursor-pointer w-6"
-                    onClick={async () => deletePoll(poll.id)}
-                    data-tip="Delete"
-                    data-for="tooltip"
-                  />
+                <hr className="border-gray-300 mb-1" />
+                {responseCounts[poll.id]} response
+                {responseCounts[poll.id] === 1 ? null : 's'}
+                <div className="mt-10" />
+                <div className="text-xs text-gray-400 absolute bottom-0 mb-2">
+                  Created: {new Date(poll.createdAt).toLocaleString()}
+                  <br />
+                  {poll.createdAt === poll.updatedAt ? null : (
+                    <>Updated: {new Date(poll.updatedAt).toLocaleString()}</>
+                  )}
                 </div>
               </div>
             ))}
