@@ -63,6 +63,7 @@ const PollResponses = () => {
     title: section.title,
     questions: section.questions.map((question) => ({
       id: question.id,
+      type: question.type,
       question: question.question,
       responses: (question.type === QuestionType.Text
         ? responseCounter(
@@ -132,10 +133,7 @@ const PollResponses = () => {
                     {question.question}
                   </h3>
 
-                  {pollSchema.sections
-                    .find((s) => s.id === section.id)!
-                    .questions.find((q) => q.id === question.id)!.type ===
-                  QuestionType.Text ? (
+                  {question.type === QuestionType.Text ? (
                     <ul className="md:h-72 h-64 border mt-2 border-pink-300 overflow-y-auto rounded px-2">
                       {question.responses.map((response) => (
                         <li
