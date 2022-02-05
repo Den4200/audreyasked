@@ -111,7 +111,7 @@ const PollResponses = () => {
 
   return (
     <Main
-      title={pollSchema.title}
+      title={`${pollSchema.title} responses`}
       description={`${pollResponses.length} response${
         pollResponses.length === 1 ? '' : 's'
       }!`}
