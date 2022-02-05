@@ -73,7 +73,7 @@ const Polls = () => {
             {polls.map((poll) => (
               <div
                 key={poll.id}
-                className="relative border-2 border-pink-300 rounded mb-4 p-2 md:w-56 w-80 mx-2 md:min-h-32 min-h-40"
+                className="relative border-2 border-pink-300 bg-white rounded mb-4 p-2 md:w-56 w-80 mx-2 md:min-h-32 min-h-40"
               >
                 <div className="flex justify-between">
                   <Link href={`/polls/${poll.id}`} passHref={true}>
