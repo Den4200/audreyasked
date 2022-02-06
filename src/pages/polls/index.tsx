@@ -84,20 +84,20 @@ const Polls = () => {
                   <div className="text-gray-500 space-x-2">
                     <Link href={`/polls/${poll.id}/responses`} passHref={true}>
                       <DocumentReportIcon
-                        className="cursor-pointer w-6 inline-block"
+                        className="cursor-pointer w-6 inline-block ml-2 mt-1"
                         data-tip="Responses"
                         data-for="tooltip"
                       />
                     </Link>
                     <Link href={`/polls/${poll.id}/edit`} passHref={true}>
                       <PencilIcon
-                        className="cursor-pointer w-6 inline-block"
+                        className="cursor-pointer w-6 inline-block mt-1"
                         data-tip="Edit"
                         data-for="tooltip"
                       />
                     </Link>
                     <TrashIcon
-                      className="cursor-pointer w-6 inline-block"
+                      className="cursor-pointer w-6 inline-block mt-1"
                       onClick={async () => deletePoll(poll.id)}
                       data-tip="Delete"
                       data-for="tooltip"
