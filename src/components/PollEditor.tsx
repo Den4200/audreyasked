@@ -228,7 +228,7 @@ const PollEditor = (props: PollEditorProps) => {
               <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
-                  <div className="grid grid-cols-2 grid-rows-2 gap-2 float-right text-gray-400 w-11">
+                  <div className="grid grid-cols-2 gap-2 float-right text-gray-400 w-11">
                     <ChevronUpIcon
                       className="cursor-pointer hover:text-gray-500"
                       onClick={() => moveQuestion(section.id, question.id, -1)}
