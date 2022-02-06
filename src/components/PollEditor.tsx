@@ -1,6 +1,11 @@
 import { forwardRef } from 'react';
 
-import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  DuplicateIcon,
+  XIcon,
+} from '@heroicons/react/outline';
 import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/solid';
 
 import Button from '@/components/Button';
@@ -182,6 +187,7 @@ const PollEditor = (props: PollEditorProps) => {
     setSectionTitle,
     setSectionQuestionType,
     addQuestion,
+    moveQuestion,
     duplicateQuestion,
     removeQuestion,
   } = usePollSchema();
@@ -220,21 +226,23 @@ const PollEditor = (props: PollEditorProps) => {
               <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
-                  <div className="flex flex-col float-right text-gray-400 w-5 -mt-1 space-y-2">
-                    <button
-                      className="hover:text-gray-500"
-                      tabIndex={-1}
+                  <div className="grid grid-cols-2 grid-rows-2 gap-2 float-right text-gray-400 w-11">
+                    <ChevronUpIcon
+                      className="cursor-pointer hover:text-gray-500"
+                      onClick={() => moveQuestion(section.id, question.id, -1)}
+                    />
+                    <XIcon
+                      className="cursor-pointer hover:text-gray-500"
                       onClick={() => removeQuestion(section.id, question.id)}
-                    >
-                      <XIcon />
-                    </button>
-                    <button
-                      className="hover:text-gray-500"
-                      tabIndex={-1}
+                    />
+                    <ChevronDownIcon
+                      className="cursor-pointer hover:text-gray-500"
+                      onClick={() => moveQuestion(section.id, question.id, 1)}
+                    />
+                    <DuplicateIcon
+                      className="cursor-pointer hover:text-gray-500"
                       onClick={() => duplicateQuestion(section.id, question.id)}
-                    >
-                      <DuplicateIcon />
-                    </button>
+                    />
                   </div>
                   <QuestionElement
                     sectionID={section.id}
