@@ -58,7 +58,7 @@ const Polls = () => {
           <ReactTooltip
             id="tooltip"
             effect="solid"
-            backgroundColor="#FDF2F8"
+            backgroundColor="white"
             border
             borderColor="#F472B6"
             textColor="#374151"
