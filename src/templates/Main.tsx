@@ -32,6 +32,15 @@ const Main = (props: MainProps) => {
   return (
     <div className="flex flex-col px-4 pt-4 min-h-screen max-w-screen-md mx-auto text-gray-700">
       <Meta title={props.title} description={props.description} />
+      <ReactTooltip
+        id="nav-tooltip"
+        effect="solid"
+        backgroundColor="white"
+        border
+        borderColor="#F472B6"
+        textColor="#374151"
+        place="left"
+      />
 
       <div className="flex mb-4 border-b border-gray-300 justify-between">
         <div>
@@ -40,17 +49,7 @@ const Main = (props: MainProps) => {
           </h1>
           <h2 className="mb-4 text-xl">{props.description}</h2>
         </div>
-        <div className="md:flex inline-block md:space-x-2">
-          <ReactTooltip
-            id="nav-tooltip"
-            effect="solid"
-            backgroundColor="white"
-            border
-            borderColor="#F472B6"
-            textColor="#374151"
-            place="left"
-          />
-
+        <div className="flex items-center -mt-4 space-x-2">
           <Link href="/" passHref={true}>
             <HomeIcon
               className="cursor-pointer w-8"
