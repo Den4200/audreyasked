@@ -9,19 +9,21 @@ const usePollResponse = (pollId?: string) => {
     sections: [],
   });
 
-  useEffect(
-    () =>
-      setPollResponse({
-        sections: poll.schema.sections.map((section) => ({
-          id: section.id,
-          questions: section.questions.map((question) => ({
-            id: question.id,
-            answers: [],
-          })),
+  useEffect(() => {
+    if (!poll) {
+      return;
+    }
+
+    setPollResponse({
+      sections: poll.schema.sections.map((section) => ({
+        id: section.id,
+        questions: section.questions.map((question) => ({
+          id: question.id,
+          answers: [],
         })),
-      }),
-    [poll]
-  );
+      })),
+    });
+  }, [poll]);
 
   const setAnswer = (sectionId: number, questionId: number, values: string[]) =>
     setPollResponse({
