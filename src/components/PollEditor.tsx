@@ -228,21 +228,21 @@ const PollEditor = (props: PollEditorProps) => {
               <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
-                  <div className="grid grid-cols-2 gap-2 float-right text-gray-400 w-11">
+                  <div className="grid grid-cols-2 md:gap-2 float-right text-gray-400 md:w-11 w-8">
                     <ChevronUpIcon
-                      className="cursor-pointer hover:text-gray-500"
+                      className="cursor-pointer hover:text-gray-500 w-5 md:ml-0 -ml-2"
                       onClick={() => moveQuestion(section.id, question.id, -1)}
                     />
                     <XIcon
-                      className="cursor-pointer hover:text-gray-500"
+                      className="cursor-pointer hover:text-gray-500 w-5"
                       onClick={() => removeQuestion(section.id, question.id)}
                     />
                     <ChevronDownIcon
-                      className="cursor-pointer hover:text-gray-500"
+                      className="cursor-pointer hover:text-gray-500 w-5 md:ml-0 md:mt-0 -ml-2  mt-1"
                       onClick={() => moveQuestion(section.id, question.id, 1)}
                     />
                     <DuplicateIcon
-                      className="cursor-pointer hover:text-gray-500"
+                      className="cursor-pointer hover:text-gray-500 w-5 md:mt-0 mt-1"
                       onClick={() => duplicateQuestion(section.id, question.id)}
                     />
 
@@ -252,7 +252,7 @@ const PollEditor = (props: PollEditorProps) => {
                       <>
                         <div />
                         <SwitchHorizontalIcon
-                          className="cursor-pointer hover:text-gray-500"
+                          className="cursor-pointer hover:text-gray-500 w-5 mt-1"
                           onClick={() =>
                             switchQuestionType(section.id, question.id)
                           }
