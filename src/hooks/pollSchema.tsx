@@ -24,6 +24,7 @@ type PollSchemaContextType = {
   moveQuestion: (sectionID: number, questionID: number, dr: number) => void;
   getQuestion: (sectionID: number, questionID: number) => Question;
   setQuestion: (sectionID: number, questionID: number, value: string) => void;
+  switchQuestionType: (sectionID: number, questionID: number) => void;
   duplicateQuestion: (sectionID: number, questionID: number) => void;
   removeQuestion: (sectionID: number, questionID: number) => void;
   addAnswer: (sectionID: number, questionID: number) => void;
@@ -187,6 +188,31 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
       ),
     });
 
+  const switchQuestionType = (sectionID: number, questionID: number) =>
+    setPollSchema({
+      ...pollSchema,
+      sections: pollSchema.sections.map((section) =>
+        section.id === sectionID
+          ? {
+              ...section,
+              questions: section.questions.map((question) =>
+                question.id === questionID
+                  ? {
+                      ...question,
+                      type:
+                        question.type === QuestionType.Checkbox
+                          ? QuestionType.Radio
+                          : question.type === QuestionType.Radio
+                          ? QuestionType.Checkbox
+                          : question.type,
+                    }
+                  : question
+              ),
+            }
+          : section
+      ),
+    });
+
   const duplicateQuestion = (sectionID: number, questionID: number) => {
     const question = getQuestion(sectionID, questionID);
     const questionIndex = getQuestionIndex(sectionID, questionID) + 1;
@@ -320,6 +346,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
         moveQuestion,
         getQuestion,
         setQuestion,
+        switchQuestionType,
         duplicateQuestion,
         removeQuestion,
         addAnswer,

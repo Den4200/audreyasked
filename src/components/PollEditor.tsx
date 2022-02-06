@@ -4,6 +4,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   DuplicateIcon,
+  SwitchHorizontalIcon,
   XIcon,
 } from '@heroicons/react/outline';
 import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/solid';
@@ -189,6 +190,7 @@ const PollEditor = (props: PollEditorProps) => {
     addQuestion,
     moveQuestion,
     duplicateQuestion,
+    switchQuestionType,
     removeQuestion,
   } = usePollSchema();
 
@@ -243,6 +245,20 @@ const PollEditor = (props: PollEditorProps) => {
                       className="cursor-pointer hover:text-gray-500"
                       onClick={() => duplicateQuestion(section.id, question.id)}
                     />
+
+                    {[QuestionType.Checkbox, QuestionType.Radio].includes(
+                      question.type
+                    ) ? (
+                      <>
+                        <div />
+                        <SwitchHorizontalIcon
+                          className="cursor-pointer hover:text-gray-500"
+                          onClick={() =>
+                            switchQuestionType(section.id, question.id)
+                          }
+                        />
+                      </>
+                    ) : null}
                   </div>
                   <QuestionElement
                     sectionID={section.id}
