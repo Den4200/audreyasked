@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   DocumentAddIcon,
   DocumentReportIcon,
+  EmojiSadIcon,
   PencilIcon,
   TrashIcon,
 } from '@heroicons/react/outline';
@@ -70,53 +71,64 @@ const Polls = () => {
           </ButtonLink>
           <hr className="border-gray-300 mb-4" />
           <div className="flex md:justify-start justify-center flex-wrap">
-            {polls.map((poll) => (
-              <div
-                key={poll.id}
-                className="relative border-2 border-pink-300 bg-white rounded mb-4 p-2 md:w-56 w-80 mx-2 md:min-h-32 min-h-40"
-              >
-                <div className="flex justify-between">
-                  <Link href={`/polls/${poll.id}`} passHref={true}>
-                    <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300">
-                      {poll.schema.title}
-                    </h2>
-                  </Link>
-                  <div className="text-gray-500 space-x-2">
-                    <Link href={`/polls/${poll.id}/responses`} passHref={true}>
-                      <DocumentReportIcon
-                        className="cursor-pointer w-6 inline-block ml-2 mt-1"
-                        data-tip="Responses"
-                        data-for="tooltip"
-                      />
+            {polls.length !== 0 ? (
+              polls.map((poll) => (
+                <div
+                  key={poll.id}
+                  className="relative border-2 border-pink-300 bg-white rounded mb-4 p-2 md:w-56 w-80 mx-2 md:min-h-32 min-h-40"
+                >
+                  <div className="flex justify-between">
+                    <Link href={`/polls/${poll.id}`} passHref={true}>
+                      <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300">
+                        {poll.schema.title}
+                      </h2>
                     </Link>
-                    <Link href={`/polls/${poll.id}/edit`} passHref={true}>
-                      <PencilIcon
+                    <div className="text-gray-500 space-x-2">
+                      <Link
+                        href={`/polls/${poll.id}/responses`}
+                        passHref={true}
+                      >
+                        <DocumentReportIcon
+                          className="cursor-pointer w-6 inline-block ml-2 mt-1"
+                          data-tip="Responses"
+                          data-for="tooltip"
+                        />
+                      </Link>
+                      <Link href={`/polls/${poll.id}/edit`} passHref={true}>
+                        <PencilIcon
+                          className="cursor-pointer w-6 inline-block mt-1"
+                          data-tip="Edit"
+                          data-for="tooltip"
+                        />
+                      </Link>
+                      <TrashIcon
                         className="cursor-pointer w-6 inline-block mt-1"
-                        data-tip="Edit"
+                        onClick={async () => deletePoll(poll.id)}
+                        data-tip="Delete"
                         data-for="tooltip"
                       />
-                    </Link>
-                    <TrashIcon
-                      className="cursor-pointer w-6 inline-block mt-1"
-                      onClick={async () => deletePoll(poll.id)}
-                      data-tip="Delete"
-                      data-for="tooltip"
-                    />
+                    </div>
+                  </div>
+                  <hr className="border-gray-300 mb-1" />
+                  {responseCounts[poll.id]} response
+                  {responseCounts[poll.id] === 1 ? null : 's'}
+                  <div className="mt-10" />
+                  <div className="text-xs text-gray-400 absolute bottom-0 mb-2">
+                    Created: {new Date(poll.createdAt).toLocaleString()}
+                    <br />
+                    {poll.createdAt === poll.updatedAt ? null : (
+                      <>Updated: {new Date(poll.updatedAt).toLocaleString()}</>
+                    )}
                   </div>
                 </div>
-                <hr className="border-gray-300 mb-1" />
-                {responseCounts[poll.id]} response
-                {responseCounts[poll.id] === 1 ? null : 's'}
-                <div className="mt-10" />
-                <div className="text-xs text-gray-400 absolute bottom-0 mb-2">
-                  Created: {new Date(poll.createdAt).toLocaleString()}
-                  <br />
-                  {poll.createdAt === poll.updatedAt ? null : (
-                    <>Updated: {new Date(poll.updatedAt).toLocaleString()}</>
-                  )}
-                </div>
+              ))
+            ) : (
+              <div className="text-center w-full text-gray-400">
+                <EmojiSadIcon className="inline-block w-8" />
+                <span className="mx-2">Wow, there&apos;s nothing here..</span>
+                <EmojiSadIcon className="inline-block w-8" />
               </div>
-            ))}
+            )}
           </div>
         </div>
       ) : (
