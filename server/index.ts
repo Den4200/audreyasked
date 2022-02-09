@@ -19,6 +19,7 @@ app.prepare().then(() => {
   wss.on('connection', async (ws) => {
     console.log('incoming connection');
 
+    // eslint-disable-next-line no-param-reassign
     ws.onclose = () => {
       console.log('connection closed');
     };
