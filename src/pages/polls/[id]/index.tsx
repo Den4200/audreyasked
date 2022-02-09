@@ -101,9 +101,9 @@ const Poll = () => {
         {poll.schema.sections.map((section) => (
           <div
             key={section.id}
-            className="border-2 border-pink-300 p-4 rounded bg-white"
+            className="rounded border-2 border-pink-300 bg-white p-4"
           >
-            <div className="flex flex-col space-y-4 mt-2">
+            <div className="mt-2 flex flex-col space-y-4">
               <h2 className="text-2xl font-semibold">{section.title}</h2>
               <hr />
               {section.questions.map((question) => (
@@ -122,7 +122,7 @@ const Poll = () => {
                       )
                     }
                   />
-                  <hr className="mt-4 group-last:border-0 group-last:mt-2" />
+                  <hr className="mt-4 group-last:mt-2 group-last:border-0" />
                 </div>
               ))}
             </div>

@@ -8,12 +8,12 @@ const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
   ({ className, ...rest }, ref) => (
     <label
       className={clsxm(
-        'group-option cursor-pointer block h-4 w-4 mr-2 relative select-none',
+        'group-option relative mr-2 block h-4 w-4 cursor-pointer select-none',
         className
       )}
     >
       <input
-        className="cursor-pointer h-0 w-0 absolute opacity-0 peer"
+        className="peer absolute h-0 w-0 cursor-pointer opacity-0"
         ref={ref}
         {...rest}
         type="radio"
@@ -21,11 +21,11 @@ const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
       />
       <span
         className={clsxm(
-          'bg-white border-2 border-pink-400 rounded-full h-6 w-6 absolute left-0 top-0 transition-colors duration-200 ease-linear',
-          'group-option-hover:bg-pink-200 group-option-hover:peer-checked:bg-white'
+          'group-option-hover:bg-pink-200 group-option-hover:peer-checked:bg-white absolute left-0 top-0 h-6 w-6 rounded-full',
+          'border-2 border-pink-400 bg-white transition-colors duration-200 ease-linear'
         )}
       />
-      <span className="absolute hidden peer-checked:block top-[7px] left-1 transition-colors duration-300 ease-linear">
+      <span className="absolute top-[7px] left-1 hidden transition-colors duration-300 ease-linear peer-checked:block">
         <div className="heart before:bg-pink-300 after:bg-pink-300" />
       </span>
     </label>

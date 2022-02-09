@@ -30,7 +30,7 @@ const Main = (props: MainProps) => {
   }
 
   return (
-    <div className="flex flex-col px-4 pt-4 min-h-screen max-w-screen-md mx-auto text-gray-700">
+    <div className="mx-auto flex min-h-screen max-w-screen-md flex-col px-4 pt-4 text-gray-700">
       <Meta title={props.title} description={props.description} />
       <ReactTooltip
         id="nav-tooltip"
@@ -42,24 +42,24 @@ const Main = (props: MainProps) => {
         place="left"
       />
 
-      <div className="flex mb-4 border-b border-gray-300 justify-between">
+      <div className="mb-4 flex justify-between border-b border-gray-300">
         <div>
-          <h1 className="font-bold mb-1 text-3xl text-gray-900">
+          <h1 className="mb-1 text-3xl font-bold text-gray-900">
             {props.title}
           </h1>
           <h2 className="mb-4 text-xl">{props.description}</h2>
         </div>
-        <div className="flex items-center -mt-4 space-x-2">
+        <div className="-mt-4 flex items-center space-x-2">
           <Link href="/" passHref={true}>
             <HomeIcon
-              className="cursor-pointer w-8"
+              className="w-8 cursor-pointer"
               data-tip="Home"
               data-for="nav-tooltip"
             />
           </Link>
           {session === null ? (
             <LoginIcon
-              className="cursor-pointer w-8"
+              className="w-8 cursor-pointer"
               onClick={() => signIn('discord')}
               data-tip="Sign in"
               data-for="nav-tooltip"
@@ -68,13 +68,13 @@ const Main = (props: MainProps) => {
             <>
               <Link href="/polls" passHref={true}>
                 <ClipboardListIcon
-                  className="cursor-pointer w-8"
+                  className="w-8 cursor-pointer"
                   data-tip="Polls"
                   data-for="nav-tooltip"
                 />
               </Link>
               <LogoutIcon
-                className="cursor-pointer w-8"
+                className="w-8 cursor-pointer"
                 onClick={() => signOut({ callbackUrl: '/' })}
                 data-tip="Sign out"
                 data-for="nav-tooltip"
@@ -84,9 +84,9 @@ const Main = (props: MainProps) => {
         </div>
       </div>
 
-      <div className="grow content">{props.children}</div>
+      <div className="content grow">{props.children}</div>
 
-      <footer className="mt-4 border-t border-gray-300 text-center py-6 text-sm">
+      <footer className="mt-4 border-t border-gray-300 py-6 text-center text-sm">
         Copyright &copy; {new Date().getFullYear()} {AppConfig.title}. All
         Rights Reserved.
       </footer>

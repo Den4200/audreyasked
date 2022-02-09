@@ -24,7 +24,7 @@ const QuestionInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ className, ...rest }, ref) => (
     <TextInput
       className={clsxm(
-        'text-xl font-semibold border-dotted focus:border-solid focus:ring-0 px-2 mr-3 leading-10',
+        'mr-3 border-dotted px-2 text-xl font-semibold leading-10 focus:border-solid focus:ring-0',
         className
       )}
       placeholder="Question here.."
@@ -38,7 +38,7 @@ const AnswerOptionInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ className, ...rest }, ref) => (
     <TextInput
       className={clsxm(
-        'border-dotted focus:border-solid focus:ring-0 leading-5',
+        'border-dotted leading-5 focus:border-solid focus:ring-0',
         className
       )}
       placeholder="Answer here.."
@@ -93,7 +93,7 @@ const QuestionElement = (props: QuestionElementProps) => {
                 value={answer.value}
               />
               <button
-                className="text-gray-400 hover:text-gray-500 ml-1 w-4"
+                className="ml-1 w-4 text-gray-400 hover:text-gray-500"
                 onClick={() =>
                   removeAnswer(props.sectionID, question.id, answer.id)
                 }
@@ -104,7 +104,7 @@ const QuestionElement = (props: QuestionElementProps) => {
             </div>
           ))}
           <button
-            className="text-pink-400 hover:text-pink-500 rounded-full w-8 transition-colors duration-500 ml-1"
+            className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
             onClick={() => addAnswer(props.sectionID, question.id)}
           >
             <PlusCircleIcon />
@@ -142,7 +142,7 @@ const QuestionElement = (props: QuestionElementProps) => {
                 value={answer.value}
               />
               <button
-                className="text-gray-400 hover:text-gray-500 ml-1 w-4"
+                className="ml-1 w-4 text-gray-400 hover:text-gray-500"
                 onClick={() =>
                   removeAnswer(props.sectionID, question.id, answer.id)
                 }
@@ -153,7 +153,7 @@ const QuestionElement = (props: QuestionElementProps) => {
             </div>
           ))}
           <button
-            className="text-pink-400 hover:text-pink-500 rounded-full w-8 transition-colors duration-500 ml-1"
+            className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
             onClick={() => addAnswer(props.sectionID, question.id)}
           >
             <PlusCircleIcon />
@@ -197,7 +197,7 @@ const PollEditor = (props: PollEditorProps) => {
   return (
     <Main title={props.title} description={props.description}>
       <TextInput
-        className="w-full text-3xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-[3.25rem] mb-4 px-2"
+        className="mb-4 w-full border-dotted px-2 text-3xl font-semibold leading-[3.25rem] focus:border-solid focus:ring-0"
         placeholder="Poll title here.."
         onChange={(event) => setTitle(event.target.value)}
         value={pollSchema.title}
@@ -206,19 +206,19 @@ const PollEditor = (props: PollEditorProps) => {
         {pollSchema.sections.map((section) => (
           <div
             key={section.id}
-            className="border-2 border-pink-300 p-4 rounded bg-white"
+            className="rounded border-2 border-pink-300 bg-white p-4"
           >
             <button
-              className="float-right text-pink-400 hover:text-pink-500 transition-colors duration-500 -mt-9 -mr-9 w-10 bg-pink-50 rounded-full"
+              className="float-right -mt-9 -mr-9 w-10 rounded-full bg-pink-50 text-pink-400 transition-colors duration-500 hover:text-pink-500"
               onClick={() => removeSection(section.id)}
               tabIndex={-1}
             >
               <XCircleIcon />
             </button>
 
-            <div className="flex flex-col space-y-4 mt-2">
+            <div className="mt-2 flex flex-col space-y-4">
               <TextInput
-                className="text-2xl font-semibold border-dotted focus:border-solid focus:ring-0 leading-10 px-2"
+                className="border-dotted px-2 text-2xl font-semibold leading-10 focus:border-solid focus:ring-0"
                 placeholder="Section title here.."
                 onChange={(event) =>
                   setSectionTitle(section.id, event.target.value)
@@ -228,21 +228,21 @@ const PollEditor = (props: PollEditorProps) => {
               <hr />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`}>
-                  <div className="grid grid-cols-2 md:gap-2 float-right text-gray-400 md:w-11 w-8">
+                  <div className="float-right grid w-8 grid-cols-2 text-gray-400 md:w-11 md:gap-2">
                     <ChevronUpIcon
-                      className="cursor-pointer hover:text-gray-500 w-5 md:ml-0 -ml-2"
+                      className="-ml-2 w-5 cursor-pointer hover:text-gray-500 md:ml-0"
                       onClick={() => moveQuestion(section.id, question.id, -1)}
                     />
                     <XIcon
-                      className="cursor-pointer hover:text-gray-500 w-5"
+                      className="w-5 cursor-pointer hover:text-gray-500"
                       onClick={() => removeQuestion(section.id, question.id)}
                     />
                     <ChevronDownIcon
-                      className="cursor-pointer hover:text-gray-500 w-5 md:ml-0 md:mt-0 -ml-2  mt-1"
+                      className="-ml-2 mt-1 w-5 cursor-pointer hover:text-gray-500 md:ml-0  md:mt-0"
                       onClick={() => moveQuestion(section.id, question.id, 1)}
                     />
                     <DuplicateIcon
-                      className="cursor-pointer hover:text-gray-500 w-5 md:mt-0 mt-1"
+                      className="mt-1 w-5 cursor-pointer hover:text-gray-500 md:mt-0"
                       onClick={() => duplicateQuestion(section.id, question.id)}
                     />
 
@@ -252,7 +252,7 @@ const PollEditor = (props: PollEditorProps) => {
                       <>
                         <div />
                         <SwitchHorizontalIcon
-                          className="cursor-pointer hover:text-gray-500 w-5 mt-1"
+                          className="mt-1 w-5 cursor-pointer hover:text-gray-500"
                           onClick={() =>
                             switchQuestionType(section.id, question.id)
                           }
@@ -269,10 +269,10 @@ const PollEditor = (props: PollEditorProps) => {
               ))}
             </div>
 
-            <div className="mt-4 px-3 py-2 border border-pink-300 rounded">
-              <div className="flex justify-between items-center">
+            <div className="mt-4 rounded border border-pink-300 px-3 py-2">
+              <div className="flex items-center justify-between">
                 <div className="flex-col">
-                  <h3 className="font-semibold mb-1">Add question</h3>
+                  <h3 className="mb-1 font-semibold">Add question</h3>
                   <Dropdown
                     className=""
                     options={Object.keys(QuestionType).filter(
@@ -288,7 +288,7 @@ const PollEditor = (props: PollEditorProps) => {
                   />
                 </div>
                 <button
-                  className="text-pink-400 hover:text-pink-500 rounded-full w-12 transition-colors duration-500"
+                  className="w-12 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
                   onClick={() => addQuestion(section.id)}
                 >
                   <PlusCircleIcon />
@@ -300,7 +300,7 @@ const PollEditor = (props: PollEditorProps) => {
 
         <div className="flex justify-center">
           <button
-            className="text-pink-400 hover:text-pink-500 rounded-full w-16 transition-colors duration-500"
+            className="w-16 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
             onClick={addSection}
           >
             <PlusCircleIcon />

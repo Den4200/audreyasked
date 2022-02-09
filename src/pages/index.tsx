@@ -17,35 +17,35 @@ const Index = () => {
   return (
     <Main title={AppConfig.title} description={AppConfig.description}>
       <Image
-        className="pb-4 border-b border-gray-300"
+        className="border-b border-gray-300 pb-4"
         src={banner}
         alt="banner"
       />
-      <hr className="border-gray-300 my-2" />
+      <hr className="my-2 border-gray-300" />
 
-      <div className="bg-pink-200 mx-2 my-4 rounded p-2 border-2 border-pink-300">
+      <div className="mx-2 my-4 rounded border-2 border-pink-300 bg-pink-200 p-2">
         <h2 className="text-xl font-semibold">Who asked?</h2>
         <p>
-          <span className="text-pink-500 font-semibold">Audrey</span> asked.
+          <span className="font-semibold text-pink-500">Audrey</span> asked.
         </p>
       </div>
-      <div className="m-2 flex flex-col justify-around text-md">
+      <div className="text-md m-2 flex flex-col justify-around">
         <div>
           Go to <UnderlineLink href="/polls">your polls</UnderlineLink> and
           create a new one!
         </div>
         <div className="mt-4 space-y-2">
           <h2 className="text-xl font-semibold">Here are some cool people:</h2>
-          <div className="flex ml-2">
+          <div className="ml-2 flex">
             <Checkbox className="mr-4" /> Audrey
           </div>
-          <div className="flex ml-2">
+          <div className="ml-2 flex">
             <Checkbox className="mr-4" /> Edric
           </div>
-          <div className="flex ml-2">
+          <div className="ml-2 flex">
             <Checkbox className="mr-4" /> Ty
           </div>
-          <div className="flex ml-2">
+          <div className="ml-2 flex">
             <Checkbox className="mr-4" /> Dennis
           </div>
         </div>

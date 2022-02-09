@@ -11,12 +11,9 @@ const ButtonLink = forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
       ref={ref}
       {...rest}
       className={clsxm(
-        'inline-block px-2 py-1 font-semibold rounded',
-        'shadow-sm transition-colors duration-500',
-        'bg-pink-400 text-white',
-        'border border-pink-500',
-        'hover:bg-pink-500 hover:text-white',
-        'active:bg-pink-400',
+        'inline-block rounded border border-pink-500 bg-pink-400 px-2 py-1',
+        'font-semibold text-white shadow-sm transition-colors duration-500',
+        'hover:bg-pink-500 hover:text-white active:bg-pink-400',
         'disabled:bg-pink-300 disabled:hover:bg-pink-300',
         className
       )}

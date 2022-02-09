@@ -65,55 +65,55 @@ const Polls = () => {
             textColor="#374151"
             place="bottom"
           />
-          <ButtonLink href="/polls/new" className="w-full mb-4 text-center">
-            <DocumentAddIcon width={24} className="inline-block mb-1" />{' '}
-            <span className="inline-block mt-1">Create Poll</span>
+          <ButtonLink href="/polls/new" className="mb-4 w-full text-center">
+            <DocumentAddIcon width={24} className="mb-1 inline-block" />{' '}
+            <span className="mt-1 inline-block">Create Poll</span>
           </ButtonLink>
-          <hr className="border-gray-300 mb-4" />
-          <div className="flex md:justify-start justify-center flex-wrap">
+          <hr className="mb-4 border-gray-300" />
+          <div className="flex flex-wrap justify-center md:justify-start">
             {polls.length !== 0 ? (
               polls.map((poll) => (
                 <div
                   key={poll.id}
-                  className="relative border-2 border-pink-300 bg-white rounded mb-4 p-2 md:w-56 w-80 mx-2 md:min-h-32 min-h-40"
+                  className="md:min-h-32 min-h-40 relative mx-2 mb-4 w-80 rounded border-2 border-pink-300 bg-white p-2 md:w-56"
                 >
                   <div className="flex justify-between">
                     <Link href={`/polls/${poll.id}`} passHref={true}>
-                      <h2 className="text-2xl font-semibold cursor-pointer hover:text-pink-500 transition-colors duration-300">
+                      <h2 className="cursor-pointer text-2xl font-semibold transition-colors duration-300 hover:text-pink-500">
                         {poll.schema.title}
                       </h2>
                     </Link>
-                    <div className="text-gray-500 space-x-2">
+                    <div className="space-x-2 text-gray-500">
                       <Link
                         href={`/polls/${poll.id}/responses`}
                         passHref={true}
                       >
                         <DocumentReportIcon
-                          className="cursor-pointer w-6 inline-block ml-2 mt-1"
+                          className="ml-2 mt-1 inline-block w-6 cursor-pointer"
                           data-tip="Responses"
                           data-for="tooltip"
                         />
                       </Link>
                       <Link href={`/polls/${poll.id}/edit`} passHref={true}>
                         <PencilIcon
-                          className="cursor-pointer w-6 inline-block mt-1"
+                          className="mt-1 inline-block w-6 cursor-pointer"
                           data-tip="Edit"
                           data-for="tooltip"
                         />
                       </Link>
                       <TrashIcon
-                        className="cursor-pointer w-6 inline-block mt-1"
+                        className="mt-1 inline-block w-6 cursor-pointer"
                         onClick={async () => deletePoll(poll.id)}
                         data-tip="Delete"
                         data-for="tooltip"
                       />
                     </div>
                   </div>
-                  <hr className="border-gray-300 mb-1" />
+                  <hr className="mb-1 border-gray-300" />
                   {responseCounts[poll.id]} response
                   {responseCounts[poll.id] === 1 ? null : 's'}
                   <div className="mt-10" />
-                  <div className="text-xs text-gray-400 absolute bottom-0 mb-2">
+                  <div className="absolute bottom-0 mb-2 text-xs text-gray-400">
                     Created: {new Date(poll.createdAt).toLocaleString()}
                     <br />
                     {poll.createdAt === poll.updatedAt ? null : (
@@ -123,7 +123,7 @@ const Polls = () => {
                 </div>
               ))
             ) : (
-              <div className="text-center w-full text-gray-400">
+              <div className="w-full text-center text-gray-400">
                 <EmojiSadIcon className="inline-block w-8" />
                 <span className="mx-2">Wow, there&apos;s nothing here..</span>
                 <EmojiSadIcon className="inline-block w-8" />

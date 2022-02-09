@@ -11,8 +11,7 @@ const UnderlineLink = forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
       ref={ref}
       {...rest}
       className={clsxm(
-        'animated-underline font-semibold',
-        'border-black border-b border-dotted hover:border-black/0',
+        'animated-underline border-b border-dotted border-black font-semibold hover:border-black/0',
         className
       )}
     >

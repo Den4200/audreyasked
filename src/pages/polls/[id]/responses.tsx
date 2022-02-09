@@ -120,25 +120,25 @@ const PollResponses = () => {
         {aggregatedResponses.map((section) => (
           <div
             key={section.id}
-            className="border-2 border-pink-300 p-4 rounded bg-white"
+            className="rounded border-2 border-pink-300 bg-white p-4"
           >
-            <div className="space-y-4 mt-2">
-              <h2 className="text-3xl font-semibold text-center">
+            <div className="mt-2 space-y-4">
+              <h2 className="text-center text-3xl font-semibold">
                 {section.title}
               </h2>
               <hr className="border-gray-300" />
               {section.questions.map((question) => (
                 <div key={`${section.id}-${question.id}`} className="group">
-                  <h3 className="text-xl font-semibold text-center">
+                  <h3 className="text-center text-xl font-semibold">
                     {question.question}
                   </h3>
 
                   {question.type === QuestionType.Text ? (
-                    <ul className="md:h-72 h-64 border mt-2 border-pink-300 overflow-y-auto rounded px-2">
+                    <ul className="mt-2 h-64 overflow-y-auto rounded border border-pink-300 px-2 md:h-72">
                       {question.responses.map((response) => (
                         <li
                           key={response.answer}
-                          className="flex justify-between border-t first:border-t-0 p-2 border-pink-200"
+                          className="flex justify-between border-t border-pink-200 p-2 first:border-t-0"
                         >
                           <p>{response.answer}</p>
                           {response.count > 1 ? (
@@ -148,7 +148,7 @@ const PollResponses = () => {
                       ))}
                     </ul>
                   ) : (
-                    <div className="md:h-72 h-64">
+                    <div className="h-64 md:h-72">
                       <ResponsiveBar
                         keys={['count']}
                         indexBy="answer"
@@ -158,7 +158,7 @@ const PollResponses = () => {
                       />
                     </div>
                   )}
-                  <hr className="mt-4 group-last:border-0 group-last:mt-2" />
+                  <hr className="mt-4 group-last:mt-2 group-last:border-0" />
                 </div>
               ))}
             </div>
