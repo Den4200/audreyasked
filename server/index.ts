@@ -27,7 +27,7 @@ app.prepare().then(() => {
   server.on('upgrade', (req, socket, head) => {
     const { pathname } = url.parse(req.url!, true);
 
-    if (!dev || pathname !== '/next/webpack-hmr') {
+    if (!dev || pathname !== '/_next/webpack-hmr') {
       wss.handleUpgrade(req, socket, head, (ws) => {
         wss.emit('connection', ws, req);
       });
