@@ -4,9 +4,6 @@ import url from 'url';
 import next from 'next';
 import WebSocket from 'ws';
 
-const pollResponsesRe = /\/polls\/([a-z0-9]+)\/responses\/?/;
-const pollRe = /\/polls\/([a-z0-9]+)\/?/;
-
 const dev = process.env.NODE_ENV !== 'production';
 const port = parseInt(process.env.PORT || '3000', 10);
 
@@ -25,16 +22,17 @@ app.prepare().then(() => {
   >();
 
   wss.on('connection', async (ws, req) => {
-    const pollMatch = req.url!.match(pollRe);
-    const respMatch = req.url!.match(pollResponsesRe);
+    const { query } = url.parse(req.url!, true);
 
-    if (respMatch) {
-      clientMap.set(ws, { pollId: respMatch[1]!, sender: false });
-    } else if (pollMatch) {
-      clientMap.set(ws, { pollId: pollMatch[1]!, sender: true });
-    } else {
+    if (!query.pollId) {
       ws.close();
+      return;
     }
+
+    clientMap.set(ws, {
+      pollId: query.pollId.toString(),
+      sender: query.sender?.toString() === 'true',
+    });
 
     ws.on('message', (data) => {
       wss.clients.forEach((client) => {
@@ -54,9 +52,9 @@ app.prepare().then(() => {
   });
 
   server.on('upgrade', (req, socket, head) => {
-    const { pathname } = url.parse(req.url!, true);
+    const { pathname, query } = url.parse(req.url!, true);
 
-    if (pathname?.match(pollRe) || pathname?.match(pollResponsesRe)) {
+    if (pathname === '/api/ws' && query.pollId) {
       wss.handleUpgrade(req, socket, head, (ws) => {
         wss.emit('connection', ws, req);
       });
