@@ -2,9 +2,9 @@
   "name": "next-js-boilerplate",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "nodemon",
+    "build": "next build && tsc --project tsconfig.server.json",
+    "start": "cross-env NODE_ENV=production node dist/server/index.js",
     "build-stats": "cross-env ANALYZE=true npm run build",
     "export": "next export",
     "build-prod": "run-s clean build export",
@@ -19,6 +19,7 @@
     "@nivo/core": "^0.79.0",
     "@prisma/client": "3.8.1",
     "@types/canvas-confetti": "^1.4.2",
+    "@types/ws": "^8.2.2",
     "axios": "^0.25.0",
     "canvas-confetti": "^1.4.0",
     "clsx": "^1.1.1",
@@ -30,9 +31,11 @@
     "react-dom": "^17.0.2",
     "react-spinners": "^0.11.0",
     "react-tooltip": "^4.2.21",
+    "react-use-websocket": "^3.0.0",
     "styled-jsx-plugin-postcss": "^4.0.1",
     "tailwind-merge": "^1.1.1",
-    "tailwindcss-named-groups": "^0.0.5"
+    "tailwindcss-named-groups": "^0.0.5",
+    "ws": "^8.5.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^12.0.7",
@@ -55,11 +58,13 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "lint-staged": "^12.1.4",
+    "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "tailwindcss": "^3.0.7",
+    "ts-node": "^10.5.0",
     "typescript": "^4.5.4"
   },
   "license": "ISC"
