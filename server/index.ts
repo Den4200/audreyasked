@@ -34,7 +34,7 @@ app.prepare().then(() => {
       sender: query.sender?.toString() === 'true',
     });
 
-    ws.on('message', (data) => {
+    ws.on('message', (data, binary) => {
       wss.clients.forEach((client) => {
         const clientData = clientMap.get(client);
         const wsData = clientMap.get(ws);
@@ -45,7 +45,7 @@ app.prepare().then(() => {
           !clientData?.sender &&
           clientData?.pollId === wsData?.pollId
         ) {
-          client.send(data);
+          client.send(data, { binary });
         }
       });
     });
