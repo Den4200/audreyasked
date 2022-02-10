@@ -197,16 +197,16 @@ const PollEditor = (props: PollEditorProps) => {
 
   return (
     <Main title={props.title} description={props.description}>
-      <TextInput
-        className="mb-4 w-full border-dotted px-2 text-3xl font-semibold leading-[3.25rem] focus:border-solid focus:ring-0"
-        placeholder="Poll title here.."
-        onChange={(event) => setTitle(event.target.value)}
-        value={pollSchema.title}
-      />
-
-      <div className="rounded border-2 border-pink-300 bg-white p-4 mt-2 mb-6">
-        <h2 className="text-2xl font-semibold">Poll Options</h2>
-        <hr className="mt-1 mb-3" />
+      <fieldset className="rounded border-2 border-pink-300 bg-white px-4 pt-2 pb-4">
+        <TextInput
+          className="mb-4 w-full border-dotted px-2 text-3xl font-semibold leading-[3.25rem] focus:border-solid focus:ring-0"
+          placeholder="Poll title here.."
+          onChange={(event) => setTitle(event.target.value)}
+          value={pollSchema.title}
+        />
+        <legend className="text-pink-400 font-semibold -ml-1 px-1">
+          Poll Settings
+        </legend>
         <div className="flex">
           <CheckboxElement
             className="mr-4"
@@ -215,9 +215,10 @@ const PollEditor = (props: PollEditorProps) => {
           />
           Collect users
         </div>
-      </div>
+      </fieldset>
+      <hr className="my-4 border-gray-300" />
 
-      <div className="mt-2 space-y-8">
+      <div className="space-y-8">
         {pollSchema.sections.map((section) => (
           <div
             key={section.id}
