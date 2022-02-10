@@ -27,9 +27,9 @@ export const withAuth =
     }
   };
 
-export const useAuth = (node: ReactNode) => {
+export const useAuth = (node: ReactNode, required: boolean = true) => {
   const { status } = useSession({
-    required: true,
+    required,
     onUnauthenticated: () => signIn('discord'),
   });
 
