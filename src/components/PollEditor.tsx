@@ -185,6 +185,7 @@ const PollEditor = (props: PollEditorProps) => {
     addSection,
     removeSection,
     setTitle,
+    setAuthRequired,
     setSectionTitle,
     setSectionQuestionType,
     addQuestion,
@@ -202,6 +203,20 @@ const PollEditor = (props: PollEditorProps) => {
         onChange={(event) => setTitle(event.target.value)}
         value={pollSchema.title}
       />
+
+      <div className="rounded border-2 border-pink-300 bg-white p-4 mt-2 mb-6">
+        <h2 className="text-2xl font-semibold">Poll Options</h2>
+        <hr className="mt-1 mb-3" />
+        <div className="flex">
+          <CheckboxElement
+            className="mr-4"
+            onChange={(event) => setAuthRequired(event.target.checked)}
+            checked={pollSchema.authRequired}
+          />
+          Require authentication
+        </div>
+      </div>
+
       <div className="mt-2 space-y-8">
         {pollSchema.sections.map((section) => (
           <div
