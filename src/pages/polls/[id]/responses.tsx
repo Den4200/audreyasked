@@ -49,7 +49,7 @@ const PollResponses = () => {
         window.location.host
       }/api/ws?pollId=${router.query.id!.toString()}`
     );
-  }, [router.isReady, router.query.id]);
+  }, [router.query.id]);
 
   useEffect(() => {
     const applyPollSchema = async () => {
