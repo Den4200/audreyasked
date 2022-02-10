@@ -213,7 +213,7 @@ const PollEditor = (props: PollEditorProps) => {
             onChange={(event) => setAuthRequired(event.target.checked)}
             checked={pollSchema.authRequired}
           />
-          Require authentication
+          Collect users
         </div>
       </div>
 
