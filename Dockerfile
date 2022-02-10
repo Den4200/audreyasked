@@ -22,6 +22,7 @@ WORKDIR /usr/src/app
 
 COPY --from=builder /audreyasked/prisma ./prisma
 COPY --from=builder /audreyasked/public ./public
+COPY --from=builder /audreyasked/dist ./dist
 COPY --from=builder /audreyasked/next.config.js ./next.config.js
 COPY --from=builder /audreyasked/.next/ ./.next
 COPY --from=builder /audreyasked/node_modules/ ./node_modules
