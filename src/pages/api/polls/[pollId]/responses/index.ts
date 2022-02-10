@@ -8,7 +8,7 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
   const pollId = req.query.pollId?.toString();
   const poll = await prisma.poll.findFirst({
-    select: { author: true },
+    select: { author: true, schema: true },
     where: { id: pollId },
   });
 
@@ -45,6 +45,12 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
       const data = JSON.stringify(req.body.response.data);
       if (!data) {
         res.status(422).json({ message: '422 Unprocessable Entity' });
+        return;
+      }
+
+      const { authRequired } = JSON.parse(poll.schema);
+      if (authRequired && !session) {
+        res.status(401).json({ message: '401 Unauthorized' });
         return;
       }
 
