@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { ResponsiveBar } from '@nivo/bar';
 import { useRouter } from 'next/router';
+import useWebSocket from 'react-use-websocket';
 
 import { usePollSchema } from '@/hooks/pollSchema';
 import axios from '@/lib/axios';
@@ -31,8 +32,24 @@ const BAR_COLORS = [
 
 const PollResponses = () => {
   const router = useRouter();
+
+  const [wsUrl, setWsUrl] = useState<string | null>(null);
+  const { lastJsonMessage } = useWebSocket(wsUrl);
+
   const { pollSchema, setPollSchema } = usePollSchema();
   const [pollResponses, setPollResponses] = useState<PollResponse[]>([]);
+
+  useEffect(() => {
+    if (!router.query.id) {
+      return;
+    }
+
+    setWsUrl(
+      `${process.env.NODE_ENV === 'production' ? 'wss' : 'ws'}://${
+        window.location.host
+      }/api/ws?pollId=${router.query.id!.toString()}`
+    );
+  }, [router.isReady, router.query.id]);
 
   useEffect(() => {
     const applyPollSchema = async () => {
@@ -57,6 +74,12 @@ const PollResponses = () => {
     };
     getPollResponses();
   }, [router.query.id, setPollResponses]);
+
+  useEffect(() => {
+    if (lastJsonMessage) {
+      setPollResponses((resps) => [...resps, lastJsonMessage.pollResponse]);
+    }
+  }, [lastJsonMessage]);
 
   const aggregatedResponses = pollSchema.sections.map((section) => ({
     id: section.id,
