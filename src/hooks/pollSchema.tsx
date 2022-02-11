@@ -13,6 +13,7 @@ type PollSchemaContextType = {
   setPollSchema: (pollSchema: PollSchema) => void;
   resetPollSchema: () => void;
   setTitle: (title: string) => void;
+  setAuthRequired: (authRequired: boolean) => void;
   addSection: () => void;
   removeSection: (id: number) => void;
   setSectionTitle: (sectionID: number, title: string) => void;
@@ -50,16 +51,21 @@ const PollSchemaContext = createContext<PollSchemaContextType>(undefined!);
 export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
   const [pollSchema, setPollSchema] = useState<PollSchema>({
     title: '',
+    authRequired: false,
     sections: [],
   });
 
   const resetPollSchema = () =>
     setPollSchema({
       title: '',
+      authRequired: false,
       sections: [],
     });
 
   const setTitle = (title: string) => setPollSchema({ ...pollSchema, title });
+
+  const setAuthRequired = (authRequired: boolean) =>
+    setPollSchema({ ...pollSchema, authRequired });
 
   const addSection = () =>
     setPollSchema({
@@ -338,6 +344,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
         setPollSchema,
         resetPollSchema,
         setTitle,
+        setAuthRequired,
         addSection,
         setSectionTitle,
         setSectionQuestionType,

@@ -26,6 +26,7 @@ export interface Section extends ObjectID {
 
 export type PollSchema = {
   title: string;
+  authRequired?: boolean;
   sections: Section[];
 };
 
