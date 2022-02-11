@@ -40,7 +40,7 @@ const pollResponseHandler: NextApiHandler = async (req, res) => {
 
       const session = await getSession({ req });
       const resp =
-        session && poll.author.email === session.user?.email
+        session && poll.author.id === session.user.id
           ? { response: parsePollResponse(response) }
           : { response: parsePollResponse(responseWithoutUser) };
 
@@ -55,7 +55,7 @@ const pollResponseHandler: NextApiHandler = async (req, res) => {
           where: { id: responseId, pollId },
         });
 
-        if (pollResponse!.user?.email !== aReq.session.user?.email) {
+        if (pollResponse!.user?.id !== aReq.session.user.id) {
           aRes.status(403).json({ message: '403 Forbidden' });
           return;
         }

@@ -32,7 +32,7 @@ const pollHandler: NextApiHandler = async (req, res) => {
 
     case 'PUT': {
       const pollPutHandler = withAuth(async (aReq, aRes) => {
-        if (poll.author.email !== aReq.session.user?.email) {
+        if (poll.author.id !== aReq.session.user.id) {
           aRes.status(403).json({ message: '403 Forbidden' });
           return;
         }
@@ -56,7 +56,7 @@ const pollHandler: NextApiHandler = async (req, res) => {
 
     case 'DELETE': {
       const pollDeleteHandler = withAuth(async (aReq, aRes) => {
-        if (poll.author.email !== aReq.session.user?.email) {
+        if (poll.author.id !== aReq.session.user.id) {
           aRes.status(403).json({ message: '403 Forbidden' });
           return;
         }
@@ -64,7 +64,7 @@ const pollHandler: NextApiHandler = async (req, res) => {
         const { count } = await prisma.poll.deleteMany({
           where: {
             id: pollId,
-            author: { email: aReq.session.user?.email },
+            author: { id: aReq.session.user.id },
           },
         });
 

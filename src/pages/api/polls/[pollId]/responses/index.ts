@@ -30,7 +30,7 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
         where: { pollId },
       };
 
-      if (session && poll.author.email === session.user?.email) {
+      if (session && poll.author.id === session.user.id) {
         query.select.userId = true;
       }
 
@@ -60,7 +60,7 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
             ? await prisma.pollResponse.create({
                 data: {
                   poll: { connect: { id: pollId } },
-                  user: { connect: { email: session.user?.email! } },
+                  user: { connect: { id: session.user.id } },
                   data,
                 },
               })
