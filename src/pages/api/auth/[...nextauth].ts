@@ -5,16 +5,21 @@ import Discord from 'next-auth/providers/discord';
 
 import prisma from '@/lib/prisma';
 
-const options = {
-  providers: [
-    Discord({
-      clientId: process.env.DISCORD_CLIENT_ID,
-      clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    }),
-  ],
-  adapter: PrismaAdapter(prisma),
-  secret: process.env.SECRET,
-};
-
-const authHandler: NextApiHandler = (req, res) => NextAuth(req, res, options);
+const authHandler: NextApiHandler = (req, res) =>
+  NextAuth(req, res, {
+    providers: [
+      Discord({
+        clientId: process.env.DISCORD_CLIENT_ID,
+        clientSecret: process.env.DISCORD_CLIENT_SECRET,
+      }),
+    ],
+    adapter: PrismaAdapter(prisma),
+    secret: process.env.SECRET,
+    callbacks: {
+      session: async ({ session, user }) => {
+        session.user.id = user.id; // eslint-disable-line no-param-reassign
+        return Promise.resolve(session);
+      },
+    },
+  });
 export default authHandler;
