@@ -12,6 +12,7 @@ import ReactTooltip from 'react-tooltip';
 
 import ButtonLink from '@/components/link/ButtonLink';
 import Loading from '@/components/Loading';
+import Modal from '@/components/Modal';
 import { useAuth } from '@/lib/auth';
 import axios from '@/lib/axios';
 import Main from '@/templates/Main';
@@ -24,6 +25,8 @@ type ResponseCounts = {
 const Polls = () => {
   const [polls, setPolls] = useState<Poll[]>();
   const [responseCounts, setResponseCounts] = useState<ResponseCounts>({});
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
+  const [pollToDelete, setPollToDelete] = useState<Poll | null>(null);
 
   const getPolls = async () => {
     const { data } = await axios.get('polls');
@@ -41,10 +44,13 @@ const Polls = () => {
     setResponseCounts(counts);
   };
 
-  const deletePoll = async (pollId: string) => {
-    const { data } = await axios.delete(`polls/${pollId}`);
-    if (data.deleted === 1) {
-      await getPolls();
+  const deletePoll = async () => {
+    if (pollToDelete) {
+      const { data } = await axios.delete(`polls/${pollToDelete.id}`);
+      if (data.deleted === 1) {
+        setPollToDelete(null);
+        await getPolls();
+      }
     }
   };
 
@@ -64,6 +70,18 @@ const Polls = () => {
             borderColor="#F472B6"
             textColor="#374151"
             place="bottom"
+          />
+          <Modal
+            open={isDeleteOpen}
+            setOpen={setIsDeleteOpen}
+            title={`Delete ${pollToDelete?.schema.title || 'poll'}`}
+            description="This will permanently delete your poll."
+            body={`Are you sure you want to delete ${
+              pollToDelete?.schema.title || 'your poll'
+            }? All responses will be
+          removed alongside it.`}
+            submitText="Delete"
+            onSubmit={deletePoll}
           />
           <ButtonLink href="/polls/new" className="mb-4 w-full text-center">
             <DocumentAddIcon width={24} className="mb-1 inline-block" />{' '}
@@ -103,7 +121,10 @@ const Polls = () => {
                       </Link>
                       <TrashIcon
                         className="mt-1 inline-block w-6 cursor-pointer"
-                        onClick={async () => deletePoll(poll.id)}
+                        onClick={() => {
+                          setPollToDelete(poll);
+                          setIsDeleteOpen(true);
+                        }}
                         data-tip="Delete"
                         data-for="tooltip"
                       />
