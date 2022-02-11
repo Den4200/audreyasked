@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 
+import { Switch } from '@headlessui/react';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -207,13 +208,25 @@ const PollEditor = (props: PollEditorProps) => {
         <legend className="text-pink-400 font-semibold -ml-1 px-1">
           Poll Settings
         </legend>
-        <div className="flex">
-          <CheckboxElement
-            className="mr-4"
-            onChange={(event) => setAuthRequired(event.target.checked)}
-            checked={pollSchema.authRequired}
-          />
+        <div className="border-y border-gray-300 p-2">
           Collect users
+          <Switch
+            checked={!!pollSchema.authRequired}
+            onChange={setAuthRequired}
+            className={clsxm(
+              'float-right relative inline-flex items-center border-2 border-pink-400 transition-colors duration-200 rounded-full h-6 w-11 mr-2',
+              pollSchema.authRequired ? 'bg-pink-300' : 'bg-white'
+            )}
+          >
+            <span
+              className={clsxm(
+                'heart inline-block w-4 h-4 transform transition-all duration-200',
+                pollSchema.authRequired
+                  ? 'translate-x-5'
+                  : 'translate-x-1 before:bg-pink-300 after:bg-pink-300'
+              )}
+            />
+          </Switch>
         </div>
       </fieldset>
       <hr className="my-4 border-gray-300" />
