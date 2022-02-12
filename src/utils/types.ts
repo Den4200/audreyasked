@@ -32,6 +32,7 @@ export type PollSchema = {
 
 export type Poll = {
   id: string;
+  authorId: string;
   schema: PollSchema;
   createdAt: Date;
   updatedAt: Date;

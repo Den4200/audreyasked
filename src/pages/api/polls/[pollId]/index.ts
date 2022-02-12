@@ -12,7 +12,7 @@ const pollHandler: NextApiHandler = async (req, res) => {
       schema: true,
       createdAt: true,
       updatedAt: true,
-      author: true,
+      authorId: true,
     },
     where: { id: pollId },
   });
@@ -24,15 +24,13 @@ const pollHandler: NextApiHandler = async (req, res) => {
 
   switch (req.method) {
     case 'GET': {
-      // eslint-disable-next-line unused-imports/no-unused-vars
-      const { author, ...resPoll } = poll;
-      res.status(200).json({ poll: parsePoll(resPoll) });
+      res.status(200).json({ poll: parsePoll(poll) });
       break;
     }
 
     case 'PUT': {
       const pollPutHandler = withAuth(async (aReq, aRes) => {
-        if (poll.author.id !== aReq.session.user.id) {
+        if (poll.authorId !== aReq.session.user.id) {
           aRes.status(403).json({ message: '403 Forbidden' });
           return;
         }
@@ -56,7 +54,7 @@ const pollHandler: NextApiHandler = async (req, res) => {
 
     case 'DELETE': {
       const pollDeleteHandler = withAuth(async (aReq, aRes) => {
-        if (poll.author.id !== aReq.session.user.id) {
+        if (poll.authorId !== aReq.session.user.id) {
           aRes.status(403).json({ message: '403 Forbidden' });
           return;
         }

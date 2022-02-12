@@ -10,6 +10,7 @@ const usePoll = (id?: string) => {
     schema: { title: '', sections: [] },
     createdAt: new Date(),
     updatedAt: new Date(),
+    authorId: '',
   });
 
   useEffect(() => {
