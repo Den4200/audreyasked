@@ -12,7 +12,6 @@ const EditPoll = () => {
   const router = useRouter();
   const { poll, setPollId } = usePoll();
   const { pollSchema, setPollSchema } = usePollSchema();
-  setPollSchema(poll.schema);
 
   useEffect(() => {
     if (!router.query.id) {
@@ -21,6 +20,10 @@ const EditPoll = () => {
 
     setPollId(router.query.id.toString());
   }, [router.query.id, setPollId]);
+
+  useEffect(() => {
+    setPollSchema(poll.schema);
+  }, [poll.schema, setPollSchema]);
 
   const onSubmit = async () => {
     const { data } = await axios.put(`polls/${router.query.id}`, {
