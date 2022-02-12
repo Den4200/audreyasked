@@ -3,25 +3,24 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import PollEditor from '@/components/PollEditor';
+import usePoll from '@/hooks/poll';
 import { usePollSchema } from '@/hooks/pollSchema';
 import { useAuth } from '@/lib/auth';
 import axios from '@/lib/axios';
 
 const EditPoll = () => {
   const router = useRouter();
+  const { poll, setPollId } = usePoll();
   const { pollSchema, setPollSchema } = usePollSchema();
+  setPollSchema(poll.schema);
 
   useEffect(() => {
-    const applyPollSchema = async () => {
-      if (!router.query.id) {
-        return;
-      }
+    if (!router.query.id) {
+      return;
+    }
 
-      const { data } = await axios.get(`polls/${router.query.id}`);
-      setPollSchema(data.poll.schema);
-    };
-    applyPollSchema();
-  }, [router.query.id, setPollSchema]);
+    setPollId(router.query.id.toString());
+  }, [router.query.id, setPollId]);
 
   const onSubmit = async () => {
     const { data } = await axios.put(`polls/${router.query.id}`, {
@@ -39,7 +38,9 @@ const EditPoll = () => {
       description="Edit a poll here!"
       submitText="Save poll!"
       onSubmit={onSubmit}
-    />
+    />,
+    true,
+    poll.authorId
   );
 };
 
