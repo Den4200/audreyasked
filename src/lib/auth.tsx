@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-auth';
 import { getSession, signIn, useSession } from 'next-auth/react';
+import ErrorPage from 'next/error';
 
 import Loading from '@/components/Loading';
 
@@ -27,14 +28,24 @@ export const withAuth =
     }
   };
 
-export const useAuth = (node: ReactNode, required: boolean = true) => {
-  const { status } = useSession({
+export const useAuth = (
+  node: ReactNode,
+  required: boolean = true,
+  userId?: string
+) => {
+  const { status, data: session } = useSession({
     required,
     onUnauthenticated: () => signIn('discord'),
   });
 
   if (status === 'loading') {
     return <Loading />;
+  }
+
+  if (userId && session!.user.id !== userId) {
+    return (
+      <ErrorPage statusCode={403} title="You do not have access to this page" />
+    );
   }
 
   return node;
