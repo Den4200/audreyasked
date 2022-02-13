@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 import '@/styles/global.css';
 import Loading from '@/components/Loading';
+import { ErrorHandlerProvider } from '@/hooks/errorHandler';
 import { PollSchemaProvider } from '@/hooks/pollSchema';
 
 const MyApp = ({
@@ -34,10 +35,12 @@ const MyApp = ({
 
   return (
     <SessionProvider session={session}>
-      <PollSchemaProvider>
-        {loading ? <Loading /> : null}
-        <Component {...pageProps} />
-      </PollSchemaProvider>
+      <ErrorHandlerProvider>
+        <PollSchemaProvider>
+          {loading ? <Loading /> : null}
+          <Component {...pageProps} />
+        </PollSchemaProvider>
+      </ErrorHandlerProvider>
     </SessionProvider>
   );
 };
