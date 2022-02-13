@@ -4,7 +4,7 @@ import { ResponsiveBar } from '@nivo/bar';
 import { useRouter } from 'next/router';
 import useWebSocket from 'react-use-websocket';
 
-import { usePollSchema } from '@/hooks/pollSchema';
+import usePoll from '@/hooks/poll';
 import axios from '@/lib/axios';
 import Main from '@/templates/Main';
 import responseCounter from '@/utils/responseCounter';
@@ -36,32 +36,12 @@ const PollResponses = () => {
   const [wsUrl, setWsUrl] = useState<string | null>(null);
   const { lastJsonMessage } = useWebSocket(wsUrl);
 
-  const { pollSchema, setPollSchema } = usePollSchema();
+  const { poll, setPollId } = usePoll();
   const [pollResponses, setPollResponses] = useState<PollResponse[]>([]);
 
   useEffect(() => {
-    if (!router.query.id) {
-      return;
-    }
-
-    setWsUrl(
-      `${process.env.NODE_ENV === 'production' ? 'wss' : 'ws'}://${
-        window.location.host
-      }/api/ws?pollId=${router.query.id!.toString()}`
-    );
-  }, [router.query.id]);
-
-  useEffect(() => {
-    const applyPollSchema = async () => {
-      if (!router.query.id) {
-        return;
-      }
-
-      const { data } = await axios.get(`polls/${router.query.id}`);
-      setPollSchema(data.poll.schema);
-    };
-    applyPollSchema();
-  }, [router.query.id, setPollSchema]);
+    setPollId(router.query.id?.toString());
+  }, [router.query.id, setPollId]);
 
   useEffect(() => {
     const getPollResponses = async () => {
@@ -76,12 +56,24 @@ const PollResponses = () => {
   }, [router.query.id, setPollResponses]);
 
   useEffect(() => {
+    if (!router.query.id) {
+      return;
+    }
+
+    setWsUrl(
+      `${process.env.NODE_ENV === 'production' ? 'wss' : 'ws'}://${
+        window.location.host
+      }/api/ws?pollId=${router.query.id!.toString()}`
+    );
+  }, [router.query.id]);
+
+  useEffect(() => {
     if (lastJsonMessage) {
       setPollResponses((resps) => [...resps, lastJsonMessage.pollResponse]);
     }
   }, [lastJsonMessage]);
 
-  const aggregatedResponses = pollSchema.sections.map((section) => ({
+  const aggregatedResponses = poll.schema.sections.map((section) => ({
     id: section.id,
     title: section.title,
     questions: section.questions.map((question) => ({
@@ -115,7 +107,7 @@ const PollResponses = () => {
               .reduce((prev, curr) => [...prev, ...curr], [])
               .map(
                 (answerId) =>
-                  pollSchema.sections
+                  poll.schema.sections
                     .find((sec) => sec.id === section.id)
                     ?.questions.find((ques) => ques.id === question.id)
                     ?.answers.find(
@@ -134,7 +126,7 @@ const PollResponses = () => {
 
   return (
     <Main
-      title={`${pollSchema.title} responses`}
+      title={`${poll.schema.title} responses`}
       description={`${pollResponses.length} response${
         pollResponses.length === 1 ? '' : 's'
       }!`}
