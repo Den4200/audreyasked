@@ -243,7 +243,20 @@ const PollResponses = () => {
                   <legend className="text-pink-400 font-semibold -ml-1 -mb-2 px-1">
                     Responses
                   </legend>
-                  <span className="block truncate">
+                  <span className="flex truncate">
+                    {selectedResponse.user?.image ? (
+                      <img
+                        className="mr-2 rounded-full"
+                        src={selectedResponse.user?.image}
+                        width={24}
+                        height={24}
+                        alt=""
+                      />
+                    ) : selectedResponse.id === 'overall' ? (
+                      <UserGroupIcon className="w-6 h-6 mr-2" />
+                    ) : (
+                      <UserIcon className="w-6 h-6 mr-2" />
+                    )}
                     {selectedResponse.user?.name || 'Anonymous'}
                   </span>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -273,7 +286,7 @@ const PollResponses = () => {
                         <>
                           {response.user?.image ? (
                             <img
-                              className="mr-2"
+                              className="mr-2 rounded-full"
                               src={response.user?.image}
                               width={24}
                               height={24}
