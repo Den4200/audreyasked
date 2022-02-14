@@ -267,54 +267,65 @@ const PollResponses = () => {
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute w-full bg-white border-2 border-pink-300 py-1 mt-1 overflow-auto rounded max-h-80 focus:outline-none shadow-md">
-                  {[OVERALL_RESPONSE, ...pollResponses].map((response) => (
-                    <Listbox.Option
-                      key={response.id}
-                      className={({ active }) =>
-                        clsxm(
-                          'flex cursor-default select-none relative py-2 pl-10 pr-4',
-                          active ? 'text-pink-500 bg-pink-100' : 'text-gray-900'
-                        )
-                      }
-                      value={response}
-                    >
-                      {({ selected, active }) => (
-                        <>
-                          {response.user?.image ? (
-                            <img
-                              className="mr-2 rounded-full"
-                              src={response.user?.image}
-                              width={24}
-                              height={24}
-                              alt=""
-                            />
-                          ) : response.id === 'overall' ? (
-                            <UserGroupIcon className="w-6 h-6 mr-2" />
-                          ) : (
-                            <UserIcon className="w-6 h-6 mr-2" />
-                          )}
-                          <span
-                            className={clsxm(
-                              'block truncate',
-                              selected ? 'font-medium' : 'font-normal'
+                  {[OVERALL_RESPONSE, ...pollResponses].map(
+                    (response, index) => (
+                      <Listbox.Option
+                        key={response.id}
+                        className={({ active }) =>
+                          clsxm(
+                            'flex cursor-default select-none relative py-2 pl-10 pr-4',
+                            active
+                              ? 'text-pink-500 bg-pink-100'
+                              : 'text-gray-900'
+                          )
+                        }
+                        value={response}
+                      >
+                        {({ selected, active }) => (
+                          <>
+                            {response.user?.image ? (
+                              <img
+                                className="mr-2 rounded-full"
+                                src={response.user?.image}
+                                width={24}
+                                height={24}
+                                alt=""
+                              />
+                            ) : response.id === 'overall' ? (
+                              <UserGroupIcon className="w-6 h-6 mr-2" />
+                            ) : (
+                              <UserIcon className="w-6 h-6 mr-2" />
                             )}
-                          >
-                            {response.user?.name || 'Anonymous'}
-                          </span>
-                          {selected ? (
-                            <span
-                              className={clsxm(
-                                'absolute inset-y-0 left-0 flex items-center pl-3',
-                                active ? 'text-pink-500' : 'text-pink-500'
-                              )}
-                            >
-                              <CheckIcon className="w-5" />
-                            </span>
-                          ) : null}
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
+                            <div className="flex w-full justify-between">
+                              <span
+                                className={clsxm(
+                                  'block truncate',
+                                  selected ? 'font-medium' : 'font-normal'
+                                )}
+                              >
+                                {response.user?.name || 'Anonymous'}
+                              </span>
+                              {index !== 0 ? (
+                                <span className="text-gray-400 text-sm">
+                                  #{index}
+                                </span>
+                              ) : null}
+                            </div>
+                            {selected ? (
+                              <span
+                                className={clsxm(
+                                  'absolute inset-y-0 left-0 flex items-center pl-3',
+                                  active ? 'text-pink-500' : 'text-pink-500'
+                                )}
+                              >
+                                <CheckIcon className="w-5" />
+                              </span>
+                            ) : null}
+                          </>
+                        )}
+                      </Listbox.Option>
+                    )
+                  )}
                 </Listbox.Options>
               </Transition>
             </div>
