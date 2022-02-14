@@ -112,7 +112,7 @@ const QuestionElement = (props: QuestionElementProps) => {
       return (
         <div className="flex flex-col space-y-2">
           <h3 className="text-xl font-semibold">{props.question.question}</h3>
-          <TextInput readOnly value={props.answers[0]!} />
+          <TextInput readOnly value={props.answers} />
         </div>
       );
     default:
