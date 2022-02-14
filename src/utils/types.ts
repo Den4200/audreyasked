@@ -49,11 +49,18 @@ export type PollResponseData = {
 export type PollResponse = {
   id: string;
   data: PollResponseData;
+  createdAt: Date;
+  updatedAt: Date;
   user?: {
     id: string;
     name: string | null;
     image: string | null;
   } | null;
+};
+
+export type ApiPollResponse = Omit<PollResponse, 'createdAt' | 'updatedAt'> & {
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type DbPollResponse = Omit<PollResponse, 'data'> & {

@@ -21,7 +21,12 @@ import axios from '@/lib/axios';
 import Main from '@/templates/Main';
 import clsxm from '@/utils/clsxm';
 import responseCounter from '@/utils/responseCounter';
-import { PollResponse, Question, QuestionType } from '@/utils/types';
+import {
+  ApiPollResponse,
+  PollResponse,
+  Question,
+  QuestionType,
+} from '@/utils/types';
 
 const BAR_COLORS = [
   '#FECDD3',
@@ -46,6 +51,8 @@ const BAR_COLORS = [
 const OVERALL_RESPONSE = {
   id: 'overall',
   data: { sections: [] },
+  createdAt: new Date(),
+  updatedAt: new Date(),
   user: {
     id: 'overall',
     name: 'Overall',
@@ -137,7 +144,13 @@ const PollResponses = () => {
       }
 
       const { data } = await axios.get(`polls/${router.query.id}/responses`);
-      setPollResponses(data.responses);
+      setPollResponses(
+        data.responses.map((response: ApiPollResponse) => ({
+          ...response,
+          createdAt: new Date(response.createdAt),
+          updatedAt: new Date(response.updatedAt),
+        }))
+      );
     };
     getPollResponses();
   }, [router.query.id, setPollResponses]);
