@@ -56,14 +56,10 @@ const OVERALL_RESPONSE = {
 type QuestionElementProps = {
   sectionId: number;
   question: Question;
-  response: PollResponse;
+  answers: string[];
 };
 
 const QuestionElement = (props: QuestionElementProps) => {
-  const { answers } = props.response.data.sections
-    .find((section) => section.id === props.sectionId)!
-    .questions.find((question) => question.id === props.question.id)!;
-
   switch (props.question.type) {
     case QuestionType.Checkbox:
       return (
@@ -77,7 +73,7 @@ const QuestionElement = (props: QuestionElementProps) => {
               <Checkbox
                 className="ml-2 mr-4"
                 checked={
-                  answers.find(
+                  props.answers.find(
                     (answerId) => answerId === answer.id.toString()
                   ) !== undefined
                 }
@@ -101,7 +97,7 @@ const QuestionElement = (props: QuestionElementProps) => {
                 name={`${props.sectionId}-${props.question.id}`}
                 className="ml-2 mr-4"
                 checked={
-                  answers.find(
+                  props.answers.find(
                     (answerId) => answerId === answer.id.toString()
                   ) !== undefined
                 }
@@ -116,7 +112,7 @@ const QuestionElement = (props: QuestionElementProps) => {
       return (
         <div className="flex flex-col space-y-2">
           <h3 className="text-xl font-semibold">{props.question.question}</h3>
-          <TextInput readOnly value={answers[0]!} />
+          <TextInput readOnly value={props.answers[0]!} />
         </div>
       );
     default:
@@ -404,7 +400,10 @@ const PollResponses = () => {
                           <QuestionElement
                             sectionId={section.id}
                             question={question}
-                            response={selectedResponse}
+                            answers={
+                              selectedResponse.data.sections[sectionIndex]!
+                                .questions[questionIndex]!.answers
+                            }
                           />
                           <hr className="mt-4 group-last:mt-2 group-last:border-0" />
                         </div>
