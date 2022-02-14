@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/outline';
 import { ResponsiveBar } from '@nivo/bar';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useWebSocket from 'react-use-websocket';
 
@@ -233,7 +234,7 @@ const PollResponses = () => {
                   </legend>
                   <span className="flex truncate">
                     {selectedResponse.user?.image ? (
-                      <img
+                      <Image
                         className="mr-2 rounded-full"
                         src={selectedResponse.user?.image}
                         width={24}
@@ -276,7 +277,7 @@ const PollResponses = () => {
                         {({ selected, active }) => (
                           <>
                             {response.user?.image ? (
-                              <img
+                              <Image
                                 className="mr-2 rounded-full"
                                 src={response.user?.image}
                                 width={24}
