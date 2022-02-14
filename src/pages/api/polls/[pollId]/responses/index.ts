@@ -19,22 +19,37 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
 
   switch (req.method) {
     case 'GET': {
-      const query = {
-        select: {
-          id: true,
-          data: true,
-          createdAt: true,
-          updatedAt: true,
-          userId: false,
-        },
-        where: { pollId },
-      };
+      let resps;
 
       if (session && poll.author.id === session.user.id) {
-        query.select.userId = true;
+        resps = await prisma.pollResponse.findMany({
+          select: {
+            id: true,
+            data: true,
+            createdAt: true,
+            updatedAt: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+          where: { pollId },
+        });
+      } else {
+        resps = await prisma.pollResponse.findMany({
+          select: {
+            id: true,
+            data: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+          where: { pollId },
+        });
       }
 
-      const resps = await prisma.pollResponse.findMany(query);
       res.status(200).json({
         responses: resps.map((resp) => parsePollResponse(resp)),
       });

@@ -49,7 +49,11 @@ export type PollResponseData = {
 export type PollResponse = {
   id: string;
   data: PollResponseData;
-  userId?: string | null;
+  user?: {
+    id: string;
+    name: string | null;
+    image: string | null;
+  } | null;
 };
 
 export type DbPollResponse = Omit<PollResponse, 'data'> & {
