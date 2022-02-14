@@ -72,11 +72,7 @@ const QuestionElement = (props: QuestionElementProps) => {
             >
               <Checkbox
                 className="ml-2 mr-4"
-                checked={
-                  props.answers.find(
-                    (answerId) => answerId === answer.id.toString()
-                  ) !== undefined
-                }
+                checked={props.answers.includes(answer.id.toString())}
                 disabled
               />
               <p>{answer.value}</p>
@@ -96,11 +92,7 @@ const QuestionElement = (props: QuestionElementProps) => {
               <RadioButton
                 name={`${props.sectionId}-${props.question.id}`}
                 className="ml-2 mr-4"
-                checked={
-                  props.answers.find(
-                    (answerId) => answerId === answer.id.toString()
-                  ) !== undefined
-                }
+                checked={props.answers.includes(answer.id.toString())}
                 disabled
               />
               <p>{answer.value}</p>
