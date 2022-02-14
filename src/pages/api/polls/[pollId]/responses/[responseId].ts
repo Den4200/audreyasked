@@ -24,7 +24,13 @@ const pollResponseHandler: NextApiHandler = async (req, res) => {
       data: true,
       createdAt: true,
       updatedAt: true,
-      userId: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
     },
     where: { id: responseId, pollId },
   });
@@ -36,7 +42,7 @@ const pollResponseHandler: NextApiHandler = async (req, res) => {
   switch (req.method) {
     case 'GET': {
       // eslint-disable-next-line unused-imports/no-unused-vars
-      const { userId, ...responseWithoutUser } = response;
+      const { user, ...responseWithoutUser } = response;
 
       const session = await getSession({ req });
       const resp =
@@ -50,12 +56,7 @@ const pollResponseHandler: NextApiHandler = async (req, res) => {
 
     case 'PUT': {
       const pollResponsePutHandler = withAuth(async (aReq, aRes) => {
-        const pollResponse = await prisma.pollResponse.findFirst({
-          select: { user: true },
-          where: { id: responseId, pollId },
-        });
-
-        if (pollResponse!.user?.id !== aReq.session.user.id) {
+        if (response.user?.id !== aReq.session.user.id) {
           aRes.status(403).json({ message: '403 Forbidden' });
           return;
         }
