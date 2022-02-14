@@ -237,7 +237,7 @@ const PollResponses = () => {
       {session?.user.id === poll.authorId ? (
         <div className="flex justify-center">
           <Listbox value={selectedResponse} onChange={setSelectedResponse}>
-            <div className="relative w-11/12 md:w-1/2 mb-4">
+            <div className="relative w-11/12 md:w-1/2 mb-4 z-10">
               <Listbox.Button className="w-full focus:outline-none">
                 <fieldset className="relative py-2 pl-3 pr-10 text-left bg-white border-2 border-pink-300 rounded">
                   <legend className="text-pink-400 font-semibold -ml-1 -mb-2 px-1">
