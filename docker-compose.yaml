@@ -11,6 +11,8 @@ services:
       SECRET: only-for-development
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      EMAIL_SERVER: ${EMAIL_SERVER}
+      EMAIL_FROM: ${EMAIL_FROM}
       NEXTAUTH_URL: http://localhost:3000/api/auth
     ports:
       - 3000:3000
