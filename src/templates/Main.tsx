@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/outline';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import ReactTooltip from 'react-tooltip';
 
 import Loading from '@/components/Loading';
@@ -21,6 +22,7 @@ type MainProps = {
 };
 
 const Main = (props: MainProps) => {
+  const router = useRouter();
   const { data: session, status } = useSession({
     required: false,
   });
@@ -60,7 +62,11 @@ const Main = (props: MainProps) => {
           {session === null ? (
             <LoginIcon
               className="w-8 cursor-pointer"
-              onClick={() => signIn('discord')}
+              onClick={() => {
+                if (!router.asPath.startsWith('/auth/signin')) {
+                  signIn();
+                }
+              }}
               data-tip="Sign in"
               data-for="nav-tooltip"
             />
