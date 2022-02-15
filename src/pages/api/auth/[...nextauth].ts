@@ -26,5 +26,8 @@ const authHandler: NextApiHandler = (req, res) =>
         return Promise.resolve(session);
       },
     },
+    pages: {
+      signIn: '/auth/signin',
+    },
   });
 export default authHandler;
