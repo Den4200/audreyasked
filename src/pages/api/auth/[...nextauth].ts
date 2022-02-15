@@ -28,6 +28,7 @@ const authHandler: NextApiHandler = (req, res) =>
     },
     pages: {
       signIn: '/auth/signin',
+      verifyRequest: '/auth/verify-request',
     },
   });
 export default authHandler;
