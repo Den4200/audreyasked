@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { GetServerSideProps } from 'next';
 import { BuiltInProviderType } from 'next-auth/providers';
 import {
@@ -15,6 +17,7 @@ import banner from '@/public/assets/banner.png';
 import Main from '@/templates/Main';
 
 type SignInProps = {
+  callbackUrl?: string;
   csrfToken: string;
   providers: Record<
     LiteralUnion<BuiltInProviderType, string>,
@@ -23,6 +26,8 @@ type SignInProps = {
 };
 
 const SignIn = (props: SignInProps) => {
+  const [email, setEmail] = useState<string>('');
+
   return (
     <Main title="Sign in" description="Please sign in below.">
       <div className="border-2 border-pink-300 rounded bg-white p-4">
@@ -31,11 +36,7 @@ const SignIn = (props: SignInProps) => {
         <Image src={banner} alt="" />
         <hr className="border-gray-300 mt-2 mb-4" />
 
-        <form
-          className="flex flex-col items-center"
-          method="post"
-          action="/api/auth/signin/email"
-        >
+        <div className="flex flex-col items-center">
           <input name="csrfToken" type="hidden" value={props.csrfToken} />
           <label>
             <span className="text-pink-400 text-sm font-semibold">
@@ -48,13 +49,20 @@ const SignIn = (props: SignInProps) => {
               type="email"
               id="email"
               name="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
               required
             />
           </label>
-          <Button className="mt-4 shadow-md" type="submit">
+          <Button
+            className="mt-4 shadow-md"
+            onClick={() =>
+              signIn('email', { email, callbackUrl: props.callbackUrl })
+            }
+          >
             Sign in with Email
           </Button>
-        </form>
+        </div>
 
         <div className="flex justify-center items-center space-x-3 my-3">
           <div className="border-t border-gray-300 w-1/2" />
@@ -68,7 +76,9 @@ const SignIn = (props: SignInProps) => {
               <div key={provider.id}>
                 <Button
                   className="bg-white border-2 border-pink-400 text-pink-400 shadow-md hover:bg-pink-400"
-                  onClick={() => signIn(provider.id)}
+                  onClick={() =>
+                    signIn(provider.id, { callbackUrl: props.callbackUrl })
+                  }
                 >
                   Sign in with {provider.name}
                 </Button>
@@ -81,12 +91,12 @@ const SignIn = (props: SignInProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const csrfToken = await getCsrfToken(context);
-  const providers = await getProviders();
-  return {
-    props: { csrfToken, providers },
-  };
-};
+export const getServerSideProps: GetServerSideProps = async (context) => ({
+  props: {
+    callbackUrl: context.query.callbackUrl?.toString(),
+    csrfToken: await getCsrfToken(context),
+    providers: await getProviders(),
+  },
+});
 
 export default SignIn;
