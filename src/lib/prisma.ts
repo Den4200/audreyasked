@@ -24,4 +24,19 @@ prisma.$use(async (params, next) => {
   return result;
 });
 
+prisma.$use(async (params, next) => {
+  if (
+    params.action === 'create' &&
+    params.model === 'User' &&
+    !params.args.data.name
+  ) {
+    const { email } = params.args.data;
+
+    // eslint-disable-next-line no-param-reassign
+    params.args.data.name = email.substring(0, email.lastIndexOf('@'));
+  }
+
+  return next(params);
+});
+
 export default prisma;
