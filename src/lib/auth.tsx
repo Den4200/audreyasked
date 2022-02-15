@@ -35,7 +35,7 @@ export const useAuth = (
 ) => {
   const { status, data: session } = useSession({
     required,
-    onUnauthenticated: () => signIn(),
+    onUnauthenticated: signIn,
   });
 
   if (status === 'loading') {
