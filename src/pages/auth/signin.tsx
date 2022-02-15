@@ -17,7 +17,7 @@ import banner from '@/public/assets/banner.png';
 import Main from '@/templates/Main';
 
 type SignInProps = {
-  callbackUrl?: string;
+  callbackUrl: string;
   csrfToken: string;
   providers: Record<
     LiteralUnion<BuiltInProviderType, string>,
@@ -93,7 +93,7 @@ const SignIn = (props: SignInProps) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => ({
   props: {
-    callbackUrl: context.query.callbackUrl?.toString(),
+    callbackUrl: context.query.callbackUrl?.toString() || '/polls/',
     csrfToken: await getCsrfToken(context),
     providers: await getProviders(),
   },
