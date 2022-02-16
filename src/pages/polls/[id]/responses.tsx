@@ -132,6 +132,7 @@ const PollResponses = () => {
     useState<PollResponse>(OVERALL_RESPONSE);
 
   const { status, data: session } = useSession({ required: false });
+  const [initialLoad, setinitialLoad] = useState<boolean>(true);
 
   useEffect(() => {
     setPollId(router.query.id?.toString());
@@ -154,6 +155,38 @@ const PollResponses = () => {
     };
     getPollResponses();
   }, [router.query.id, setPollResponses]);
+
+  useEffect(() => {
+    if (initialLoad && pollResponses.length !== 0 && router.query.r) {
+      const response = pollResponses.find((resp) => resp.id === router.query.r);
+
+      if (response) {
+        setSelectedResponse(response);
+      } else {
+        const { pathname, query } = router;
+        delete query.r;
+
+        router.replace({ pathname, query });
+      }
+
+      setinitialLoad(false);
+    }
+  }, [initialLoad, pollResponses, router]);
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
+    const { pathname, query } = router;
+
+    if (selectedResponse.id === 'overall') {
+      delete query.r;
+      router.replace({ pathname, query });
+    } else {
+      router.replace({ pathname, query: { ...query, r: selectedResponse.id } });
+    }
+  }, [selectedResponse]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!router.query.id) {
