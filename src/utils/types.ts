@@ -67,6 +67,14 @@ export type DbPollResponse = Omit<PollResponse, 'data'> & {
   data: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email?: string;
+  image: string | null;
+  createdAt: Date;
+};
+
 export const newID = (objs: ObjectID[]) =>
   objs.length !== 0 ? Math.max(...objs.map((obj) => obj.id)) + 1 : 0;
 

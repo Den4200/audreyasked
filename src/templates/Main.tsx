@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import {
   ClipboardListIcon,
+  CogIcon,
   HomeIcon,
   LoginIcon,
   LogoutIcon,
@@ -51,7 +52,7 @@ const Main = (props: MainProps) => {
           </h1>
           <h2 className="mb-4 text-xl">{props.description}</h2>
         </div>
-        <div className="-mt-4 flex items-center space-x-2">
+        <div className="flex-none grid grid-rows-2 grid-cols-2 w-20 h-20 -mr-2 sm:flex sm:items-center sm:space-x-2 sm:w-auto sm:h-auto sm:mr-0">
           <Link href="/" passHref={true}>
             <HomeIcon
               className="w-8 cursor-pointer"
@@ -76,6 +77,13 @@ const Main = (props: MainProps) => {
                 <ClipboardListIcon
                   className="w-8 cursor-pointer"
                   data-tip="Polls"
+                  data-for="nav-tooltip"
+                />
+              </Link>
+              <Link href="/settings" passHref={true}>
+                <CogIcon
+                  className="w-8 cursor-pointer"
+                  data-tip="Settings"
                   data-for="nav-tooltip"
                 />
               </Link>
