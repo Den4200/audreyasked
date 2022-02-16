@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import {
   ClipboardListIcon,
+  CogIcon,
   HomeIcon,
   LoginIcon,
   LogoutIcon,
@@ -76,6 +77,13 @@ const Main = (props: MainProps) => {
                 <ClipboardListIcon
                   className="w-8 cursor-pointer"
                   data-tip="Polls"
+                  data-for="nav-tooltip"
+                />
+              </Link>
+              <Link href="/settings" passHref={true}>
+                <CogIcon
+                  className="w-8 cursor-pointer"
+                  data-tip="Settings"
                   data-for="nav-tooltip"
                 />
               </Link>
