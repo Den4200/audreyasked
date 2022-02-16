@@ -28,9 +28,9 @@ const Settings = () => {
 
   return (
     <Main title="Settings" description="Update your account settings.">
-      <div className="grid grid-cols-2 border-2 border-pink-300 bg-white rounded p-4">
+      <div className="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-2 border-2 border-pink-300 bg-white rounded px-4 py-8">
         <img
-          className="w-40 mx-auto rounded-full border-4 border-pink-300 transition-all duration-300 ease-in-out shadow-md hover:shadow-lg"
+          className="w-40 mx-auto rounded-full border-4 border-pink-300 transition-all duration-300 ease-in-out shadow-md hover:shadow-lg mb-4 md:mb-0"
           src={user.image || undefined}
           alt=""
         />
