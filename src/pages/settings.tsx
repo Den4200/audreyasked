@@ -51,7 +51,7 @@ const Settings = () => {
               />
             </fieldset>
             <ConfettiForm onSubmit={updateUser}>
-              <Button>Save Profile</Button>
+              <Button className="mt-2">Save Profile</Button>
             </ConfettiForm>
           </div>
         </div>
