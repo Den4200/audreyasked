@@ -3,8 +3,10 @@ import { NextApiHandler } from 'next';
 import NextAuth from 'next-auth';
 import Discord from 'next-auth/providers/discord';
 import EmailProvider from 'next-auth/providers/email';
+import nodemailer from 'nodemailer';
 
 import prisma from '@/lib/prisma';
+import { verificationEmail } from '@/utils/email';
 
 const authHandler: NextApiHandler = (req, res) =>
   NextAuth(req, res, {
@@ -16,6 +18,19 @@ const authHandler: NextApiHandler = (req, res) =>
       EmailProvider({
         server: process.env.EMAIL_SERVER,
         from: process.env.EMAIL_FROM,
+        sendVerificationRequest: async ({
+          identifier: email,
+          url,
+          expires,
+          provider: { server, from },
+        }) => {
+          const transport = nodemailer.createTransport(server);
+          await transport.sendMail({
+            to: email,
+            from,
+            ...verificationEmail(email, url, expires),
+          });
+        },
       }),
     ],
     adapter: PrismaAdapter(prisma),
