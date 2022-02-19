@@ -380,66 +380,66 @@ const PollResponses = () => {
         </div>
       ) : null}
 
-      <div className="mt-2 space-y-8">
-        {selectedResponse.id === 'overall' ? (
-          <>
-            {aggregatedResponses.map((section) => (
-              <div
-                key={section.id}
-                className="rounded border-2 border-pink-300 bg-white p-4"
-              >
-                <div className="mt-2 space-y-4">
-                  <h2 className="text-center text-3xl font-semibold">
-                    {section.title}
-                  </h2>
-                  <hr className="border-gray-300" />
-                  {section.questions.map((question) => (
-                    <div key={`${section.id}-${question.id}`} className="group">
-                      <h3 className="text-center text-xl font-semibold">
-                        {question.question}
-                      </h3>
+      {selectedResponse.id === 'overall' ? (
+        <div className="my-2 space-y-8">
+          {aggregatedResponses.map((section) => (
+            <div
+              key={section.id}
+              className="rounded border-2 border-pink-300 bg-white p-4"
+            >
+              <div className="mt-2 space-y-4">
+                <h2 className="text-center text-3xl font-semibold">
+                  {section.title}
+                </h2>
+                <hr className="border-gray-300" />
+                {section.questions.map((question) => (
+                  <div key={`${section.id}-${question.id}`} className="group">
+                    <h3 className="text-center text-xl font-semibold">
+                      {question.question}
+                    </h3>
 
-                      {question.type === QuestionType.Text ? (
-                        <ul className="mt-2 h-64 overflow-y-auto rounded border border-pink-300 px-2 md:h-72">
-                          {question.responses.map((response) => (
-                            <li
-                              key={response.answer}
-                              className="flex justify-between border-t border-pink-200 p-2 first:border-t-0"
-                            >
-                              <p>{response.answer}</p>
-                              {response.count > 1 ? (
-                                <p className="text-gray-400">
-                                  ({response.count})
-                                </p>
-                              ) : null}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <div className="h-64 md:h-72">
-                          <ResponsiveBar
-                            keys={['count']}
-                            indexBy="answer"
-                            data={question.responses}
-                            colors={(resp) => resp.data.color}
-                            margin={{
-                              top: 16,
-                              right: 16,
-                              bottom: 24,
-                              left: 32,
-                            }}
-                          />
-                        </div>
-                      )}
-                      <hr className="mt-4 group-last:mt-2 group-last:border-0" />
-                    </div>
-                  ))}
-                </div>
+                    {question.type === QuestionType.Text ? (
+                      <ul className="mt-2 h-64 overflow-y-auto rounded border border-pink-300 px-2 md:h-72">
+                        {question.responses.map((response) => (
+                          <li
+                            key={response.answer}
+                            className="flex justify-between border-t border-pink-200 p-2 first:border-t-0"
+                          >
+                            <p>{response.answer}</p>
+                            {response.count > 1 ? (
+                              <p className="text-gray-400">
+                                ({response.count})
+                              </p>
+                            ) : null}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="h-64 md:h-72">
+                        <ResponsiveBar
+                          keys={['count']}
+                          indexBy="answer"
+                          data={question.responses}
+                          colors={(resp) => resp.data.color}
+                          margin={{
+                            top: 16,
+                            right: 16,
+                            bottom: 24,
+                            left: 32,
+                          }}
+                        />
+                      </div>
+                    )}
+                    <hr className="mt-4 group-last:mt-2 group-last:border-0" />
+                  </div>
+                ))}
               </div>
-            ))}
-          </>
-        ) : (
-          <>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col my-2">
+          <div className="space-y-8">
             {poll.schema.sections.map((section, sectionIndex) =>
               selectedResponse.data.sections[sectionIndex] ===
               undefined ? null : (
@@ -471,9 +471,12 @@ const PollResponses = () => {
                 </div>
               )
             )}
-          </>
-        )}
-      </div>
+          </div>
+          <span className="text-center text-gray-400 text-xs mt-4">
+            Submitted {selectedResponse.createdAt.toLocaleString()}
+          </span>
+        </div>
+      )}
     </Main>
   );
 };
