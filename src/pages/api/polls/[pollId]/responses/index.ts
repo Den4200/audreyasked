@@ -73,6 +73,20 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
         response: parsePollResponse(
           session
             ? await prisma.pollResponse.create({
+                select: {
+                  id: true,
+                  pollId: true,
+                  data: true,
+                  createdAt: true,
+                  updatedAt: true,
+                  user: {
+                    select: {
+                      id: true,
+                      name: true,
+                      image: true,
+                    },
+                  },
+                },
                 data: {
                   poll: { connect: { id: pollId } },
                   user: { connect: { id: session.user.id } },
@@ -80,6 +94,13 @@ const pollResponsesHandler: NextApiHandler = async (req, res) => {
                 },
               })
             : await prisma.pollResponse.create({
+                select: {
+                  id: true,
+                  pollId: true,
+                  data: true,
+                  createdAt: true,
+                  updatedAt: true,
+                },
                 data: {
                   poll: { connect: { id: pollId } },
                   data,
