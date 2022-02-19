@@ -202,7 +202,16 @@ const PollResponses = () => {
 
   useEffect(() => {
     if (lastJsonMessage) {
-      setPollResponses((resps) => [...resps, lastJsonMessage.pollResponse]);
+      const resp = lastJsonMessage.pollResponse;
+
+      setPollResponses((resps) => [
+        ...resps,
+        {
+          ...resp,
+          createdAt: new Date(resp.createdAt),
+          updatedAt: new Date(resp.updatedAt),
+        },
+      ]);
     }
   }, [lastJsonMessage]);
 
