@@ -23,6 +23,7 @@ const Meta = (props: IMetaProps) => {
           key="viewport"
         />
         <meta name="theme-color" content={AppConfig.themeColor} />
+        <meta name="msapplication-TileColor" content={AppConfig.themeColor} />
         <link
           rel="apple-touch-icon"
           href={`${router.basePath}/apple-touch-icon.png`}
@@ -43,9 +44,14 @@ const Meta = (props: IMetaProps) => {
           key="icon16"
         />
         <link
-          rel="icon"
+          rel="shortcut icon"
           href={`${router.basePath}/favicon.ico`}
           key="favicon"
+        />
+        <link
+          rel="manifest"
+          href={`${router.basePath}/site.webmanifest`}
+          key="webmanifest"
         />
       </Head>
       <NextSeo
