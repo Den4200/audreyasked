@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 
 import { Switch } from '@headlessui/react';
 import {
@@ -6,9 +6,12 @@ import {
   ChevronUpIcon,
   DuplicateIcon,
   SwitchHorizontalIcon,
+  ViewListIcon,
   XIcon,
 } from '@heroicons/react/outline';
 import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/solid';
+import type { Identifier } from 'dnd-core';
+import { useDrag, useDrop, XYCoord } from 'react-dnd';
 
 import Button from '@/components/Button';
 import CheckboxElement from '@/components/Checkbox';
@@ -49,6 +52,18 @@ const AnswerOptionInput = forwardRef<HTMLInputElement, TextInputProps>(
   )
 );
 
+type DragItem = {
+  id: string;
+  index: number;
+  type: string;
+};
+
+type AnswerElementProps = {
+  sectionID: number;
+  questionID: number;
+  answerID: number;
+};
+
 type QuestionElementProps = {
   sectionID: number;
   questionID: number;
@@ -61,9 +76,154 @@ type PollEditorProps = {
   description: string;
 };
 
-const QuestionElement = (props: QuestionElementProps) => {
-  const { getQuestion, setQuestion, addAnswer, setAnswer, removeAnswer } =
+const AnswerElement = (props: AnswerElementProps) => {
+  const dndRef = useRef<HTMLDivElement>(null);
+  const { getAnswer, moveAnswer, removeAnswer, setAnswer, getQuestion } =
     usePollSchema();
+  const question = getQuestion(props.sectionID, props.questionID);
+  const answer = getAnswer(props.sectionID, question.id, props.answerID);
+  const answerIndex = question.answers.indexOf(answer);
+
+  const globalPollQuestionID = `${props.sectionID}-${question.id}`;
+
+  const [{ handlerId }, drop] = useDrop<
+    DragItem,
+    void,
+    { handlerId: Identifier | null }
+  >({
+    accept: globalPollQuestionID,
+    collect: (monitor) => ({ handlerId: monitor.getHandlerId() }),
+    hover: (item, monitor) => {
+      if (!dndRef.current) {
+        return;
+      }
+
+      const dragIndex = item.index;
+      const hoverIndex = answerIndex;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      // Determine rectangle on screen
+      const hoverBoundingRect = dndRef.current?.getBoundingClientRect();
+
+      // Get vertical middle
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset();
+
+      // Get pixels to the top
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
+
+      // Only perform the move when the mouse has crossed half of the items height
+      // When dragging downwards, only move when the cursor is below 50%
+      // When dragging upwards, only move when the cursor is above 50%
+
+      // Dragging downwards
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      // Dragging upwards
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
+      // Time to actually perform the action
+      moveAnswer(props.sectionID, question.id, dragIndex, hoverIndex);
+
+      // eslint-disable-next-line no-param-reassign
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag, previewRef] = useDrag({
+    type: globalPollQuestionID,
+    item: () => ({ id: answer.id, index: answerIndex }),
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+  });
+
+  drag(drop(dndRef));
+
+  switch (question.type) {
+    case QuestionType.Checkbox:
+      return (
+        <div
+          className={clsxm('flex', isDragging ? 'opacity-25' : 'opacity-100')}
+          ref={previewRef}
+          data-handler-id={handlerId}
+        >
+          <div className="flex items-center ml-2" ref={dndRef}>
+            <ViewListIcon className="text-gray-300 w-4 hover:text-gray-400" />
+          </div>
+          <CheckboxElement className="ml-2 mr-4" />
+          <AnswerOptionInput
+            onChange={(event) =>
+              setAnswer(
+                props.sectionID,
+                question.id,
+                answer.id,
+                event.target.value
+              )
+            }
+            value={answer.value}
+          />
+          <button
+            className="ml-1 w-4 text-gray-400 hover:text-gray-500"
+            onClick={() =>
+              removeAnswer(props.sectionID, question.id, answer.id)
+            }
+            tabIndex={-1}
+          >
+            <XIcon />
+          </button>
+        </div>
+      );
+
+    case QuestionType.Radio:
+      return (
+        <div
+          className={clsxm('flex', isDragging ? 'opacity-0' : 'opacity-100')}
+          ref={previewRef}
+          data-handler-id={handlerId}
+        >
+          <div className="flex items-center ml-2" ref={dndRef}>
+            <ViewListIcon className="text-gray-300 w-4 hover:text-gray-400" />
+          </div>
+          <RadioButton name={globalPollQuestionID} className="ml-2 mr-4" />
+          <AnswerOptionInput
+            onChange={(event) =>
+              setAnswer(
+                props.sectionID,
+                question.id,
+                answer.id,
+                event.target.value
+              )
+            }
+            value={answer.value}
+          />
+          <button
+            className="ml-1 w-4 text-gray-400 hover:text-gray-500"
+            onClick={() =>
+              removeAnswer(props.sectionID, question.id, answer.id)
+            }
+            tabIndex={-1}
+          >
+            <XIcon />
+          </button>
+        </div>
+      );
+
+    default:
+      return <></>;
+  }
+};
+
+const QuestionElement = (props: QuestionElementProps) => {
+  const { getQuestion, setQuestion, addAnswer } = usePollSchema();
   const question = getQuestion(props.sectionID, props.questionID);
 
   switch (question.type) {
@@ -77,32 +237,12 @@ const QuestionElement = (props: QuestionElementProps) => {
             value={question.question}
           />
           {question.answers.map((answer) => (
-            <div
+            <AnswerElement
               key={`${props.sectionID}-${question.id}-${answer.id}`}
-              className="flex"
-            >
-              <CheckboxElement className="ml-2 mr-4" />
-              <AnswerOptionInput
-                onChange={(event) =>
-                  setAnswer(
-                    props.sectionID,
-                    question.id,
-                    answer.id,
-                    event.target.value
-                  )
-                }
-                value={answer.value}
-              />
-              <button
-                className="ml-1 w-4 text-gray-400 hover:text-gray-500"
-                onClick={() =>
-                  removeAnswer(props.sectionID, question.id, answer.id)
-                }
-                tabIndex={-1}
-              >
-                <XIcon />
-              </button>
-            </div>
+              sectionID={props.sectionID}
+              questionID={question.id}
+              answerID={answer.id}
+            />
           ))}
           <button
             className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
@@ -123,35 +263,12 @@ const QuestionElement = (props: QuestionElementProps) => {
             value={question.question}
           />
           {question.answers.map((answer) => (
-            <div
+            <AnswerElement
               key={`${props.sectionID}-${question.id}-${answer.id}`}
-              className="flex"
-            >
-              <RadioButton
-                name={`${props.sectionID}-${question.id}`}
-                className="ml-2 mr-4"
-              />
-              <AnswerOptionInput
-                onChange={(event) =>
-                  setAnswer(
-                    props.sectionID,
-                    question.id,
-                    answer.id,
-                    event.target.value
-                  )
-                }
-                value={answer.value}
-              />
-              <button
-                className="ml-1 w-4 text-gray-400 hover:text-gray-500"
-                onClick={() =>
-                  removeAnswer(props.sectionID, question.id, answer.id)
-                }
-                tabIndex={-1}
-              >
-                <XIcon />
-              </button>
-            </div>
+              sectionID={props.sectionID}
+              questionID={question.id}
+              answerID={answer.id}
+            />
           ))}
           <button
             className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
