@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
 
+import update from 'immutability-helper';
+
 import {
   Answer,
   newID,
@@ -29,6 +31,17 @@ type PollSchemaContextType = {
   duplicateQuestion: (sectionID: number, questionID: number) => void;
   removeQuestion: (sectionID: number, questionID: number) => void;
   addAnswer: (sectionID: number, questionID: number) => void;
+  moveAnswer: (
+    sectionID: number,
+    questionID: number,
+    dragIndex: number,
+    hoverIndex: number
+  ) => void;
+  getAnswer: (
+    sectionID: number,
+    questionID: number,
+    answerID: number
+  ) => Answer;
   setAnswer: (
     sectionID: number,
     questionID: number,
@@ -284,6 +297,42 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
       ),
     });
 
+  const moveAnswer = (
+    sectionID: number,
+    questionID: number,
+    dragIndex: number,
+    hoverIndex: number
+  ) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
+        section.id === sectionID
+          ? {
+              ...section,
+              questions: section.questions.map((question) =>
+                question.id === questionID
+                  ? {
+                      ...question,
+                      answers: update(question.answers, {
+                        $splice: [
+                          [dragIndex, 1],
+                          [hoverIndex, 0, question.answers[dragIndex]!],
+                        ],
+                      }),
+                    }
+                  : question
+              ),
+            }
+          : section
+      ),
+    }));
+
+  const getAnswer = (sectionID: number, questionID: number, answerID: number) =>
+    pollSchema.sections
+      .find((section) => section.id === sectionID)!
+      .questions.find((question) => question.id === questionID)!
+      .answers.find((answer) => answer.id === answerID)!;
+
   const setAnswer = (
     sectionID: number,
     questionID: number,
@@ -357,6 +406,8 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
         duplicateQuestion,
         removeQuestion,
         addAnswer,
+        moveAnswer,
+        getAnswer,
         setAnswer,
         removeAnswer,
       }}
