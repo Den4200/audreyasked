@@ -75,63 +75,64 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
       sections: [],
     });
 
-  const setTitle = (title: string) => setPollSchema({ ...pollSchema, title });
+  const setTitle = (title: string) =>
+    setPollSchema((schema) => ({ ...schema, title }));
 
   const setAuthRequired = (authRequired: boolean) =>
-    setPollSchema({ ...pollSchema, authRequired });
+    setPollSchema((schema) => ({ ...schema, authRequired }));
 
   const addSection = () =>
-    setPollSchema({
-      ...pollSchema,
+    setPollSchema((schema) => ({
+      ...schema,
       sections: [
-        ...pollSchema.sections,
+        ...schema.sections,
         {
-          id: newID(pollSchema.sections),
+          id: newID(schema.sections),
           title: '',
           questions: [],
           addQuestionType: 'Checkbox',
         },
       ],
-    });
+    }));
 
   const getSection = (sectionID: number) =>
     pollSchema.sections.find((section) => section.id === sectionID)!;
 
   const removeSection = (id: number) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.filter((section) => section.id !== id),
-    });
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.filter((section) => section.id !== id),
+    }));
 
   const setSectionTitle = (sectionID: number, title: string) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID ? { ...section, title } : section
       ),
-    });
+    }));
 
   const setSectionQuestionType = (
     sectionID: number,
     type: keyof typeof QuestionType
   ) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? { ...section, addQuestionType: type }
           : section
       ),
-    });
+    }));
 
   const addQuestion = (
     sectionID: number,
     question?: string,
     answers?: Answer[]
   ) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -147,7 +148,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   const moveQuestion = (sectionID: number, questionID: number, dr: number) => {
     const sect = getSection(sectionID);
@@ -163,9 +164,9 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
         : questionIndex + dr) %
       (sectQuestions.length + 1);
 
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -177,7 +178,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
   };
 
   const getQuestion = (sectionID: number, questionID: number) =>
@@ -191,9 +192,9 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
       .questions.findIndex((question) => question.id === questionID);
 
   const setQuestion = (sectionID: number, questionID: number, value: string) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -205,12 +206,12 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   const switchQuestionType = (sectionID: number, questionID: number) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -230,15 +231,15 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   const duplicateQuestion = (sectionID: number, questionID: number) => {
     const question = getQuestion(sectionID, questionID);
     const questionIndex = getQuestionIndex(sectionID, questionID) + 1;
 
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -253,13 +254,13 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
   };
 
   const removeQuestion = (sectionID: number, questionID: number) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -269,12 +270,12 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   const addAnswer = (sectionID: number, questionID: number) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -295,7 +296,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   const moveAnswer = (
     sectionID: number,
@@ -339,9 +340,9 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
     answerID: number,
     value: string
   ) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -358,16 +359,16 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   const removeAnswer = (
     sectionID: number,
     questionID: number,
     answerID: number
   ) =>
-    setPollSchema({
-      ...pollSchema,
-      sections: pollSchema.sections.map((section) =>
+    setPollSchema((schema) => ({
+      ...schema,
+      sections: schema.sections.map((section) =>
         section.id === sectionID
           ? {
               ...section,
@@ -384,7 +385,7 @@ export const PollSchemaProvider = (props: PollSchemaProviderProps) => {
             }
           : section
       ),
-    });
+    }));
 
   return (
     <PollSchemaContext.Provider

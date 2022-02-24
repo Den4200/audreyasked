@@ -26,8 +26,8 @@ const usePollResponse = (pollId?: string) => {
   }, [poll]);
 
   const setAnswer = (sectionId: number, questionId: number, values: string[]) =>
-    setPollResponse({
-      sections: pollResponse.sections.map((section) =>
+    setPollResponse((response) => ({
+      sections: response.sections.map((section) =>
         section.id === sectionId
           ? {
               ...section,
@@ -42,7 +42,7 @@ const usePollResponse = (pollId?: string) => {
             }
           : section
       ),
-    });
+    }));
 
   const setCheckboxAnswer = (
     sectionId: number,
