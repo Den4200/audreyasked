@@ -6,7 +6,6 @@ import {
   ChevronUpIcon,
   DuplicateIcon,
   SwitchHorizontalIcon,
-  ViewListIcon,
   XIcon,
 } from '@heroicons/react/outline';
 import { PlusCircleIcon, XCircleIcon } from '@heroicons/react/solid';
@@ -140,7 +139,7 @@ const AnswerElement = (props: AnswerElementProps) => {
     },
   });
 
-  const [{ isDragging }, drag, previewRef] = useDrag({
+  const [{ isDragging }, drag] = useDrag({
     type: globalPollQuestionID,
     item: () => ({ id: answer.id, index: answerIndex }),
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
@@ -153,12 +152,9 @@ const AnswerElement = (props: AnswerElementProps) => {
       return (
         <div
           className={clsxm('flex', isDragging ? 'opacity-25' : 'opacity-100')}
-          ref={previewRef}
+          ref={dndRef}
           data-handler-id={handlerId}
         >
-          <div className="flex items-center ml-2" ref={dndRef}>
-            <ViewListIcon className="text-gray-300 w-4 hover:text-gray-400" />
-          </div>
           <CheckboxElement className="ml-2 mr-4" />
           <AnswerOptionInput
             onChange={(event) =>
@@ -186,13 +182,10 @@ const AnswerElement = (props: AnswerElementProps) => {
     case QuestionType.Radio:
       return (
         <div
-          className={clsxm('flex', isDragging ? 'opacity-0' : 'opacity-100')}
-          ref={previewRef}
+          className={clsxm('flex', isDragging ? 'opacity-25' : 'opacity-100')}
+          ref={dndRef}
           data-handler-id={handlerId}
         >
-          <div className="flex items-center ml-2" ref={dndRef}>
-            <ViewListIcon className="text-gray-300 w-4 hover:text-gray-400" />
-          </div>
           <RadioButton name={globalPollQuestionID} className="ml-2 mr-4" />
           <AnswerOptionInput
             onChange={(event) =>
