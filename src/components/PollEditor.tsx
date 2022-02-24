@@ -147,153 +147,80 @@ const AnswerElement = (props: AnswerElementProps) => {
 
   drag(drop(dndRef));
 
-  switch (question.type) {
-    case QuestionType.Checkbox:
-      return (
-        <div
-          className={clsxm(
-            'flex w-fit',
-            isDragging ? 'opacity-25' : 'opacity-100'
-          )}
-          ref={dndRef}
-          data-handler-id={handlerId}
-        >
-          <CheckboxElement className="ml-2 mr-4" />
-          <AnswerOptionInput
-            onChange={(event) =>
-              setAnswer(
-                props.sectionID,
-                question.id,
-                answer.id,
-                event.target.value
-              )
-            }
-            value={answer.value}
-          />
-          <button
-            className="ml-1 w-4 text-gray-400 hover:text-gray-500"
-            onClick={() =>
-              removeAnswer(props.sectionID, question.id, answer.id)
-            }
-            tabIndex={-1}
-          >
-            <XIcon />
-          </button>
-        </div>
-      );
+  const checkElement = {
+    [QuestionType.Checkbox]: (
+      <CheckboxElement name={globalPollQuestionID} className="ml-2 mr-4" />
+    ),
+    [QuestionType.Radio]: (
+      <RadioButton name={globalPollQuestionID} className="ml-2 mr-4" />
+    ),
+    [QuestionType.Text]: <></>,
+  };
 
-    case QuestionType.Radio:
-      return (
-        <div
-          className={clsxm(
-            'flex w-fit',
-            isDragging ? 'opacity-25' : 'opacity-100'
-          )}
-          ref={dndRef}
-          data-handler-id={handlerId}
-        >
-          <RadioButton name={globalPollQuestionID} className="ml-2 mr-4" />
-          <AnswerOptionInput
-            onChange={(event) =>
-              setAnswer(
-                props.sectionID,
-                question.id,
-                answer.id,
-                event.target.value
-              )
-            }
-            value={answer.value}
-          />
-          <button
-            className="ml-1 w-4 text-gray-400 hover:text-gray-500"
-            onClick={() =>
-              removeAnswer(props.sectionID, question.id, answer.id)
-            }
-            tabIndex={-1}
-          >
-            <XIcon />
-          </button>
-        </div>
-      );
-
-    default:
-      return <></>;
-  }
+  return (
+    <div
+      className={clsxm('flex w-fit', isDragging ? 'opacity-25' : 'opacity-100')}
+      ref={dndRef}
+      data-handler-id={handlerId}
+    >
+      {checkElement[question.type]}
+      <AnswerOptionInput
+        onChange={(event) =>
+          setAnswer(props.sectionID, question.id, answer.id, event.target.value)
+        }
+        value={answer.value}
+      />
+      <button
+        className="ml-1 w-4 text-gray-400 hover:text-gray-500"
+        onClick={() => removeAnswer(props.sectionID, question.id, answer.id)}
+        tabIndex={-1}
+      >
+        <XIcon />
+      </button>
+    </div>
+  );
 };
 
 const QuestionElement = (props: QuestionElementProps) => {
   const { getQuestion, setQuestion, addAnswer } = usePollSchema();
   const question = getQuestion(props.sectionID, props.questionID);
 
-  switch (question.type) {
-    case QuestionType.Checkbox:
-      return (
-        <div className="flex flex-col space-y-2">
-          <QuestionInput
-            onChange={(event) =>
-              setQuestion(props.sectionID, question.id, event.target.value)
-            }
-            value={question.question}
-          />
-          {question.answers.map((answer) => (
-            <AnswerElement
-              key={`${props.sectionID}-${question.id}-${answer.id}`}
-              sectionID={props.sectionID}
-              questionID={question.id}
-              answerID={answer.id}
-            />
-          ))}
-          <button
-            className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
-            onClick={() => addAnswer(props.sectionID, question.id)}
-          >
-            <PlusCircleIcon />
-          </button>
-        </div>
-      );
+  const checkAnswerElement = (
+    <>
+      {question.answers.map((answer) => (
+        <AnswerElement
+          key={`${props.sectionID}-${question.id}-${answer.id}`}
+          sectionID={props.sectionID}
+          questionID={question.id}
+          answerID={answer.id}
+        />
+      ))}
+      <button
+        className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
+        onClick={() => addAnswer(props.sectionID, question.id)}
+      >
+        <PlusCircleIcon />
+      </button>
+    </>
+  );
 
-    case QuestionType.Radio:
-      return (
-        <div className="flex flex-col space-y-2">
-          <QuestionInput
-            onChange={(event) =>
-              setQuestion(props.sectionID, question.id, event.target.value)
-            }
-            value={question.question}
-          />
-          {question.answers.map((answer) => (
-            <AnswerElement
-              key={`${props.sectionID}-${question.id}-${answer.id}`}
-              sectionID={props.sectionID}
-              questionID={question.id}
-              answerID={answer.id}
-            />
-          ))}
-          <button
-            className="ml-1 w-8 rounded-full text-pink-400 transition-colors duration-500 hover:text-pink-500"
-            onClick={() => addAnswer(props.sectionID, question.id)}
-          >
-            <PlusCircleIcon />
-          </button>
-        </div>
-      );
+  const answerElements = {
+    [QuestionType.Checkbox]: checkAnswerElement,
+    [QuestionType.Radio]: checkAnswerElement,
+    [QuestionType.Text]: <TextInput className="mr-3" />,
+  };
 
-    case QuestionType.Text:
-      return (
-        <div className="flex flex-col space-y-2">
-          <QuestionInput
-            onChange={(event) =>
-              setQuestion(props.sectionID, question.id, event.target.value)
-            }
-            value={question.question}
-          />
-          <TextInput className="mr-3" />
-        </div>
-      );
-
-    default:
-      return <></>;
-  }
+  return (
+    <div className="flex flex-col space-y-2">
+      <QuestionInput
+        onChange={(event) =>
+          setQuestion(props.sectionID, question.id, event.target.value)
+        }
+        value={question.question}
+      />
+      {answerElements[question.type]}
+    </div>
+  );
 };
 
 const PollEditor = (props: PollEditorProps) => {
