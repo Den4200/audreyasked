@@ -151,7 +151,10 @@ const AnswerElement = (props: AnswerElementProps) => {
     case QuestionType.Checkbox:
       return (
         <div
-          className={clsxm('flex', isDragging ? 'opacity-25' : 'opacity-100')}
+          className={clsxm(
+            'flex w-fit',
+            isDragging ? 'opacity-25' : 'opacity-100'
+          )}
           ref={dndRef}
           data-handler-id={handlerId}
         >
@@ -182,7 +185,10 @@ const AnswerElement = (props: AnswerElementProps) => {
     case QuestionType.Radio:
       return (
         <div
-          className={clsxm('flex', isDragging ? 'opacity-25' : 'opacity-100')}
+          className={clsxm(
+            'flex w-fit',
+            isDragging ? 'opacity-25' : 'opacity-100'
+          )}
           ref={dndRef}
           data-handler-id={handlerId}
         >
