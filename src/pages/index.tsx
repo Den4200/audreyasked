@@ -1,68 +1,40 @@
-import React, { useState } from 'react';
-
 import Image from 'next/image';
 
-import Button from '@/components/Button';
-import Checkbox from '@/components/Checkbox';
-import ConfettiForm from '@/components/ConfettiForm';
-import UnderlineLink from '@/components/link/UnderlineLink';
-import TextInput from '@/components/TextInput';
+import UnstyledLink from '@/components/link/UnstyledLink';
 import banner from '@/public/assets/banner.png';
 import Main from '@/templates/Main';
 import { AppConfig } from '@/utils/AppConfig';
 
-const Index = () => {
-  const [input, setInput] = useState<string>();
-
-  return (
-    <Main title={AppConfig.title} description={AppConfig.description}>
-      <Image
-        className="border-b border-gray-300 pb-4"
-        src={banner}
-        alt="banner"
-      />
-      <hr className="my-2 border-gray-300" />
-
-      <div className="mx-2 my-4 rounded border-2 border-pink-300 bg-pink-200 p-2">
-        <h2 className="text-xl font-semibold">Who asked?</h2>
-        <p>
-          <span className="font-semibold text-pink-500">Audrey</span> asked.
+const Index = () => (
+  <Main title={AppConfig.title} description={AppConfig.description}>
+    <div className="rounded-[8px] p-[2px] bg-gradient-to-r from-pink-400 to-fuchsia-400">
+      <div className="rounded-[6px] bg-gradient-to-r from-pink-200 to-fuchsia-200 px-4 pt-16 pb-4 flex flex-col justify-center items-center">
+        <h1 className="md:text-4xl text-3xl text-center font-extrabold mb-1 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-fuchsia-400">
+          Create your own polls!
+        </h1>
+        <p className="text-lg text-center">
+          Sign up today to collect responses.
         </p>
-      </div>
-      <div className="text-md m-2 flex flex-col justify-around">
-        <div>
-          Go to <UnderlineLink href="/polls">your polls</UnderlineLink> and
-          create a new one!
-        </div>
-        <div className="mt-4 space-y-2">
-          <h2 className="text-xl font-semibold">Here are some cool people:</h2>
-          <div className="ml-2 flex">
-            <Checkbox className="mr-4" /> Audrey
+
+        <UnstyledLink
+          className="inline-block mt-4 rounded-[8px] p-[2px] bg-gradient-to-r from-pink-400 to-fuchsia-400 group"
+          href="/auth/signin/"
+        >
+          <div className="px-4 py-2 rounded-[6px] bg-gradient-to-r from-pink-200 to-fuchsia-200">
+            <p className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-fuchsia-400 group-hover:from-pink-500 group-hover:to-fuchsia-500">
+              Sign up
+            </p>
           </div>
-          <div className="ml-2 flex">
-            <Checkbox className="mr-4" /> Edric
+        </UnstyledLink>
+
+        <div className="mt-16 rounded-[8px] p-[2px] bg-gradient-to-r from-pink-300 to-fuchsia-300 w-full">
+          <div className="rounded-[6px] overflow-hidden">
+            <Image src={banner} alt="banner" layout="responsive" />
           </div>
-          <div className="ml-2 flex">
-            <Checkbox className="mr-4" /> Ty
-          </div>
-          <div className="ml-2 flex">
-            <Checkbox className="mr-4" /> Dennis
-          </div>
-        </div>
-        <div className="mt-4">
-          <ConfettiForm onSubmit={() => setInput('')}>
-            <TextInput
-              onChange={(event) => setInput(event.target.value)}
-              value={input}
-              required
-              placeholder="Who's your favorite?"
-            />
-            <Button className="ml-2">Submit</Button>
-          </ConfettiForm>
         </div>
       </div>
-    </Main>
-  );
-};
+    </div>
+  </Main>
+);
 
 export default Index;
